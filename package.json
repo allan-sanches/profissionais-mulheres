@@ -23,18 +23,19 @@
     "dayjs": "^1.11.19",
     "dotenv": "^10.0.0",
     "googleapis": "^142.0.0",
+    "pnpm": "^10.33.0",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@iconify-json/mdi": "^1.2.3",
     "@tailwindcss/typography": "^0.5.19",
-    "tsx": "^4.7.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "pagefind": "^1.4.0",
     "prettier": "3.7.4",
     "prettier-plugin-astro": "0.14.1",
-    "prettier-plugin-tailwindcss": "0.7.2"
+    "prettier-plugin-tailwindcss": "0.7.2",
+    "tsx": "^4.7.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
