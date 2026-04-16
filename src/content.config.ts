@@ -1,4 +1,4 @@
-import { glob } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { reference, z } from "astro:content";
 import { defineCollection } from "astro:content";
 import { readFileSync } from "fs";
