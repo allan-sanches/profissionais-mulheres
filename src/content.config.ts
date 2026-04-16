@@ -1,6 +1,9 @@
-import { file, glob } from "astro/loaders";
+import { glob } from "astro/loaders";
 import { reference, z } from "astro:content";
 import { defineCollection } from "astro:content";
+import { readFileSync } from "fs";
+import { resolve } from "path";
+import { fileURLToPath } from "url";
 
 function slug() {
   return z
@@ -38,11 +41,13 @@ const projects = defineCollection({
     title: z.string(),
     description: z.string(),
     tech: z.array(z.string()),
-    links: z.object({
-      homepage: z.string().url().optional(),
-      github: z.string().url().optional(),
-      demo: z.string().url().optional(),
-    }).optional(),
+    links: z
+      .object({
+        homepage: z.string().url().optional(),
+        github: z.string().url().optional(),
+        demo: z.string().url().optional(),
+      })
+      .optional(),
     status: z
       .enum(["planning", "in-progress", "completed", "archived"])
       .default("completed"),
@@ -101,8 +106,21 @@ const pages = defineCollection({
   }),
 });
 
+// Custom loader for researchers JSON
+const researchersLoader = async () => {
+  const __dirname = fileURLToPath(new URL(".", import.meta.url));
+  const filePath = resolve(__dirname, "./researchers.json");
+  const fileContent = readFileSync(filePath, "utf-8");
+  const data = JSON.parse(fileContent);
+
+  return (data.researchers || []).map((researcher: any) => ({
+    id: researcher.id,
+    data: researcher,
+  }));
+};
+
 const researchers = defineCollection({
-  loader: file("./src/content/researchers.json"),
+  loader: researchersLoader,
   schema: z.object({
     id: z.string(),
     nome: z.string(),
