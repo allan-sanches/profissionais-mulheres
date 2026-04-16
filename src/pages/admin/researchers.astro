@@ -1,0 +1,364 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+type SyncStatus = "SUCCESS" | "FAILED";
+
+interface SyncLog {
+  timestamp: string;
+  status: SyncStatus;
+  message: string;
+  count: number;
+}
+
+// Parse sync log
+let syncHistory: SyncLog[] = [];
+try {
+  const logPath = new URL("../../content/researchers.sync.log", import.meta.url);
+  const logContent = await fetch(logPath).then(r => {
+    if (r.ok) return r.text();
+    return "";
+  }).catch(() => "");
+
+  if (logContent) {
+    const entries = logContent.split("---").filter((e) => e.trim());
+    syncHistory = entries.map((entry) => {
+      const lines = entry.trim().split("\n");
+      const timestamp = lines[0]?.replace(/[\[\]]/g, "") || "";
+      const statusLine = lines[1] || "";
+      const status: SyncStatus = statusLine.includes("SUCCESS") ? "SUCCESS" : "FAILED";
+      const message = lines[2]?.replace("Message: ", "") || "";
+      const count = parseInt(lines[3]?.replace("Count: ", "") || "0");
+      return { timestamp, status, message, count };
+    }).reverse();
+  }
+} catch (e) {
+  console.log("No sync log found yet");
+}
+
+const title = "Painel Administrativo - Pesquisadoras";
+const description = "Sincronize dados das pesquisadoras do Google Sheets";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="space-y-8">
+    {/* Header */}
+    <div class="space-y-2">
+      <h1 class="text-4xl font-bold tracking-tight">⚙️ {title}</h1>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400">
+        {description}
+      </p>
+    </div>
+
+    {/* Auth Check - Will be handled by API */}
+    <div
+      id="auth-container"
+      class="space-y-4 rounded-lg border border-yellow-200 bg-yellow-50 p-6 dark:border-yellow-900 dark:bg-yellow-950"
+    >
+      <h2 class="text-lg font-semibold">🔐 Autenticação Necessária</h2>
+      <p class="text-sm text-neutral-700 dark:text-neutral-300">
+        Digite seu token de acesso para gerenciar a sincronização:
+      </p>
+      <div class="flex gap-2">
+        <input
+          type="password"
+          id="admin-token"
+          placeholder="Digite o token de admin"
+          class="flex-1 rounded-md border border-neutral-300 bg-white px-4 py-2 dark:border-neutral-700 dark:bg-neutral-800"
+        />
+        <button
+          id="btn-authenticate"
+          class="rounded-md bg-blue-600 px-6 py-2 font-medium text-white hover:bg-blue-700"
+        >
+          Autenticar
+        </button>
+      </div>
+    </div>
+
+    {/* Admin Panel - Hidden until authenticated */}
+    <div id="admin-panel" class="hidden space-y-8">
+      {/* Status */}
+      <div class="rounded-lg border border-blue-200 bg-blue-50 p-6 dark:border-blue-900 dark:bg-blue-950">
+        <h2 class="mb-4 text-lg font-semibold">📊 Status Atual</h2>
+        <div class="grid gap-4 sm:grid-cols-3">
+          <div class="rounded-md bg-white p-4 dark:bg-neutral-900">
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">
+              Pesquisadoras Cadastradas
+            </p>
+            <p class="mt-2 text-3xl font-bold" id="researchers-count">0</p>
+          </div>
+          <div class="rounded-md bg-white p-4 dark:bg-neutral-900">
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">
+              Última Sincronização
+            </p>
+            <p class="mt-2 text-sm font-mono" id="last-sync">Nunca</p>
+          </div>
+          <div class="rounded-md bg-white p-4 dark:bg-neutral-900">
+            <p class="text-sm text-neutral-600 dark:text-neutral-400">
+              Status
+            </p>
+            <p class="mt-2 text-sm font-medium" id="sync-status">Aguardando...</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Sync Button */}
+      <div class="rounded-lg border border-green-200 bg-green-50 p-6 dark:border-green-900 dark:bg-green-950">
+        <h2 class="mb-4 text-lg font-semibold">🔄 Sincronizar Dados</h2>
+        <p class="mb-4 text-sm text-neutral-700 dark:text-neutral-300">
+          Clique no botão abaixo para sincronizar os dados das pesquisadoras diretamente
+          do Google Sheets. Este processo:
+        </p>
+        <ul class="mb-6 list-inside list-disc space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
+          <li>Busca novas respostas do Google Forms</li>
+          <li>Download automático de imagens do Google Drive</li>
+          <li>Valida os dados inseridos</li>
+          <li>Atualiza a lista de pesquisadoras</li>
+        </ul>
+
+        <button
+          id="btn-sync"
+          class="rounded-md bg-green-600 px-8 py-3 font-medium text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          🚀 Sincronizar Agora
+        </button>
+
+        <div id="sync-progress" class="mt-4 hidden">
+          <div class="flex items-center gap-2">
+            <div
+              class="h-5 w-5 animate-spin rounded-full border-4 border-neutral-300 border-t-green-600 dark:border-neutral-700 dark:border-t-green-400"
+            ></div>
+            <span id="progress-text">Sincronizando...</span>
+          </div>
+        </div>
+
+        <div id="sync-result" class="mt-4 hidden rounded-md p-4"></div>
+      </div>
+
+      {/* Sync History */}
+      <div class="rounded-lg border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-neutral-950">
+        <h2 class="mb-4 text-lg font-semibold">📜 Histórico de Sincronizações</h2>
+
+        {syncHistory.length === 0 ? (
+          <p class="text-sm text-neutral-600 dark:text-neutral-400">
+            Nenhuma sincronização realizada ainda.
+          </p>
+        ) : (
+          <div class="space-y-2">
+            {syncHistory.slice(0, 10).map((log) => (
+              <div
+                class={`flex items-start justify-between rounded-md p-3 ${
+                  log.status === "SUCCESS"
+                    ? "bg-green-50 dark:bg-green-950"
+                    : "bg-red-50 dark:bg-red-950"
+                }`}
+              >
+                <div>
+                  <p
+                    class={`text-sm font-medium ${
+                      log.status === "SUCCESS"
+                        ? "text-green-700 dark:text-green-200"
+                        : "text-red-700 dark:text-red-200"
+                    }`}
+                  >
+                    {log.status === "SUCCESS" ? "✅" : "❌"} {log.message}
+                  </p>
+                  <p class="mt-1 text-xs text-neutral-600 dark:text-neutral-400">
+                    {log.timestamp}
+                  </p>
+                </div>
+                {log.status === "SUCCESS" && (
+                  <span class="rounded-full bg-green-200 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-200">
+                    {log.count} pesquisadoras
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Documentation */}
+      <div class="rounded-lg border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-neutral-950">
+        <h2 class="mb-4 text-lg font-semibold">📚 Como Configurar</h2>
+        <div class="space-y-3 text-sm text-neutral-700 dark:text-neutral-300">
+          <p>
+            <strong>1. Google Cloud Project:</strong> Crie um projeto em
+            <a
+              href="https://console.cloud.google.com/projectcreate"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ml-1 text-blue-600 hover:underline dark:text-blue-400"
+            >
+              Google Cloud Console
+            </a>
+          </p>
+          <p>
+            <strong>2. Habilite APIs:</strong> Ative "Google Sheets API" e "Google Drive API"
+          </p>
+          <p>
+            <strong>3. Service Account:</strong> Crie uma conta de serviço e exporte a chave JSON
+          </p>
+          <p>
+            <strong>4. Compartilhe a Planilha:</strong> Compartilhe o Google Sheet com o email da
+            service account (acesso de leitor)
+          </p>
+          <p>
+            <strong>5. Variáveis de Ambiente:</strong> Configure em <code class="rounded bg-neutral-200 px-1 dark:bg-neutral-800">.env.local</code>:
+          </p>
+
+          <pre class="overflow-x-auto rounded-md bg-neutral-900 p-3 text-xs text-neutral-100">
+{`GOOGLE_SHEET_ID=seu-sheet-id
+GOOGLE_CLIENT_EMAIL=seu-email@projeto.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\n..."
+ADMIN_TOKEN=seu-token-seguro`}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const authContainer = document.getElementById("auth-container");
+    const adminPanel = document.getElementById("admin-panel");
+    const tokenInput = document.getElementById("admin-token") as HTMLInputElement;
+    const btnAuthenticate = document.getElementById("btn-authenticate") as HTMLButtonElement;
+    const btnSync = document.getElementById("btn-sync") as HTMLButtonElement;
+    const syncProgress = document.getElementById("sync-progress");
+    const syncResult = document.getElementById("sync-result");
+    const progressText = document.getElementById("progress-text");
+    const researchersCount = document.getElementById("researchers-count");
+    const lastSync = document.getElementById("last-sync");
+    const syncStatus = document.getElementById("sync-status");
+
+    let isAuthenticated = false;
+    let currentToken = "";
+
+    // Check if Already Authenticated (session storage)
+    const storedToken = sessionStorage.getItem("admin_token");
+    if (storedToken) {
+      isAuthenticated = true;
+      currentToken = storedToken;
+      showAdminPanel();
+    }
+
+    btnAuthenticate?.addEventListener("click", async () => {
+      const token = tokenInput.value.trim();
+      if (!token) {
+        alert("Digite um token");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/admin/verify-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        });
+
+        if (response.ok) {
+          isAuthenticated = true;
+          currentToken = token;
+          sessionStorage.setItem("admin_token", token);
+          showAdminPanel();
+        } else {
+          alert("Token inválido");
+        }
+      } catch (error) {
+        console.error("Error verifying token:", error);
+        alert("Erro ao verificar token");
+      }
+    });
+
+    async function showAdminPanel() {
+      authContainer!.classList.add("hidden");
+      adminPanel!.classList.remove("hidden");
+      await updateStatus();
+    }
+
+    btnSync?.addEventListener("click", async () => {
+      if (!isAuthenticated) {
+        alert("Você não está autenticado");
+        return;
+      }
+
+      btnSync!.disabled = true;
+      syncProgress!.classList.remove("hidden");
+      syncResult!.classList.add("hidden");
+
+      try {
+        const response = await fetch("/api/sync-researchers", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${currentToken}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          syncResult!.innerHTML = `
+            <div class="rounded-md bg-green-100 p-4 dark:bg-green-900">
+              <p class="font-medium text-green-700 dark:text-green-200">✅ Sincronização bem-sucedida!</p>
+              <p class="mt-2 text-sm text-green-600 dark:text-green-300">${data.message}</p>
+              <p class="mt-1 text-sm text-green-600 dark:text-green-300">🎉 ${data.count} pesquisadoras sincronizadas</p>
+            </div>
+          `;
+        } else {
+          syncResult!.innerHTML = `
+            <div class="rounded-md bg-red-100 p-4 dark:bg-red-900">
+              <p class="font-medium text-red-700 dark:text-red-200">❌ Erro na sincronização</p>
+              <p class="mt-2 text-sm text-red-600 dark:text-red-300">${data.message || "Erro desconhecido"}</p>
+            </div>
+          `;
+        }
+
+        syncResult!.classList.remove("hidden");
+        await updateStatus();
+      } catch (error) {
+        console.error("Sync error:", error);
+        syncResult!.innerHTML = `
+          <div class="rounded-md bg-red-100 p-4 dark:bg-red-900">
+            <p class="font-medium text-red-700 dark:text-red-200">❌ Erro de conexão</p>
+            <p class="mt-2 text-sm text-red-600 dark:text-red-300">Verifique sua conexão e tente novamente</p>
+          </div>
+        `;
+        syncResult!.classList.remove("hidden");
+      } finally {
+        if (btnSync) {
+          btnSync.disabled = false;
+        }
+        syncProgress!.classList.add("hidden");
+      }
+    });
+
+    async function updateStatus() {
+      try {
+        const response = await fetch("/api/admin/status", {
+          headers: {
+            Authorization: `Bearer ${currentToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (researchersCount) researchersCount.textContent = data.count.toString();
+          if (lastSync) lastSync.textContent = data.lastSync || "Nunca";
+          if (syncStatus) {
+            syncStatus.textContent = "✅ Conectado";
+            syncStatus.className = "mt-2 text-sm font-medium text-green-600 dark:text-green-400";
+          }
+        }
+      } catch (error) {
+        console.error("Error updating status:", error);
+      }
+    }
+
+    // Allow Enter key in token input
+    tokenInput?.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        btnAuthenticate?.click();
+      }
+    });
+  </script>
+</BaseLayout>

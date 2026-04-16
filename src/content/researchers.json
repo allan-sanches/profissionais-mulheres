@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-04-16T22:16:50.490Z",
+  "total": 1,
+  "researchers": [
+    {
+      "data_sincronizacao": "2026-04-16T22:16:50.488Z",
+      "timestamp": "allan",
+      "nome": "aaa",
+      "email": "654",
+      "id": "654-1776377810489",
+      "slug": "aaa"
+    }
+  ]
+}

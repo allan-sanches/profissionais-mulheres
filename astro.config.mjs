@@ -38,6 +38,22 @@ export default defineConfig({
         access: "public",
         optional: true,
       }),
+      GOOGLE_SHEET_ID: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      GOOGLE_CLIENT_EMAIL: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      GOOGLE_PRIVATE_KEY: envField.string({
+        context: "server",
+        access: "secret",
+      }),
+      ADMIN_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+      }),
     },
   },
 

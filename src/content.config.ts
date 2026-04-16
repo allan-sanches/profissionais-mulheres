@@ -101,6 +101,26 @@ const pages = defineCollection({
   }),
 });
 
+const researchers = defineCollection({
+  loader: file("./src/content/researchers.json"),
+  schema: z.object({
+    id: z.string(),
+    nome: z.string(),
+    email: z.string().email(),
+    slug: z.string(),
+    data_sincronizacao: z.string(),
+    telefone: z.string().optional(),
+    formacao: z.string().optional(),
+    imagem: z.string().optional(),
+    curriculo: z.string().url().optional(),
+    researchgate: z.string().url().optional(),
+    instagram: z.string().optional(),
+    site_pessoal: z.string().url().optional(),
+    genero: z.string().optional(),
+    localizacao: z.string().optional(),
+  }),
+});
+
 export const collections = {
   posts,
   projects,
@@ -108,4 +128,5 @@ export const collections = {
   tags,
   friends,
   pages,
+  researchers,
 };

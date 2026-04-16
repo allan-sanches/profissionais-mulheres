@@ -1,0 +1,259 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+// Fetch all researchers
+const researchers = await getCollection("researchers");
+
+// Extract unique values for filters
+const generos = [...new Set(researchers.map((r: any) => r.data.genero).filter(Boolean))].sort() as string[];
+const localizacoes = [...new Set(researchers.map((r: any) => r.data.localizacao).filter(Boolean))].sort() as string[];
+const formacoes = [...new Set(researchers.map((r: any) => r.data.formacao).filter(Boolean))].sort() as string[];
+
+const title = "Pesquisadoras";
+const description = "Portfólio de pesquisadoras cadastradas no programa";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="space-y-8">
+    {/* Header */}
+    <div class="space-y-2">
+      <h1 class="text-4xl font-bold tracking-tight">{title}</h1>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400">
+        {description} ({researchers.length} pesquisadoras)
+      </p>
+    </div>
+
+    {/* Filters */}
+    <div class="space-y-4 rounded-lg bg-neutral-100 p-6 dark:bg-neutral-900">
+      <h2 class="text-lg font-semibold">Filtros</h2>
+
+      <div class="grid gap-4 md:grid-cols-3">
+        {/* Gender Filter */}
+        <div class="space-y-2">
+          <label for="filter-genero" class="block text-sm font-medium">
+            Gênero
+          </label>
+          <select
+            id="filter-genero"
+            class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <option value="">Todos</option>
+            {generos.map((genero) => (
+              <option value={genero}>{genero}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Location Filter */}
+        <div class="space-y-2">
+          <label for="filter-localizacao" class="block text-sm font-medium">
+            Localização
+          </label>
+          <select
+            id="filter-localizacao"
+            class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <option value="">Todas</option>
+            {localizacoes.map((loc) => (
+              <option value={loc}>{loc}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Education Filter */}
+        <div class="space-y-2">
+          <label for="filter-formacao" class="block text-sm font-medium">
+            Formação
+          </label>
+          <select
+            id="filter-formacao"
+            class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <option value="">Todos</option>
+            {formacoes.map((form) => (
+              <option value={form}>{form}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <button
+        id="btn-clear-filters"
+        class="mt-2 rounded-md bg-neutral-300 px-4 py-2 text-sm font-medium hover:bg-neutral-400 dark:bg-neutral-700 dark:hover:bg-neutral-600"
+      >
+        Limpar Filtros
+      </button>
+    </div>
+
+    {/* Grid of Researchers */}
+    <div id="researchers-grid" class="space-y-4">
+      {researchers.length === 0 ? (
+        <p class="py-12 text-center text-neutral-600 dark:text-neutral-400">
+          Nenhuma pesquisadora cadastrada ainda.
+        </p>
+      ) : (
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {researchers.map((researcher: any) => {
+            const r = researcher.data;
+            return (
+              <div
+                class="researcher-card group rounded-lg border border-neutral-200 bg-white p-6 transition-shadow hover:shadow-lg dark:border-neutral-800 dark:bg-neutral-950"
+                data-genero={r.genero || ""}
+                data-localizacao={r.localizacao || ""}
+                data-formacao={r.formacao || ""}
+              >
+                {/* Image */}
+                {r.imagem && (
+                  <div class="mb-4 h-48 w-full overflow-hidden rounded-md bg-neutral-100 dark:bg-neutral-800">
+                    <img
+                      src={r.imagem}
+                      alt={r.nome}
+                      class="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
+
+                {/* Name */}
+                <h3 class="mb-1 text-lg font-semibold">{r.nome}</h3>
+
+                {/* Education */}
+                {r.formacao && (
+                  <p class="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
+                    {r.formacao}
+                  </p>
+                )}
+
+                {/* Location & Gender */}
+                <div class="mb-4 flex flex-wrap gap-2 text-xs">
+                  {r.localizacao && (
+                    <span class="rounded-full bg-blue-100 px-3 py-1 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                      📍 {r.localizacao}
+                    </span>
+                  )}
+                  {r.genero && (
+                    <span class="rounded-full bg-pink-100 px-3 py-1 text-pink-700 dark:bg-pink-900 dark:text-pink-200">
+                      {r.genero}
+                    </span>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div class="mb-4">
+                  <a
+                    href={`mailto:${r.email}`}
+                    class="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                  >
+                    ✉️ {r.email}
+                  </a>
+                </div>
+
+                {/* Phone */}
+                {r.telefone && (
+                  <div class="mb-4">
+                    <a
+                      href={`tel:${r.telefone}`}
+                      class="text-sm text-green-600 hover:underline dark:text-green-400"
+                    >
+                      📱 {r.telefone}
+                    </a>
+                  </div>
+                )}
+
+                {/* Links */}
+                <div class="flex flex-wrap gap-2">
+                  {r.curriculo && (
+                    <a
+                      href={r.curriculo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-md bg-neutral-200 px-3 py-1 text-xs font-medium transition-colors hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                      title="Currículo Lattes"
+                    >
+                      📄 CV
+                    </a>
+                  )}
+                  {r.researchgate && (
+                    <a
+                      href={r.researchgate}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-md bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-200 dark:hover:bg-blue-800"
+                      title="ResearchGate"
+                    >
+                      🔬 RG
+                    </a>
+                  )}
+                  {r.instagram && (
+                    <a
+                      href={r.instagram.startsWith("http") ? r.instagram : `https://instagram.com/${r.instagram}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-md bg-pink-100 px-3 py-1 text-xs font-medium text-pink-700 transition-colors hover:bg-pink-200 dark:bg-pink-900 dark:text-pink-200 dark:hover:bg-pink-800"
+                      title="Instagram"
+                    >
+                      📷 IG
+                    </a>
+                  )}
+                  {r.site_pessoal && (
+                    <a
+                      href={r.site_pessoal}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-md bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700 transition-colors hover:bg-purple-200 dark:bg-purple-900 dark:text-purple-200 dark:hover:bg-purple-800"
+                      title="Site Pessoal"
+                    >
+                      🌐 Site
+                    </a>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+
+  <script>
+    // Filter functionality
+    const filterGenero = document.getElementById("filter-genero") as HTMLSelectElement;
+    const filterLocalizacao = document.getElementById("filter-localizacao") as HTMLSelectElement;
+    const filterFormacao = document.getElementById("filter-formacao") as HTMLSelectElement;
+    const btnClearFilters = document.getElementById("btn-clear-filters") as HTMLButtonElement;
+    const cards = document.querySelectorAll(".researcher-card");
+
+    function applyFilters() {
+      const genero = filterGenero?.value || "";
+      const localizacao = filterLocalizacao?.value || "";
+      const formacao = filterFormacao?.value || "";
+
+      cards.forEach((card) => {
+        const cardGenero = card.getAttribute("data-genero") || "";
+        const cardLocalizacao = card.getAttribute("data-localizacao") || "";
+        const cardFormacao = card.getAttribute("data-formacao") || "";
+
+        const matchGenero = !genero || cardGenero === genero;
+        const matchLocalizacao = !localizacao || cardLocalizacao === localizacao;
+        const matchFormacao = !formacao || cardFormacao === formacao;
+
+        if (matchGenero && matchLocalizacao && matchFormacao) {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+    }
+
+    filterGenero?.addEventListener("change", applyFilters);
+    filterLocalizacao?.addEventListener("change", applyFilters);
+    filterFormacao?.addEventListener("change", applyFilters);
+
+    btnClearFilters?.addEventListener("click", () => {
+      filterGenero.value = "";
+      filterLocalizacao.value = "";
+      filterFormacao.value = "";
+      applyFilters();
+    });
+  </script>
+</BaseLayout>

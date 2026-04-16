@@ -1,0 +1,66 @@
+
+---
+[2026-04-16T22:12:31.572Z]
+Status: FAILED
+Message: Sync failed: Missing Google credentials: GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID
+Count: 0
+Errors: 1
+
+Errors:
+Missing Google credentials: GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID
+
+---
+[2026-04-16T22:13:18.993Z]
+Status: FAILED
+Message: Sync failed: Missing Google credentials: GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID
+Count: 0
+Errors: 1
+
+Errors:
+Missing Google credentials: GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID
+
+---
+[2026-04-16T22:13:41.596Z]
+Status: FAILED
+Message: Sync failed: The caller does not have permission
+Count: 0
+Errors: 1
+
+Errors:
+The caller does not have permission
+
+---
+[2026-04-16T22:14:47.803Z]
+Status: FAILED
+Message: Sync failed: Unable to parse range: Form Responses!A:L
+Count: 0
+Errors: 1
+
+Errors:
+Unable to parse range: Form Responses!A:L
+
+---
+[2026-04-16T22:15:16.885Z]
+Status: FAILED
+Message: Sync failed: Unable to parse range: Form Responses!A:L
+Count: 0
+Errors: 1
+
+Errors:
+Unable to parse range: Form Responses!A:L
+
+---
+[2026-04-16T22:15:43.175Z]
+Status: SUCCESS
+Message: Successfully synced 0 researchers
+Count: 0
+Errors: 0
+
+
+---
+[2026-04-16T22:16:49.669Z]
+Status: SUCCESS
+Message: Successfully synced 1 researchers
+Count: 1
+Errors: 0
+
