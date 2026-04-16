@@ -1,6 +1,5 @@
 import { file, glob } from "astro/loaders";
-import { reference, z } from "astro:content";
-import { defineCollection } from "astro:content";
+import { reference, z, defineCollection } from "astro:content";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 import { fileURLToPath } from "url";
@@ -123,17 +122,19 @@ const researchers = defineCollection({
   loader: researchersLoader,
   schema: z.object({
     id: z.string(),
-    nome: z.string(),
-    email: z.string().email(),
-    slug: z.string(),
-    data_sincronizacao: z.string(),
+    // Campos principais como opcionais para evitar erro em linhas vazias do Sheets
+    nome: z.string().optional(),
+    email: z.string().email().optional().or(z.string().length(0)),
+    slug: z.string().optional(),
+    // Coerce garante que strings de data virem objetos Date
+    data_sincronizacao: z.coerce.date().optional(),
     telefone: z.string().optional(),
     formacao: z.string().optional(),
     imagem: z.string().optional(),
-    curriculo: z.string().url().optional(),
-    researchgate: z.string().url().optional(),
+    curriculo: z.string().url().optional().or(z.string().length(0)),
+    researchgate: z.string().url().optional().or(z.string().length(0)),
     instagram: z.string().optional(),
-    site_pessoal: z.string().url().optional(),
+    site_pessoal: z.string().url().optional().or(z.string().length(0)),
     genero: z.string().optional(),
     localizacao: z.string().optional(),
   }),
