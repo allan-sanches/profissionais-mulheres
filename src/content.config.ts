@@ -109,7 +109,7 @@ const pages = defineCollection({
 // Custom loader for researchers JSON
 const researchersLoader = async () => {
   const __dirname = fileURLToPath(new URL(".", import.meta.url));
-  const filePath = resolve(__dirname, "./researchers.json");
+  const filePath = resolve(__dirname, "./content/researchers.json");
   const fileContent = readFileSync(filePath, "utf-8");
   const data = JSON.parse(fileContent);
 
