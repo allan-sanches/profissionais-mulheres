@@ -1,47 +1,35 @@
 // @ts-check
 import { defineConfig, envField, fontProviders } from "astro/config";
-
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import icon from "astro-icon";
-import expressiveCode from "astro-expressive-code";
 import sitemap from "@astrojs/sitemap";
+import vercel from "@astrojs/vercel";
 
-// https://astro.build/config
 export default defineConfig({
-  // IMPORTANTE: Mude para a URL real do seu site aqui
-  site: "https://your-domain.com",
+  site: "https://profissionais-mulheres.vercel.app",
+  adapter: vercel(),
+  output: "static",
 
   vite: {
     plugins: [tailwindcss()],
   },
 
-  integrations: [
-    expressiveCode({
-      themeCssSelector: (theme) => `.${theme.type}`,
-      themes: ["material-theme-darker", "material-theme-lighter"],
-    }),
-    mdx(),
-    icon(),
-    sitemap(),
-  ],
+  integrations: [mdx(), icon(), sitemap()],
 
   env: {
     schema: {
       UMAMI_URL: envField.string({
-        context: "server",
+        context: "client",
         access: "public",
         optional: true,
       }),
       UMAMI_WEBSITE_ID: envField.string({
-        context: "server",
+        context: "client",
         access: "public",
         optional: true,
       }),
-      GOOGLE_SHEET_ID: envField.string({
-        context: "server",
-        access: "secret",
-      }),
+      GOOGLE_SHEET_ID: envField.string({ context: "server", access: "secret" }),
       GOOGLE_CLIENT_EMAIL: envField.string({
         context: "server",
         access: "secret",
@@ -53,7 +41,7 @@ export default defineConfig({
       ADMIN_TOKEN: envField.string({
         context: "server",
         access: "secret",
-        default: "ecologia2026", // <--- Você pode definir uma senha padrão aqui
+        default: "ecologia2026",
       }),
     },
   },

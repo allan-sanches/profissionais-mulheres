@@ -1,11 +1,9 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
-type SyncStatus = "SUCCESS" | "FAILED";
-
 interface SyncLog {
   timestamp: string;
-  status: SyncStatus;
+  status: "SUCCESS" | "FAILED";
   message: string;
   count: number;
 }
@@ -13,16 +11,16 @@ interface SyncLog {
 let syncHistory: SyncLog[] = [];
 try {
   const logPath = new URL(
-    "../../content/researchers.sync.log",
+    "../../../src/content/researchers.sync.log",
     import.meta.url,
   );
   const logContent = await fetch(logPath)
     .then((r) => (r.ok ? r.text() : ""))
     .catch(() => "");
-
   if (logContent) {
-    const entries = logContent.split("---").filter((e) => e.trim());
-    syncHistory = entries
+    syncHistory = logContent
+      .split("---")
+      .filter((e) => e.trim())
       .map((entry) => {
         const lines = entry.trim().split("\n");
         return {
@@ -36,54 +34,37 @@ try {
       })
       .reverse();
   }
-} catch (e) {
-  console.log("Sem log de sincronização");
-}
-
-const title = "Administração do Catálogo";
-const description =
-  "Atualize a lista de pesquisadoras a partir da planilha oficial";
+} catch (e) {}
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title="Admin - Pesquisadoras">
   <div class="mx-auto max-w-4xl space-y-12 px-4 py-10">
-    <header
-      class="space-y-4 border-b border-neutral-200 pb-8 dark:border-neutral-800"
-    >
-      <h1
-        class="text-3xl font-light tracking-tight text-neutral-900 sm:text-4xl dark:text-neutral-100"
-      >
-        Painel de <span class="font-serif text-primary italic">Controle</span>
+    <header class="border-b pb-8 dark:border-neutral-800">
+      <h1 class="font-serif text-3xl text-primary italic">
+        Painel de Controle
       </h1>
-      <p class="font-light text-neutral-500 dark:text-neutral-400">
-        Bem-vinda. Aqui você pode sincronizar os novos dados do Google Sheets
-        com o site.
+      <p class="mt-2 font-light text-neutral-500">
+        Atualize o catálogo via Google Sheets.
       </p>
     </header>
 
     <div
       id="auth-container"
-      class="rounded-xl border border-neutral-200 bg-neutral-50/50 p-8 backdrop-blur-sm dark:border-neutral-800 dark:bg-neutral-900/50"
+      class="rounded-xl border bg-neutral-50 p-8 dark:bg-neutral-900/50"
     >
-      <div class="max-w-md space-y-4">
-        <h2 class="text-lg font-medium">Acesso Restrito</h2>
-        <p class="text-sm text-neutral-600 dark:text-neutral-400">
-          Insira sua chave de acesso para liberar as atualizações:
-        </p>
-        <div class="flex flex-col gap-3 sm:flex-row">
-          <input
-            type="password"
-            id="admin-token"
-            placeholder="Sua chave de acesso..."
-            class="flex-1 rounded-lg border border-neutral-300 bg-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-primary/20 dark:border-neutral-700 dark:bg-neutral-800"
-          />
-          <button
-            id="btn-authenticate"
-            class="rounded-lg bg-neutral-900 px-6 py-2.5 font-medium text-white hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900"
-          >
-            Entrar
-          </button>
-        </div>
+      <h2 class="mb-4 font-serif text-lg font-medium">Acesso Restrito</h2>
+      <div class="flex max-w-md gap-3">
+        <input
+          type="password"
+          id="admin-token"
+          placeholder="Senha de admin..."
+          class="flex-1 rounded-lg border p-2.5 dark:bg-neutral-800"
+        />
+        <button
+          id="btn-authenticate"
+          class="rounded-lg bg-neutral-900 px-6 py-2.5 font-bold text-white dark:bg-white dark:text-neutral-900"
+          >ENTRAR</button
+        >
       </div>
     </div>
 
@@ -91,210 +72,104 @@ const description =
       <section
         class="relative overflow-hidden rounded-2xl bg-neutral-900 p-8 text-white shadow-xl dark:bg-neutral-100 dark:text-neutral-900"
       >
-        <div class="relative z-10 space-y-6">
-          <div>
-            <h2 class="text-2xl font-light">Sincronizar Planilha</h2>
-            <p class="mt-1 font-light text-neutral-400 dark:text-neutral-600">
-              Busca novos cadastros e atualiza o catálogo no site.
-            </p>
-          </div>
-
-          <button
-            id="btn-sync"
-            class="group relative flex items-center gap-3 rounded-full bg-primary px-8 py-4 font-bold text-white shadow-lg shadow-primary/30 transition-all hover:scale-105 active:scale-95"
-          >
-            <span id="btn-text">🚀 ATUALIZAR LISTA AGORA</span>
-            <div
-              id="btn-spinner"
-              class="hidden h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"
-            >
-            </div>
-          </button>
-
+        <h2 class="mb-6 font-serif text-2xl italic">Sincronizar Dados</h2>
+        <button
+          id="btn-sync"
+          class="flex items-center gap-3 rounded-full bg-primary px-8 py-4 font-bold text-white shadow-lg transition-transform hover:scale-105"
+        >
+          <span id="btn-text">🚀 ATUALIZAR LISTA AGORA</span>
           <div
-            id="sync-status-msg"
-            class="hidden animate-pulse text-sm font-medium text-primary-foreground/80"
+            id="btn-spinner"
+            class="hidden h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white"
           >
-            Processando... por favor, não feche esta página.
           </div>
-        </div>
+        </button>
       </section>
 
-      <div class="grid gap-6 sm:grid-cols-2">
-        <div
-          class="rounded-xl border border-neutral-200 p-6 dark:border-neutral-800"
-        >
+      <div class="grid gap-6 text-center sm:grid-cols-2">
+        <div class="rounded-xl border bg-white p-6 dark:bg-neutral-950">
           <span
-            class="text-xs font-bold tracking-widest text-neutral-500 uppercase"
-            >Total no Catálogo</span
+            class="text-xs font-bold tracking-widest text-neutral-400 uppercase"
+            >Total Sincronizado</span
           >
-          <p class="mt-2 text-4xl font-light" id="researchers-count">--</p>
+          <p class="mt-2 text-4xl font-light" id="res-count">
+            {syncHistory[0]?.count || "0"}
+          </p>
         </div>
-        <div
-          class="rounded-xl border border-neutral-200 p-6 dark:border-neutral-800"
-        >
+        <div class="rounded-xl border bg-white p-6 dark:bg-neutral-950">
           <span
-            class="text-xs font-bold tracking-widest text-neutral-500 uppercase"
+            class="text-xs font-bold tracking-widest text-neutral-400 uppercase"
             >Último Refresh</span
           >
-          <p
-            class="mt-2 text-lg font-medium text-neutral-700 dark:text-neutral-300"
-            id="last-sync"
-          >
-            --
+          <p class="mt-2 text-lg font-medium" id="res-date">
+            {syncHistory[0]?.timestamp || "---"}
           </p>
         </div>
       </div>
-
-      <section class="space-y-4">
-        <h2
-          class="font-serif text-xl font-light text-neutral-800 italic dark:text-neutral-200"
-        >
-          Histórico de Atividade
-        </h2>
-        <div
-          class="divide-y divide-neutral-100 overflow-hidden rounded-xl border border-neutral-200 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-950"
-        >
-          {
-            syncHistory.length === 0 ? (
-              <p class="p-8 text-center text-sm text-neutral-500 italic">
-                Nenhum registro encontrado.
-              </p>
-            ) : (
-              syncHistory.slice(0, 5).map((log) => (
-                <div class="flex items-center justify-between p-4 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-900/50">
-                  <div class="flex items-center gap-4">
-                    <div
-                      class={`h-2 w-2 rounded-full ${log.status === "SUCCESS" ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" : "bg-red-500"}`}
-                    />
-                    <div>
-                      <p class="text-sm font-medium text-neutral-800 dark:text-neutral-200">
-                        {log.message}
-                      </p>
-                      <p class="text-xs text-neutral-500">{log.timestamp}</p>
-                    </div>
-                  </div>
-                  {log.status === "SUCCESS" && (
-                    <span class="rounded bg-primary/10 px-2 py-1 text-xs font-bold text-primary">
-                      +{log.count}
-                    </span>
-                  )}
-                </div>
-              ))
-            )
-          }
-        </div>
-      </section>
     </div>
   </div>
 
   <script>
-    const authContainer = document.getElementById("auth-container");
-    const adminPanel = document.getElementById("admin-panel");
-    const tokenInput = document.getElementById(
-      "admin-token",
-    ) as HTMLInputElement;
-    const btnAuthenticate = document.getElementById("btn-authenticate");
+    const authBox = document.getElementById("auth-container");
+    const panelBox = document.getElementById("admin-panel");
+    const input = document.getElementById("admin-token") as HTMLInputElement;
     const btnSync = document.getElementById("btn-sync");
-    const btnText = document.getElementById("btn-text");
-    const btnSpinner = document.getElementById("btn-spinner");
-    const statusMsg = document.getElementById("sync-status-msg");
-    const countDisplay = document.getElementById("researchers-count");
-    const lastSyncDisplay = document.getElementById("last-sync");
 
-    let currentToken = sessionStorage.getItem("admin_token") || "";
+    let token = sessionStorage.getItem("admin_token") || "";
+    if (token) attemptLogin(token);
 
-    // Se já tiver token, tenta validar automaticamente
-    if (currentToken) {
-      validateAndShow(currentToken);
-    }
+    document
+      .getElementById("btn-authenticate")
+      ?.addEventListener("click", () => attemptLogin(input.value.trim()));
 
-    btnAuthenticate?.addEventListener("click", () => {
-      const token = tokenInput.value.trim();
-      if (token) validateAndShow(token);
-    });
-
-    async function validateAndShow(token: string) {
-      try {
-        const response = await fetch("/api/admin/verify-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // <--- CORREÇÃO: Enviando no Header como a API espera
-          },
-        });
-
-        if (response.ok) {
-          currentToken = token;
-          sessionStorage.setItem("admin_token", token);
-          authContainer?.classList.add("hidden");
-          adminPanel?.classList.remove("hidden");
-          await refreshData();
-        } else {
-          sessionStorage.removeItem("admin_token");
-          alert("Chave de acesso inválida.");
-        }
-      } catch (e) {
-        alert("Erro ao conectar com o servidor.");
+    async function attemptLogin(t: string) {
+      const res = await fetch("/api/admin/verify-token", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${t}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.ok) {
+        token = t;
+        sessionStorage.setItem("admin_token", t);
+        authBox?.classList.add("hidden");
+        panelBox?.classList.remove("hidden");
+      } else {
+        alert("Chave inválida.");
       }
     }
 
     btnSync?.addEventListener("click", async () => {
-      if (
-        !btnSync ||
-        !confirm(
-          "Deseja atualizar os dados agora? Isso substituirá as informações atuais.",
-        )
-      )
-        return;
+      if (!confirm("Isso atualizará os dados do site. Confirmar?")) return;
+
+      const btnText = document.getElementById("btn-text");
+      const spinner = document.getElementById("btn-spinner");
 
       btnSync.setAttribute("disabled", "true");
       btnText!.textContent = "SINCRONIZANDO...";
-      btnSpinner?.classList.remove("hidden");
-      statusMsg?.classList.remove("hidden");
+      spinner?.classList.remove("hidden");
 
       try {
-        const response = await fetch("/api/sync-researchers", {
+        const res = await fetch("/api/sync-researchers", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${currentToken}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (response.ok) {
-          const data = await response.json();
+        if (res.ok) {
+          const data = await res.json();
           alert(`Sucesso! ${data.count} pesquisadoras sincronizadas.`);
           window.location.reload();
         } else {
-          alert("Erro na sincronização. Verifique as permissões da planilha.");
+          alert("Erro na sincronização.");
         }
-      } catch (error) {
+      } catch (e) {
         alert("Erro de rede.");
       } finally {
         btnSync.removeAttribute("disabled");
         btnText!.textContent = "🚀 ATUALIZAR LISTA AGORA";
-        btnSpinner?.classList.add("hidden");
-        statusMsg?.classList.add("hidden");
+        spinner?.classList.add("hidden");
       }
-    });
-
-    async function refreshData() {
-      try {
-        const response = await fetch("/api/admin/status", {
-          headers: { Authorization: `Bearer ${currentToken}` },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (countDisplay) countDisplay.textContent = data.count.toString();
-          if (lastSyncDisplay)
-            lastSyncDisplay.textContent = data.lastSync || "Nunca";
-        }
-      } catch (e) {}
-    }
-
-    tokenInput?.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") btnAuthenticate?.click();
     });
   </script>
 </BaseLayout>

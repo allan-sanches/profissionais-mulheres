@@ -1,53 +1,42 @@
 import type { APIRoute } from "astro";
-import { ADMIN_TOKEN } from "astro:env/server";
-import { main as syncResearchers } from "@/scripts/sync-researchers";
+import {
+  ADMIN_TOKEN,
+  GOOGLE_CLIENT_EMAIL,
+  GOOGLE_PRIVATE_KEY,
+  GOOGLE_SHEET_ID,
+} from "astro:env/server";
+import { runFullSync } from "../../utils/google-sheets";
+
+export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    // Check authorization
     const authHeader = request.headers.get("Authorization");
     const token = authHeader?.replace("Bearer ", "");
 
     if (!token || token !== ADMIN_TOKEN) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 401 }
-      );
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+      });
     }
 
-    // Run sync
-    const result = await syncResearchers();
+    const count = await runFullSync({
+      email: GOOGLE_CLIENT_EMAIL,
+      key: GOOGLE_PRIVATE_KEY,
+      sheetId: GOOGLE_SHEET_ID,
+    });
 
-    if (result.success) {
-      return new Response(
-        JSON.stringify({
-          success: true,
-          message: result.message,
-          count: result.count,
-          timestamp: result.timestamp,
-        }),
-        { status: 200 }
-      );
-    } else {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          message: result.message,
-          errors: result.errors,
-        }),
-        { status: 400 }
-      );
-    }
-  } catch (error) {
-    const errorMsg = error instanceof Error ? error.message : "Internal server error";
-    console.error("Sync error:", error);
     return new Response(
       JSON.stringify({
-        success: false,
-        message: `Erro durante sincronização: ${errorMsg}`,
-        errors: [errorMsg],
+        success: true,
+        count,
+        message: "Sincronização concluída com sucesso!",
       }),
-      { status: 500 }
+      { status: 200 },
     );
+  } catch (error: any) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
   }
 };
