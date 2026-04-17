@@ -14,7 +14,6 @@ export async function runFullSync(credentials: {
   });
 
   const sheets = google.sheets({ version: "v4", auth });
-
   const spreadsheet = await sheets.spreadsheets.get({
     spreadsheetId: credentials.sheetId,
   });
@@ -54,16 +53,20 @@ export async function runFullSync(credentials: {
     .filter((r) => r.nome && r.email);
 
   const OUTPUT_DIR = path.resolve("./src/content");
-  const OUTPUT_FILE = path.join(OUTPUT_DIR, "researchers.json");
-
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
-  const finalData = {
-    timestamp: new Date().toISOString(),
-    total: researchers.length,
-    researchers: researchers.sort((a, b) => a.nome.localeCompare(b.nome)),
-  };
+  await fs.writeFile(
+    path.join(OUTPUT_DIR, "researchers.json"),
+    JSON.stringify(
+      {
+        timestamp: new Date().toISOString(),
+        total: researchers.length,
+        researchers: researchers.sort((a, b) => a.nome.localeCompare(b.nome)),
+      },
+      null,
+      2,
+    ),
+  );
 
-  await fs.writeFile(OUTPUT_FILE, JSON.stringify(finalData, null, 2));
   return researchers.length;
 }
