@@ -9,7 +9,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  // IMPORTANT: Change this to your deployed site URL
+  // IMPORTANTE: Mude para a URL real do seu site aqui
   site: "https://your-domain.com",
 
   vite: {
@@ -53,6 +53,7 @@ export default defineConfig({
       ADMIN_TOKEN: envField.string({
         context: "server",
         access: "secret",
+        default: "ecologia2026", // <--- Você pode definir uma senha padrão aqui
       }),
     },
   },
