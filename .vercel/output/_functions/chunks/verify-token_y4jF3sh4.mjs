@@ -1,4 +1,4 @@
-import { A as ADMIN_TOKEN } from "./server_sik58Zoo.mjs";
+import { A as ADMIN_TOKEN } from "./server_Mjp-O15s.mjs";
 
 const prerender = false;
 const POST = async ({ request }) => {

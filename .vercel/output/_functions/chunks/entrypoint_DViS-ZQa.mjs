@@ -4653,7 +4653,7 @@ const ASTRO_PATH_PARAM = "x_astro_path";
 const ASTRO_LOCALS_HEADER = "x-astro-locals";
 const ASTRO_MIDDLEWARE_SECRET_HEADER = "x-astro-middleware-secret";
 
-const middlewareSecret = "53d8f65e-6e20-42e3-8cad-be672333f1f8";
+const middlewareSecret = "89cfca7f-fcd8-48f7-91ce-7ed05daf4eca";
 
 function shouldAppendForwardSlash(trailingSlash, buildFormat) {
   switch (trailingSlash) {
@@ -13954,9 +13954,9 @@ const serializedData = [
 ];
 serializedData.map(deserializeRouteInfo);
 
-const _page0 = () => import("./generic_FyxkI0ar.mjs").then((n) => n.g);
-const _page1 = () => import("./verify-token_Cxh50uvZ.mjs");
-const _page2 = () => import("./sync-researchers_HoZTJTRW.mjs");
+const _page0 = () => import("./generic_DfKCTulR.mjs").then((n) => n.g);
+const _page1 = () => import("./verify-token_y4jF3sh4.mjs");
+const _page2 = () => import("./sync-researchers_CgVQkRVo.mjs");
 const pageMap = new Map([
   [
     "node_modules/.pnpm/astro@6.1.7_@types+node@25._043e3dbb38b7c7679edcba7637bb0aa8/node_modules/astro/dist/assets/endpoint/generic.js",
@@ -14315,29 +14315,29 @@ const _manifest = deserializeManifest({
       "chunks/_virtual_astro_session-driver_DYx9Bb3p.mjs",
     "\u0000virtual:astro:server-island-manifest":
       "chunks/_virtual_astro_server-island-manifest_CQQ1F5PF.mjs",
-    "\u0000virtual:astro:page:src/pages/404@_@astro": "chunks/404_Ba8haOIs.mjs",
+    "\u0000virtual:astro:page:src/pages/404@_@astro": "chunks/404_CbsgTO5_.mjs",
     "\u0000virtual:astro:page:src/pages/admin/researchers@_@astro":
-      "chunks/researchers_CoS8Wwit.mjs",
+      "chunks/researchers_CCibVHkw.mjs",
     "\u0000virtual:astro:page:src/pages/api/admin/status@_@ts":
-      "chunks/status_BgF53ZGm.mjs",
+      "chunks/status_rltVtrT3.mjs",
     "\u0000virtual:astro:page:src/pages/robots.txt@_@ts":
       "chunks/robots_BoWS-9Z4.mjs",
     "\u0000virtual:astro:page:src/pages/rss.xml@_@js":
-      "chunks/rss_C9levxo-.mjs",
+      "chunks/rss_Bg6ulxhZ.mjs",
     "\u0000virtual:astro:page:src/pages/index@_@astro":
-      "chunks/index_CeOBCKfv.mjs",
+      "chunks/index_BgbRGcsI.mjs",
     "C:/Users/allan/Documents/profissionais-mulheres/node_modules/.pnpm/astro@6.1.7_@types+node@25._043e3dbb38b7c7679edcba7637bb0aa8/node_modules/astro/dist/assets/services/sharp.js":
-      "chunks/sharp_CYx0X-bJ.mjs",
+      "chunks/sharp_DGSz8Q_o.mjs",
     "C:\\Users\\allan\\Documents\\profissionais-mulheres\\.astro\\content-assets.mjs":
       "chunks/content-assets_DloNRoa4.mjs",
     "\u0000astro:data-layer-content":
       "chunks/_astro_data-layer-content_Dx90qSfw.mjs",
-    "astro/entrypoints/prerender": "prerender-entry.DcbIkWTL.mjs",
+    "astro/entrypoints/prerender": "prerender-entry.B96drnlT.mjs",
     "@astrojs/vercel/entrypoint": "entry.mjs",
     "\u0000virtual:astro:page:src/pages/api/admin/verify-token@_@ts":
-      "chunks/verify-token_Cxh50uvZ.mjs",
+      "chunks/verify-token_y4jF3sh4.mjs",
     "\u0000virtual:astro:page:src/pages/api/sync-researchers@_@ts":
-      "chunks/sync-researchers_HoZTJTRW.mjs",
+      "chunks/sync-researchers_CgVQkRVo.mjs",
     "C:/Users/allan/Documents/profissionais-mulheres/src/pages/admin/researchers.astro?astro&type=script&index=0&lang.ts":
       "_astro/researchers.astro_astro_type_script_index_0_lang.D6pvM_9s.js",
     "C:/Users/allan/Documents/profissionais-mulheres/src/pages/index.astro?astro&type=script&index=0&lang.ts":
@@ -14395,7 +14395,7 @@ const _manifest = deserializeManifest({
   actionBodySizeLimit: 1048576,
   serverIslandBodySizeLimit: 1048576,
   allowedDomains: [],
-  key: "Rq2ay3v8MMKLK2POBEIFOs7cUryA1HqaV4+C7DdtzvY=",
+  key: "YgaEb43fn8mxu1gFPAYu0JHgoOaRnQxDr3WfVA1UoTI=",
   image: {},
   devToolbar: { enabled: false, debugInfoOutput: "" },
   logLevel: "info",

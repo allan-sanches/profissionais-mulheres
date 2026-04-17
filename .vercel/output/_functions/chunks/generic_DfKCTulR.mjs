@@ -25,7 +25,7 @@ import {
   r as renderTemplate,
   l as FontFamilyNotFound,
   u as unescapeHTML,
-} from "./entrypoint_BfZMvszB.mjs";
+} from "./entrypoint_DViS-ZQa.mjs";
 import "clsx";
 import * as mime from "mrmime";
 import "piccolore";
@@ -598,7 +598,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      "./sharp_CYx0X-bJ.mjs"
+      "./sharp_DGSz8Q_o.mjs"
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
