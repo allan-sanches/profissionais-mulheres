@@ -1,17 +1,144 @@
 ---
-import Hero from "@/components/blocks/Hero.astro";
-import RecentPosts from "@/components/blocks/RecentPosts.astro";
-import Footer from "@/components/layout/Footer.astro";
-import site from "@/config/site";
-import Layout from "@/layouts/Layout.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ResearcherCard from "@/components/blocks/ResearcherCard.astro";
+import { getCollection } from "astro:content";
+
+// Fetch all researchers
+const researchers = await getCollection("researchers");
+
+// Extract unique values for filters
+const generos = [
+  ...new Set(researchers.map((r: any) => r.data.genero).filter(Boolean)),
+].sort() as string[];
+const localizacoes = [
+  ...new Set(researchers.map((r: any) => r.data.localizacao).filter(Boolean)),
+].sort() as string[];
+const formacoes = [
+  ...new Set(researchers.map((r: any) => r.data.formacao).filter(Boolean)),
+].sort() as string[];
+
+const title = "Pesquisadoras";
+const description = "Portfólio de pesquisadoras cadastradas no programa";
 ---
 
-<Layout title={site.meta.title} description={site.meta.description}>
-  <div
-    class="animate-in fade-in slide-in-from-bottom-4 mx-auto max-w-2xl p-8 md:p-16"
-  >
-    <Hero />
+<BaseLayout title={title} description={description}>
+  <div class="space-y-8">
+    {/* Header */}
+    <div class="space-y-2">
+      <h1 class="text-4xl font-bold tracking-tight">{title}</h1>
+      <p class="text-lg text-neutral-600 dark:text-neutral-400">
+        {description} ({researchers.length} pesquisadoras)
+      </p>
+    </div>
 
-    <RecentPosts />
+    {/* Filters */}
+    <div class="space-y-4 rounded-lg bg-neutral-100 p-6 dark:bg-neutral-900">
+      <h2 class="text-lg font-semibold">Filtros</h2>
+
+      <div class="grid gap-4 md:grid-cols-3">
+        {/* Gender Filter */}
+        <div class="space-y-2">
+          <label for="filter-genero" class="block text-sm font-medium">
+            Gênero
+          </label>
+          <select
+            id="filter-genero"
+            class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <option value="">Todos</option>
+            {generos.map((genero) => <option value={genero}>{genero}</option>)}
+          </select>
+        </div>
+
+        {/* Location Filter */}
+        <div class="space-y-2">
+          <label for="filter-localizacao" class="block text-sm font-medium">
+            Localização
+          </label>
+          <select
+            id="filter-localizacao"
+            class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <option value="">Todos</option>
+            {
+              localizacoes.map((localizacao) => (
+                <option value={localizacao}>{localizacao}</option>
+              ))
+            }
+          </select>
+        </div>
+
+        {/* Formation Filter */}
+        <div class="space-y-2">
+          <label for="filter-formacao" class="block text-sm font-medium">
+            Formação
+          </label>
+          <select
+            id="filter-formacao"
+            class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <option value="">Todas</option>
+            {
+              formacoes.map((formacao) => (
+                <option value={formacao}>{formacao}</option>
+              ))
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+
+    {/* Researchers Grid */}
+    <div id="researchers-container" class="grid gap-6 md:grid-cols-2">
+      {
+        researchers.map((researcher: any) => (
+          <ResearcherCard researcher={researcher} />
+        ))
+      }
+    </div>
   </div>
-</Layout>
+
+  <script>
+    // Client-side filtering
+    const filterGenero = document.getElementById(
+      "filter-genero",
+    ) as HTMLSelectElement;
+    const filterLocalizacao = document.getElementById(
+      "filter-localizacao",
+    ) as HTMLSelectElement;
+    const filterFormacao = document.getElementById(
+      "filter-formacao",
+    ) as HTMLSelectElement;
+    const container = document.getElementById("researchers-container");
+
+    function filterResearchers() {
+      if (!container) return;
+
+      const generoValue = filterGenero?.value || "";
+      const localizacaoValue = filterLocalizacao?.value || "";
+      const formacaoValue = filterFormacao?.value || "";
+
+      const cards = container.querySelectorAll("[data-genero]");
+      cards.forEach((card) => {
+        const cardGenero = card.getAttribute("data-genero") || "";
+        const cardLocalizacao = card.getAttribute("data-localizacao") || "";
+        const cardFormacao = card.getAttribute("data-formacao") || "";
+
+        const matchGenero = !generoValue || cardGenero === generoValue;
+        const matchLocalizacao =
+          !localizacaoValue || cardLocalizacao === localizacaoValue;
+        const matchFormacao = !formacaoValue || cardFormacao === formacaoValue;
+
+        if (matchGenero && matchLocalizacao && matchFormacao) {
+          (card as HTMLElement).style.display = "";
+        } else {
+          (card as HTMLElement).style.display = "none";
+        }
+      });
+    }
+
+    filterGenero?.addEventListener("change", filterResearchers);
+    filterLocalizacao?.addEventListener("change", filterResearchers);
+    filterFormacao?.addEventListener("change", filterResearchers);
+  </script>
+</BaseLayout>

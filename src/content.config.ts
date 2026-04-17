@@ -1,8 +1,8 @@
 import { file, glob } from "astro/loaders";
 import { reference, z, defineCollection } from "astro:content";
-import { readFileSync } from "fs";
-import { resolve } from "path";
 import { fileURLToPath } from "url";
+import path from "path";
+import fs from "fs/promises";
 
 function slug() {
   return z
@@ -105,36 +105,55 @@ const pages = defineCollection({
   }),
 });
 
-// Custom loader for researchers JSON
 const researchersLoader = async () => {
   const __dirname = fileURLToPath(new URL(".", import.meta.url));
-  const filePath = resolve(__dirname, "./content/researchers.json");
-  const fileContent = readFileSync(filePath, "utf-8");
-  const data = JSON.parse(fileContent);
+  const filePath = path.resolve(__dirname, "./content/researchers.json");
 
-  return (data.researchers || []).map((researcher: any) => ({
-    id: researcher.id,
-    data: researcher,
-  }));
+  try {
+    const fileContent = await fs.readFile(filePath, "utf-8");
+    const jsonData = JSON.parse(fileContent);
+    const researchersData = Array.isArray(jsonData)
+      ? jsonData
+      : jsonData.researchers || [];
+
+    return researchersData.map((researcher: any) => ({
+      // O Astro usa o 'id' na raiz para indexar
+      id: String(researcher.id || researcher.slug || Math.random()),
+      // Retornamos as propriedades diretamente para que fiquem em entry.data
+      nome: researcher.nome,
+      email: researcher.email,
+      slug: researcher.slug,
+      data_sincronizacao: researcher.data_sincronizacao,
+      telefone: researcher.telefone,
+      formacao: researcher.formacao,
+      imagem: researcher.imagem,
+      curriculo: researcher.curriculo,
+      researchgate: researcher.researchgate,
+      instagram: researcher.instagram,
+      site_pessoal: researcher.site_pessoal,
+      genero: researcher.genero,
+      localizacao: researcher.localizacao,
+    }));
+  } catch (error) {
+    console.error("Error loading researchers:", error);
+    return [];
+  }
 };
 
 const researchers = defineCollection({
   loader: researchersLoader,
   schema: z.object({
-    id: z.string(),
-    // Campos principais como opcionais para evitar erro em linhas vazias do Sheets
     nome: z.string().optional(),
-    email: z.string().email().optional().or(z.string().length(0)),
+    email: z.string().optional(),
     slug: z.string().optional(),
-    // Coerce garante que strings de data virem objetos Date
     data_sincronizacao: z.coerce.date().optional(),
     telefone: z.string().optional(),
     formacao: z.string().optional(),
     imagem: z.string().optional(),
-    curriculo: z.string().url().optional().or(z.string().length(0)),
-    researchgate: z.string().url().optional().or(z.string().length(0)),
+    curriculo: z.string().optional(),
+    researchgate: z.string().optional(),
     instagram: z.string().optional(),
-    site_pessoal: z.string().url().optional().or(z.string().length(0)),
+    site_pessoal: z.string().optional(),
     genero: z.string().optional(),
     localizacao: z.string().optional(),
   }),

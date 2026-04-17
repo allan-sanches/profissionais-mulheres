@@ -41,20 +41,20 @@ const IMAGE_DIR = path.join(PROJECT_ROOT, "public", "researchers", "images");
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "researchers.json");
 const LOG_FILE = path.join(OUTPUT_DIR, "researchers.sync.log");
 
-// Column mapping from Google Sheets
+// Column mapping from Google Sheets (columns A-L)
+// Google Forms automatically adds a Timestamp column as the first column
 const COLUMN_MAP: Record<number, string> = {
-  0: "timestamp",
-  1: "nome",
-  2: "email",
-  3: "telefone",
-  4: "formacao",
-  5: "imagem", // Google Drive file ID or link
-  6: "curriculo", // URL
-  7: "researchgate", // URL
-  8: "instagram", // Username or URL
-  9: "site_pessoal", // URL
-  10: "genero",
-  11: "localizacao", // City, State, Country
+  0: "nome", // Column A (after Google Forms Timestamp, usually column B in responses)
+  1: "email", // Column B
+  2: "telefone", // Column C
+  3: "formacao", // Column D
+  4: "imagem", // Column E (Google Drive file ID or link)
+  5: "curriculo", // Column F (URL)
+  6: "researchgate", // Column G (URL)
+  7: "instagram", // Column H (Username or URL)
+  8: "site_pessoal", // Column I (URL)
+  9: "genero", // Column J
+  10: "localizacao", // Column K (City, State, Country)
 };
 
 async function authenticateGoogle() {
@@ -64,7 +64,7 @@ async function authenticateGoogle() {
 
   if (!clientEmail || !privateKey || !sheetId) {
     throw new Error(
-      "Missing Google credentials: GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID"
+      "Missing Google credentials: GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY, GOOGLE_SHEET_ID",
     );
   }
 
@@ -77,16 +77,16 @@ async function authenticateGoogle() {
   return { sheets: google.sheets({ version: "v4", auth }), auth };
 }
 
-async function getSheetTitle(
-  sheets: google.sheets_v4.Sheets
-): Promise<string> {
+async function getSheetTitle(sheets: google.sheets_v4.Sheets): Promise<string> {
   const response = await sheets.spreadsheets.get({
     spreadsheetId: process.env.GOOGLE_SHEET_ID!,
     fields: "sheets.properties.title",
   });
 
   const sheetsInfo = response.data.sheets || [];
-  const titles = sheetsInfo.map((sheet) => sheet?.properties?.title).filter(Boolean) as string[];
+  const titles = sheetsInfo
+    .map((sheet) => sheet?.properties?.title)
+    .filter(Boolean) as string[];
 
   if (titles.length === 0) {
     throw new Error("No sheets found in the Google Spreadsheet");
@@ -97,7 +97,7 @@ async function getSheetTitle(
 }
 
 async function fetchSheetData(
-  sheets: google.sheets_v4.Sheets
+  sheets: google.sheets_v4.Sheets,
 ): Promise<(string | number)[][]> {
   const sheetTitle = await getSheetTitle(sheets);
   const response = await sheets.spreadsheets.values.get({
@@ -165,7 +165,7 @@ function parseRow(row: (string | number)[]): Partial<Researcher> | null {
 
 async function downloadImage(
   imageUrl: string,
-  filename: string
+  filename: string,
 ): Promise<string | null> {
   try {
     // Create image directory if not exists
@@ -219,7 +219,7 @@ async function downloadImage(
 }
 
 async function processResearchers(
-  rows: (string | number)[][]
+  rows: (string | number)[][],
 ): Promise<Researcher[]> {
   const researchers: Researcher[] = [];
   const errors: string[] = [];
@@ -232,10 +232,7 @@ async function processResearchers(
       // Download image if provided
       if (parsed.imagem) {
         const imageFilename = `${parsed.slug}-${i}`;
-        const imagePath = await downloadImage(
-          parsed.imagem,
-          imageFilename
-        );
+        const imagePath = await downloadImage(parsed.imagem, imageFilename);
         if (imagePath) {
           parsed.imagem = imagePath;
         } else {
@@ -303,9 +300,7 @@ async function main(): Promise<SyncResult> {
 
     // Process and download
     const researchers = await processResearchers(rows);
-    console.log(
-      `✅ Processed ${researchers.length} valid researchers`
-    );
+    console.log(`✅ Processed ${researchers.length} valid researchers`);
 
     // Save to file
     await saveData(researchers);
@@ -319,9 +314,7 @@ async function main(): Promise<SyncResult> {
     };
 
     await logSync(result);
-    console.log(
-      "\n✅ Sync completed successfully"
-    );
+    console.log("\n✅ Sync completed successfully");
 
     return result;
   } catch (error) {
