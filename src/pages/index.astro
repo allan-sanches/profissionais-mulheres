@@ -289,23 +289,92 @@ const description =
           </div>
         </div>
 
+        {
+          /* Chips dos filtros aplicados. Preenchidos pelo script a partir dos
+          checkboxes marcados; cada um remove só o seu filtro. */
+        }
+        <div
+          id="active-filter-chips"
+          class="hidden flex-wrap items-center gap-2"
+          aria-live="polite"
+        >
+        </div>
+
         {/* Visão 1 — Tabela Clean Data Grid */}
         <div
           id="table-view-container"
           class="overflow-hidden rounded-2xl border border-gray-200/90 bg-white shadow-sm"
         >
           <div class="overflow-x-auto">
-            <table class="w-full border-collapse text-left">
+            {
+              /* As larguras ficam nos <col>: o script mede as naturais no
+              primeiro load, escreve aqui e só então liga table-fixed, pra
+              arrastar a alça mexer numa coluna sem reflowar as outras. */
+            }
+            <table
+              id="researchers-table"
+              class="w-full border-collapse text-left"
+            >
+              <colgroup>
+                <col data-col="pesquisadora" />
+                <col data-col="instituicao" />
+                <col data-col="formacao" />
+                <col data-col="localizacao" />
+                <col data-col="perfil" />
+              </colgroup>
               <thead>
                 <tr
                   class="border-b border-gray-200 bg-gray-50/80 text-xs font-bold tracking-wider text-gray-500 uppercase"
                 >
-                  <th class="px-6 py-4">Pesquisadora</th>
-                  <th class="px-4 py-4">Instituição</th>
-                  <th class="px-4 py-4">Formação</th>
-                  <th class="px-4 py-4">Localização</th>
+                  <th class="relative px-6 py-4">
+                    Pesquisadora
+                    <span
+                      class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+                      data-resize-col="0"
+                      title="Arraste para redimensionar (duplo clique para redefinir)"
+                    >
+                      <span
+                        class="h-1/2 w-px bg-gray-300 transition-colors group-hover/rz:bg-meco-purple-primary"
+                      ></span>
+                    </span>
+                  </th>
+                  <th class="relative px-4 py-4">
+                    Instituição
+                    <span
+                      class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+                      data-resize-col="1"
+                      title="Arraste para redimensionar (duplo clique para redefinir)"
+                    >
+                      <span
+                        class="h-1/2 w-px bg-gray-300 transition-colors group-hover/rz:bg-meco-purple-primary"
+                      ></span>
+                    </span>
+                  </th>
+                  <th class="relative px-4 py-4">
+                    Formação
+                    <span
+                      class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+                      data-resize-col="2"
+                      title="Arraste para redimensionar (duplo clique para redefinir)"
+                    >
+                      <span
+                        class="h-1/2 w-px bg-gray-300 transition-colors group-hover/rz:bg-meco-purple-primary"
+                      ></span>
+                    </span>
+                  </th>
+                  <th class="relative px-4 py-4">
+                    Localização
+                    <span
+                      class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+                      data-resize-col="3"
+                      title="Arraste para redimensionar (duplo clique para redefinir)"
+                    >
+                      <span
+                        class="h-1/2 w-px bg-gray-300 transition-colors group-hover/rz:bg-meco-purple-primary"
+                      ></span>
+                    </span>
+                  </th>
                   <th class="px-4 py-4">Perfil &amp; Atuação</th>
-                  <th class="px-6 py-4 text-right">Ações / Perfil</th>
                 </tr>
               </thead>
               <tbody id="researchers-container" class="text-sm">
@@ -879,6 +948,7 @@ const description =
       }));
 
       renderActiveCount(active.reduce((sum, f) => sum + f.checked.length, 0));
+      renderChips();
 
       filteredSlugs = Array.from(rowBySlug.entries())
         .filter(([, row]) => {
@@ -946,6 +1016,173 @@ const description =
 
     clearBtn?.addEventListener("click", clearAllFilters);
     clearAllBtn?.addEventListener("click", clearAllFilters);
+
+    // ── Chips dos filtros aplicados ──────────────────────────────────
+    // Espelham os checkboxes marcados: desmarcar pelo X do chip é a mesma
+    // ação que desmarcar no drawer, então os dois nunca saem de sincronia.
+    const chipsContainer = document.getElementById("active-filter-chips");
+
+    function renderChips() {
+      if (!chipsContainer) return;
+      const checked = Array.from(
+        document.querySelectorAll<HTMLInputElement>(
+          "input[data-filter-group]:checked",
+        ),
+      );
+
+      chipsContainer.replaceChildren();
+      chipsContainer.classList.toggle("hidden", checked.length === 0);
+      chipsContainer.classList.toggle("flex", checked.length > 0);
+      if (checked.length === 0) return;
+
+      for (const input of checked) {
+        // O texto visível da opção mora no <span> irmão dentro do <label>.
+        const label =
+          input.parentElement?.querySelector("span")?.textContent?.trim() ??
+          input.value;
+        // Remove o "(N)" da contagem — no chip ele só polui.
+        const text = label.replace(/\s*\(\d+\)\s*$/, "");
+
+        const chip = document.createElement("span");
+        chip.className =
+          "inline-flex items-center gap-1 rounded-full border border-meco-purple-soft/50 bg-meco-purple-bg px-2.5 py-1 text-xs font-medium text-meco-purple-deep";
+
+        const textNode = document.createElement("span");
+        textNode.textContent = text;
+        chip.appendChild(textNode);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className =
+          "rounded-full p-0.5 text-meco-purple-deep/60 transition-colors hover:bg-meco-purple-soft/40 hover:text-meco-purple-deep";
+        remove.setAttribute("aria-label", `Remover filtro ${text}`);
+        remove.innerHTML =
+          '<svg viewBox="0 0 24 24" class="size-3" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+        remove.addEventListener("click", () => {
+          input.checked = false;
+          filterResearchers();
+        });
+        chip.appendChild(remove);
+
+        chipsContainer.appendChild(chip);
+      }
+
+      const clearAll = document.createElement("button");
+      clearAll.type = "button";
+      clearAll.className =
+        "text-xs font-semibold text-gray-500 underline-offset-2 transition-colors hover:text-red-600 hover:underline";
+      clearAll.textContent = "Limpar todos os filtros";
+      clearAll.addEventListener("click", clearAllFilters);
+      chipsContainer.appendChild(clearAll);
+    }
+
+    // ── Linha da tabela clicável ─────────────────────────────────────
+    // A coluna "Ações" saiu; a linha inteira leva ao perfil. O link no nome
+    // continua existindo pra teclado, nova aba e clique do meio.
+    tableContainer?.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("a")) return; // deixa o link nativo agir
+      if (window.getSelection()?.toString()) return; // seleção de texto
+      const row = target.closest<HTMLElement>("tr[data-href]");
+      const href = row?.dataset.href;
+      if (href) window.location.href = href;
+    });
+
+    // ── Colunas redimensionáveis ─────────────────────────────────────
+    const LS_COL_WIDTHS = "meco_col_widths";
+    const table = document.getElementById(
+      "researchers-table",
+    ) as HTMLTableElement | null;
+    const cols = Array.from(
+      table?.querySelectorAll<HTMLTableColElement>("colgroup col") ?? [],
+    );
+
+    const MIN_COL_WIDTH = 90;
+    let naturalWidths: number[] = [];
+    let resizeReady = false;
+
+    const applyColWidth = (i: number, px: number) => {
+      cols[i].style.width = `${px}px`;
+    };
+
+    const persistColWidths = () => {
+      const out: Record<string, number> = {};
+      cols.forEach((col, i) => {
+        out[col.dataset.col || String(i)] = parseInt(col.style.width, 10);
+      });
+      try {
+        localStorage.setItem(LS_COL_WIDTHS, JSON.stringify(out));
+      } catch {}
+    };
+
+    // Só dá pra medir a largura natural com a tabela visível — se a visão
+    // salva for "cards" ela começa oculta (offsetWidth 0), então adiamos a
+    // inicialização até a tabela aparecer.
+    function initColumnWidths() {
+      if (resizeReady || !table || !cols.length) return;
+      const headers = Array.from(
+        table.querySelectorAll<HTMLElement>("thead th"),
+      );
+      const widths = headers.map((th) => th.offsetWidth);
+      if (widths.some((w) => w === 0)) return; // ainda oculta
+
+      naturalWidths = widths;
+      let saved: Record<string, number> = {};
+      try {
+        saved = JSON.parse(localStorage.getItem(LS_COL_WIDTHS) || "{}");
+      } catch {}
+
+      cols.forEach((col, i) => {
+        applyColWidth(i, saved[col.dataset.col || String(i)] ?? widths[i]);
+      });
+      table.classList.add("table-fixed");
+      resizeReady = true;
+    }
+
+    table?.querySelectorAll<HTMLElement>(".col-resizer").forEach((handle) => {
+      const index = Number(handle.dataset.resizeCol);
+
+      handle.addEventListener("pointerdown", (e) => {
+        if (!resizeReady) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const startX = e.clientX;
+        const startWidth = parseInt(cols[index].style.width, 10);
+        handle.setPointerCapture(e.pointerId);
+        document.body.style.userSelect = "none";
+        document.body.style.cursor = "col-resize";
+
+        const onMove = (ev: PointerEvent) => {
+          applyColWidth(
+            index,
+            Math.max(MIN_COL_WIDTH, startWidth + (ev.clientX - startX)),
+          );
+        };
+        const onUp = () => {
+          handle.removeEventListener("pointermove", onMove);
+          handle.removeEventListener("pointerup", onUp);
+          document.body.style.userSelect = "";
+          document.body.style.cursor = "";
+          persistColWidths();
+        };
+        handle.addEventListener("pointermove", onMove);
+        handle.addEventListener("pointerup", onUp);
+      });
+
+      // Duplo clique devolve a coluna à largura natural medida no load.
+      handle.addEventListener("dblclick", (e) => {
+        if (!resizeReady) return;
+        e.preventDefault();
+        e.stopPropagation();
+        applyColWidth(index, naturalWidths[index]);
+        persistColWidths();
+      });
+    });
+
+    initColumnWidths();
+    // Registrado depois do handler que troca a visão, então a tabela já está
+    // visível quando este roda.
+    viewTableBtn?.addEventListener("click", initColumnWidths);
 
     // Estado inicial: sem filtros aplicados ainda mostra a 1ª página de todas.
     filterResearchers();

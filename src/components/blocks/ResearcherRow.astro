@@ -23,7 +23,8 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
 ---
 
 <tr
-  class="group border-b border-gray-100 transition-colors last:border-b-0 hover:bg-meco-purple-bg/20"
+  class="group cursor-pointer border-b border-gray-100 transition-colors last:border-b-0 hover:bg-meco-purple-bg/20"
+  data-href={`/pesquisadoras/${researcher.id}`}
   {...vm.dataAttrs}
 >
   {/* Pesquisadora */}
@@ -53,12 +54,14 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
   </td>
 
   {/* Instituição */}
-  <td class="max-w-56 truncate px-4 py-4 text-sm font-medium text-gray-800">
-    {vm.instituicaoFormatada || "—"}
+  <td class="px-4 py-4 text-sm font-medium text-gray-800">
+    <div class="truncate" title={vm.instituicaoFormatada}>
+      {vm.instituicaoFormatada || "—"}
+    </div>
   </td>
 
   {/* Formação */}
-  <td class="max-w-48 px-4 py-4">
+  <td class="px-4 py-4">
     {
       r.nivel_formacao && (
         <span class="inline-block rounded-md bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-700">
@@ -68,7 +71,7 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
     }
     {
       vm.show("formacao", r.formacao) && (
-        <p class="mt-0.5 max-w-[180px] truncate text-xs text-gray-400">
+        <p class="mt-0.5 truncate text-xs text-gray-400" title={r.formacao}>
           {r.formacao}
         </p>
       )
@@ -76,16 +79,16 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
   </td>
 
   {/* Localização */}
-  <td class="px-4 py-4 text-sm whitespace-nowrap text-gray-600">
+  <td class="px-4 py-4 text-sm text-gray-600">
     {
       vm.localizacaoFormatada ? (
-        <>
+        <div class="truncate" title={vm.localizacaoFormatada}>
           <Icon
             name="mdi:map-marker-outline"
             class="mr-1.5 inline size-3 text-gray-400"
           />
           {vm.localizacaoFormatada}
-        </>
+        </div>
       ) : (
         "—"
       )
@@ -123,16 +126,5 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
 
       {vm.badges.length === 0 && <span class="text-gray-400">—</span>}
     </div>
-  </td>
-
-  {/* Ações / Perfil */}
-  <td class="px-6 py-4 text-right whitespace-nowrap">
-    <a
-      href={`/pesquisadoras/${researcher.id}`}
-      class="inline-flex items-center gap-1 rounded-lg border border-meco-purple-soft/50 bg-meco-purple-bg px-3 py-1.5 text-xs font-bold text-meco-purple-deep transition-all hover:bg-meco-purple-primary hover:text-white"
-    >
-      Ver perfil
-      <Icon name="mdi:arrow-right" class="size-3" />
-    </a>
   </td>
 </tr>
