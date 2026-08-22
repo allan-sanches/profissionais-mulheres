@@ -211,139 +211,12 @@ const description =
       </p>
     </div>
 
-    <div
-      class="relative flex flex-col gap-8 lg:flex-row lg:items-start"
-      id="layout-root"
-    >
-      {/* Filters sidebar */}
-      <aside
-        id="filters-sidebar"
-        class="rounded-2xl border-gray-200/90 bg-white lg:sticky lg:top-6 lg:w-72 lg:shrink-0 lg:border lg:p-4 lg:shadow-sm"
-      >
-        {/* Header do painel */}
-        <div class="mb-1 flex items-center justify-between gap-1">
-          <h2
-            class="flex items-center gap-1.5 font-epilogue text-sm font-bold text-gray-900"
-          >
-            <Icon
-              name="mdi:filter-variant"
-              class="size-4 text-meco-purple-primary"
-            />
-            Filtros
-            <span
-              id="filter-active-count"
-              class="hidden h-5 min-w-5 items-center justify-center rounded-full bg-meco-purple-primary px-1.5 text-[10px] font-bold text-white"
-              >0</span
-            >
-          </h2>
-          <div class="flex items-center gap-0.5">
-            <button
-              id="sidebar-pin-btn"
-              type="button"
-              class="rounded-lg p-1 text-meco-purple-primary transition-colors hover:bg-gray-100"
-              title="Fixar painel aberto"
-              aria-pressed="true"
-            >
-              <Icon name="mdi:pin-outline" class="size-4" />
-            </button>
-            <button
-              id="sidebar-collapse-btn"
-              type="button"
-              class="rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
-              title="Minimizar (Ctrl+B)"
-              aria-label="Minimizar filtros"
-            >
-              <Icon name="mdi:arrow-collapse-left" class="size-4" />
-            </button>
-          </div>
-        </div>
-
-        <button
-          id="filter-clear-all"
-          type="button"
-          class="mb-3 text-xs text-gray-500 transition-colors hover:text-red-600"
-        >
-          Limpar todos os filtros
-        </button>
-
-        {/* Barra de ações */}
-        <div class="mb-2 flex gap-2">
-          <button
-            id="filter-apply"
-            type="button"
-            class="w-full rounded-xl bg-meco-purple-primary px-4 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-meco-purple-deep"
-          >
-            Aplicar filtros
-          </button>
-          <button
-            id="filter-clear"
-            type="button"
-            class="rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-50"
-          >
-            Limpar
-          </button>
-        </div>
-
-        <FilterGroup
-          title="Identidade de gênero"
-          name="identidade"
-          options={identidadeOptions}
-          open
-        />
-        <FilterGroup title="Raça/cor" name="raca" options={racaOptions} />
-        <FilterGroup
-          title="Nível de formação"
-          name="nivel-formacao"
-          options={nivelFormacaoOptions}
-        />
-        <FilterGroup
-          title="Grupo biológico"
-          name="grupos-biologicos"
-          options={gruposBiologicosOptions}
-        />
-        <FilterGroup
-          title="Localização (UF / país)"
-          name="regiao"
-          options={regiaoOptions}
-        />
-        <FilterGroup
-          title="Instituição atual"
-          name="instituicao-atual"
-          options={instituicaoAtualOptions}
-        />
-        <FilterGroup
-          title="Área de pesquisa"
-          name="areas-pesquisa"
-          options={areasPesquisaOptions}
-        />
-        <FilterGroup
-          title="LGBTQIAP+"
-          name="lgbtqiap"
-          options={lgbtqiapOptions}
-        />
-        <FilterGroup title="PCD" name="pcd" options={pcdOptions} />
-        <FilterGroup
-          title="Grupo tradicional"
-          name="grupo-tradicional"
-          options={grupoTradicionalOptions}
-        />
-        <FilterGroup
-          title="Trabalho atual"
-          name="trabalho-atual"
-          options={trabalhoAtualOptions}
-        />
-        <FilterGroup
-          title="Aceita palestra"
-          name="aceita-palestras"
-          options={aceitaPalestrasOptions}
-        />
-      </aside>
-
+    <div id="layout-root">
       {/* Main content */}
-      <div class="min-w-0 flex-1 space-y-6">
+      <div class="min-w-0 space-y-6">
         {
-          /* Toolbar — botão que abre/fecha a sidebar de filtros, busca por nome
-        e alternador de visualização (tabela/cards) */
+          /* Toolbar — botão que abre o drawer de filtros, busca por nome ou
+        instituição e alternador de visualização (tabela/cards) */
         }
         <div
           class="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center"
@@ -353,10 +226,10 @@ const description =
               id="toggle-filters-btn"
               type="button"
               class="relative flex shrink-0 items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all hover:border-meco-purple-soft hover:bg-gray-50"
-              title="Mostrar/ocultar filtros (Ctrl+B)"
-              aria-pressed="true"
-              aria-expanded="true"
-              aria-controls="filters-sidebar"
+              title="Abrir filtros (Ctrl+B)"
+              aria-pressed="false"
+              aria-expanded="false"
+              aria-controls="filter-drawer"
             >
               <Icon
                 name="mdi:filter-variant"
@@ -542,145 +415,210 @@ const description =
     <Footer />
   </div>
 
+  {/* ── Drawer de filtros (off-canvas) ───────────────────────────── */}
+  <div
+    id="filter-drawer"
+    class="fixed inset-0 z-50 hidden overflow-hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="filter-drawer-title"
+  >
+    <div
+      id="filter-drawer-backdrop"
+      class="absolute inset-0 bg-slate-900/40 opacity-0 backdrop-blur-sm transition-opacity duration-200"
+    >
+    </div>
+
+    <div
+      class="pointer-events-none fixed inset-y-0 left-0 flex max-w-full pr-10"
+    >
+      <div
+        id="filter-drawer-panel"
+        class="pointer-events-auto flex w-screen max-w-md -translate-x-full flex-col bg-white shadow-2xl transition-transform duration-200 ease-out"
+      >
+        {/* Header */}
+        <div
+          class="flex shrink-0 items-center justify-between bg-slate-900 px-6 py-5 text-white"
+        >
+          <div class="flex items-center gap-2">
+            <Icon
+              name="mdi:tune-variant"
+              class="size-5 text-meco-purple-soft"
+            />
+            <h2
+              id="filter-drawer-title"
+              class="font-epilogue text-lg font-bold"
+            >
+              Filtrar Pesquisadoras
+            </h2>
+            <span
+              id="filter-active-count"
+              class="hidden h-5 min-w-5 items-center justify-center rounded-full bg-meco-purple-primary px-1.5 text-[10px] font-bold text-white"
+              >0</span
+            >
+          </div>
+          <button
+            id="filter-drawer-close"
+            type="button"
+            class="p-1 text-slate-400 transition-colors hover:text-white"
+            aria-label="Fechar filtros"
+          >
+            <Icon name="mdi:close" class="size-5" />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div class="flex-1 overflow-y-auto px-6 py-4">
+          <div class="mb-1 flex justify-end">
+            <button
+              id="filter-clear-all"
+              type="button"
+              class="text-xs text-gray-500 transition-colors hover:text-red-600"
+            >
+              Limpar todos os filtros
+            </button>
+          </div>
+
+          <FilterGroup
+            title="Identidade de gênero"
+            name="identidade"
+            options={identidadeOptions}
+            open
+          />
+          <FilterGroup title="Raça/cor" name="raca" options={racaOptions} />
+          <FilterGroup
+            title="Nível de formação"
+            name="nivel-formacao"
+            options={nivelFormacaoOptions}
+          />
+          <FilterGroup
+            title="Grupo biológico"
+            name="grupos-biologicos"
+            options={gruposBiologicosOptions}
+          />
+          <FilterGroup
+            title="Localização (UF / país)"
+            name="regiao"
+            options={regiaoOptions}
+          />
+          <FilterGroup
+            title="Instituição atual"
+            name="instituicao-atual"
+            options={instituicaoAtualOptions}
+          />
+          <FilterGroup
+            title="Área de pesquisa"
+            name="areas-pesquisa"
+            options={areasPesquisaOptions}
+          />
+          <FilterGroup
+            title="LGBTQIAP+"
+            name="lgbtqiap"
+            options={lgbtqiapOptions}
+          />
+          <FilterGroup title="PCD" name="pcd" options={pcdOptions} />
+          <FilterGroup
+            title="Grupo tradicional"
+            name="grupo-tradicional"
+            options={grupoTradicionalOptions}
+          />
+          <FilterGroup
+            title="Trabalho atual"
+            name="trabalho-atual"
+            options={trabalhoAtualOptions}
+          />
+          <FilterGroup
+            title="Aceita palestra"
+            name="aceita-palestras"
+            options={aceitaPalestrasOptions}
+          />
+        </div>
+
+        {/* Footer */}
+        <div
+          class="flex shrink-0 items-center gap-3 border-t border-gray-200 bg-gray-50 p-6"
+        >
+          <button
+            id="filter-apply"
+            type="button"
+            class="w-full rounded-xl bg-meco-purple-primary px-4 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-meco-purple-deep"
+          >
+            Aplicar Filtros
+          </button>
+          <button
+            id="filter-clear"
+            type="button"
+            class="shrink-0 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100"
+          >
+            Limpar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Sidebar retrátil (inspirada no shell do Rinco): minimiza pra liberar
-    // largura da tabela. O botão "Filtrar" na toolbar (acima da tabela)
-    // abre/fecha. "Fixar" controla se abrir deixa a sidebar permanente
-    // (empurrando a tabela) ou como overlay temporário que fecha ao clicar
-    // fora — só ativo em telas lg+; no mobile a sidebar sempre fica no
-    // fluxo normal (empilhada).
-    const LS_COLLAPSED = "pesquisadoras:sidebar-collapsed";
-    const LS_PINNED = "pesquisadoras:sidebar-pinned";
-    const isDesktop = () => window.matchMedia("(min-width: 1024px)").matches;
-
-    const sidebar = document.getElementById("filters-sidebar");
+    // Drawer de filtros off-canvas: desliza da esquerda sobre a página, com
+    // backdrop desfocado. Fica sempre fora do fluxo, então abrir/fechar nunca
+    // reflui a tabela — a listagem ocupa a largura toda o tempo inteiro.
+    const drawer = document.getElementById("filter-drawer");
+    const drawerPanel = document.getElementById("filter-drawer-panel");
+    const drawerBackdrop = document.getElementById("filter-drawer-backdrop");
+    const drawerCloseBtn = document.getElementById("filter-drawer-close");
     const toggleBtn = document.getElementById("toggle-filters-btn");
-    const collapseBtn = document.getElementById("sidebar-collapse-btn");
-    const pinBtn = document.getElementById("sidebar-pin-btn");
 
-    let collapsed = false;
-    let pinned = true;
-    let peeking = false;
-    try {
-      collapsed = localStorage.getItem(LS_COLLAPSED) === "1";
-      pinned = localStorage.getItem(LS_PINNED) !== "0";
-    } catch {}
+    let drawerOpen = false;
 
-    const OVERLAY_CLASSES = [
-      "absolute",
-      "left-0",
-      "top-0",
-      "z-40",
-      "shadow-2xl",
-    ];
+    function openDrawer() {
+      if (!drawer || drawerOpen) return;
+      drawerOpen = true;
+      drawer.classList.remove("hidden");
+      // Um frame com o painel ainda deslocado antes de animar, senão o
+      // browser aplica o estado final sem transição.
+      requestAnimationFrame(() => {
+        drawerPanel?.classList.remove("-translate-x-full");
+        drawerBackdrop?.classList.remove("opacity-0");
+      });
+      document.body.style.overflow = "hidden";
+      toggleBtn?.setAttribute("aria-expanded", "true");
+      toggleBtn?.setAttribute("aria-pressed", "true");
+      drawerCloseBtn?.focus();
+    }
 
-    function renderSidebar() {
-      if (!sidebar) return;
+    function closeDrawer() {
+      if (!drawer || !drawerOpen) return;
+      drawerOpen = false;
+      drawerPanel?.classList.add("-translate-x-full");
+      drawerBackdrop?.classList.add("opacity-0");
+      document.body.style.overflow = "";
+      toggleBtn?.setAttribute("aria-expanded", "false");
+      toggleBtn?.setAttribute("aria-pressed", "false");
+      // Só esconde de fato depois da animação de saída.
+      window.setTimeout(() => {
+        if (!drawerOpen) drawer.classList.add("hidden");
+      }, 200);
+      toggleBtn?.focus();
+    }
 
-      if (!isDesktop()) {
-        // Mobile: sidebar sempre visível no fluxo normal, sem overlay.
-        sidebar.classList.remove("hidden", ...OVERLAY_CLASSES);
+    toggleBtn?.addEventListener("click", () =>
+      drawerOpen ? closeDrawer() : openDrawer(),
+    );
+    drawerCloseBtn?.addEventListener("click", closeDrawer);
+    drawerBackdrop?.addEventListener("click", closeDrawer);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && drawerOpen) {
+        e.preventDefault();
+        closeDrawer();
         return;
       }
-
-      const showSidebar = !collapsed || peeking;
-      sidebar.classList.toggle("hidden", !showSidebar);
-
-      if (peeking) {
-        sidebar.classList.add(...OVERLAY_CLASSES);
-      } else {
-        sidebar.classList.remove(...OVERLAY_CLASSES);
-      }
-
-      toggleBtn?.classList.toggle("border-meco-purple-soft", showSidebar);
-      toggleBtn?.classList.toggle("bg-meco-purple-bg/40", showSidebar);
-      toggleBtn?.setAttribute("aria-pressed", String(showSidebar));
-      toggleBtn?.setAttribute("aria-expanded", String(showSidebar));
-
-      if (pinBtn) {
-        pinBtn.classList.toggle("text-primary", pinned);
-        pinBtn.classList.toggle("opacity-60", !pinned);
-        pinBtn.setAttribute("aria-pressed", String(pinned));
-        pinBtn.title = pinned
-          ? "Sidebar fixada (clique pra soltar)"
-          : "Fixar sidebar aberta";
-      }
-    }
-
-    function setCollapsed(next: boolean) {
-      collapsed = next;
-      peeking = false;
-      try {
-        localStorage.setItem(LS_COLLAPSED, next ? "1" : "0");
-      } catch {}
-      renderSidebar();
-    }
-
-    function setPinned(next: boolean) {
-      pinned = next;
-      try {
-        localStorage.setItem(LS_PINNED, next ? "1" : "0");
-      } catch {}
-    }
-
-    function openSidebar() {
-      if (pinned) {
-        setCollapsed(false);
-      } else {
-        peeking = true;
-        renderSidebar();
-      }
-    }
-
-    function closeSidebar() {
-      if (peeking) {
-        peeking = false;
-        renderSidebar();
-      } else {
-        setCollapsed(true);
-      }
-    }
-
-    collapseBtn?.addEventListener("click", closeSidebar);
-
-    toggleBtn?.addEventListener("click", () => {
-      const isOpen = !collapsed || peeking;
-      if (isOpen) closeSidebar();
-      else openSidebar();
-    });
-
-    pinBtn?.addEventListener("click", () => {
-      setPinned(!pinned);
-      if (pinned && peeking) {
-        // Promove o peek pra sidebar permanente.
-        setCollapsed(false);
-      } else {
-        renderSidebar();
-      }
-    });
-
-    // Fecha o peek ao clicar fora da sidebar/botão de toggle.
-    document.addEventListener("click", (e) => {
-      if (!peeking || !sidebar) return;
-      const target = e.target as Node;
-      if (sidebar.contains(target) || toggleBtn?.contains(target)) return;
-      peeking = false;
-      renderSidebar();
-    });
-
-    // Atalho Ctrl/Cmd+B pra minimizar/reabrir.
-    window.addEventListener("keydown", (e) => {
+      // Ctrl/Cmd+B alterna o drawer.
       if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "b") return;
       const tag = (e.target as HTMLElement | null)?.tagName ?? "";
       if (tag === "INPUT" || tag === "TEXTAREA") return;
       e.preventDefault();
-      const isOpen = !collapsed || peeking;
-      if (isOpen) closeSidebar();
-      else openSidebar();
+      drawerOpen ? closeDrawer() : openDrawer();
     });
-
-    window.addEventListener("resize", renderSidebar);
-    renderSidebar();
 
     // Acordeão: só uma categoria de filtro fica aberta por vez, pra não
     // precisar de scroll interno em cada uma.
@@ -978,9 +916,11 @@ const description =
       .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
       .forEach((el) => el.addEventListener("change", filterResearchers));
 
+    // A filtragem já roda no change de cada checkbox; "Aplicar Filtros" serve
+    // como confirmação explícita e fecha o drawer pra revelar o resultado.
     applyBtn?.addEventListener("click", () => {
       filterResearchers();
-      if (!isDesktop()) closeSidebar();
+      closeDrawer();
     });
 
     function clearAllFilters() {
