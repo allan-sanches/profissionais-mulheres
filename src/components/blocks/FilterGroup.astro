@@ -4,6 +4,8 @@ import { Icon } from "astro-icon/components";
 interface Option {
   value: string;
   label: string;
+  /** Quantas pesquisadoras casam com essa opção. */
+  count?: number;
 }
 
 interface Props {
@@ -11,10 +13,17 @@ interface Props {
   name: string;
   options: Option[];
   open?: boolean;
+  /**
+   * Força o mini campo de busca interno. Por padrão ele já aparece sozinho
+   * quando a categoria passa de 8 opções (regra da especificação).
+   */
   searchable?: boolean;
 }
 
-const { title, name, options, open = false, searchable = false } = Astro.props;
+const { title, name, options, open = false, searchable } = Astro.props;
+
+const SEARCH_THRESHOLD = 8;
+const showSearch = searchable ?? options.length > SEARCH_THRESHOLD;
 ---
 
 <details
@@ -22,22 +31,24 @@ const { title, name, options, open = false, searchable = false } = Astro.props;
   open={open}
 >
   <summary
-    class="group flex cursor-pointer list-none items-center justify-between text-xs font-bold tracking-wider text-gray-500 uppercase [&::-webkit-details-marker]:hidden"
+    class="group flex cursor-pointer list-none items-center justify-between gap-2 text-xs font-bold tracking-wider text-gray-500 uppercase [&::-webkit-details-marker]:hidden"
   >
-    <span>
+    <span class="flex items-center gap-1.5">
       {title}
-      <span class="font-medium text-gray-400 normal-case">
-        ({options.length})
+      <span
+        class="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold text-gray-500 normal-case"
+      >
+        {options.length}
       </span>
     </span>
     <Icon
       name="mdi:chevron-down"
-      class="size-4 shrink-0 text-gray-400 transition-transform group-open:rotate-180"
+      class="size-4 shrink-0 text-gray-400 transition-transform duration-200 group-open:rotate-180"
     />
   </summary>
 
   {
-    searchable && (
+    showSearch && (
       <div class="relative mt-2">
         <Icon
           name="mdi:magnify"
@@ -56,7 +67,7 @@ const { title, name, options, open = false, searchable = false } = Astro.props;
   <div
     class:list={[
       "mt-2 flex flex-col gap-0.5 pr-1",
-      searchable && "max-h-48 overflow-y-auto",
+      showSearch && "max-h-52 overflow-y-auto",
     ]}
     data-option-list={name}
   >
@@ -77,7 +88,12 @@ const { title, name, options, open = false, searchable = false } = Astro.props;
             data-filter-group={name}
             value={opt.value}
           />
-          <span class="leading-tight">{opt.label}</span>
+          <span class="flex-1 leading-tight">
+            {opt.label}
+            {opt.count !== undefined && (
+              <span class="ml-1 text-xs text-gray-400">({opt.count})</span>
+            )}
+          </span>
         </label>
       ))
     }

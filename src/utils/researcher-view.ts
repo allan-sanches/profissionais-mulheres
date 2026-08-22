@@ -5,6 +5,7 @@ import {
   isGrupoTradicionalVazio,
   formatName,
   formatPlace,
+  parseRegion,
   IDENTIDADE_LABELS,
   RACA_LABELS,
 } from "@/utils/labels";
@@ -174,6 +175,14 @@ export function buildResearcherView(
       ? r.instituicao!
       : "",
     "data-nome": (r.nome || "").toLowerCase(),
+    // UF (ou país, quando fora do Brasil) derivada da localização livre.
+    "data-regiao": parseRegion(r.localizacao)?.value ?? "",
+    // A busca da toolbar casa por nome OU instituição; pré-computar o texto
+    // combinado evita concatenar strings a cada tecla no cliente.
+    "data-busca": [r.nome, r.instituicao, r.instituicao_atual]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase(),
   };
 
   // Lista unificada de badges de perfil. A ordem define quais aparecem

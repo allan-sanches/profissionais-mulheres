@@ -193,6 +193,154 @@ export function buildDedupIndex(values: (string | undefined)[]) {
   return { options: [...map.values()], resolve };
 }
 
+// ── Região (UF / país) ──────────────────────────────────────────────
+// A planilha traz localização como texto livre e inconsistente:
+// "Caravelas-BA, Brasil", "sao luis, maranhao, brasil", "Natal, RN, Brasil",
+// "Mogi Guaçu (SP) Brasil". Filtrar por essa string crua geraria 150+ opções
+// quase todas com 1 resultado. parseRegion normaliza pra UF (quando é Brasil)
+// ou pro país (quando é fora), que é o que a especificação pede.
+
+const ESTADO_POR_NOME: Record<string, string> = {
+  acre: "AC",
+  alagoas: "AL",
+  amapa: "AP",
+  amazonas: "AM",
+  bahia: "BA",
+  ceara: "CE",
+  "distrito federal": "DF",
+  "espirito santo": "ES",
+  goias: "GO",
+  maranhao: "MA",
+  "mato grosso": "MT",
+  "mato grosso do sul": "MS",
+  "minas gerais": "MG",
+  para: "PA",
+  paraiba: "PB",
+  parana: "PR",
+  pernambuco: "PE",
+  piaui: "PI",
+  "rio de janeiro": "RJ",
+  "rio grande do norte": "RN",
+  "rio grande do sul": "RS",
+  rondonia: "RO",
+  roraima: "RR",
+  "santa catarina": "SC",
+  "sao paulo": "SP",
+  sergipe: "SE",
+  tocantins: "TO",
+};
+
+const NOME_POR_UF: Record<string, string> = {
+  AC: "Acre",
+  AL: "Alagoas",
+  AP: "Amapá",
+  AM: "Amazonas",
+  BA: "Bahia",
+  CE: "Ceará",
+  DF: "Distrito Federal",
+  ES: "Espírito Santo",
+  GO: "Goiás",
+  MA: "Maranhão",
+  MT: "Mato Grosso",
+  MS: "Mato Grosso do Sul",
+  MG: "Minas Gerais",
+  PA: "Pará",
+  PB: "Paraíba",
+  PR: "Paraná",
+  PE: "Pernambuco",
+  PI: "Piauí",
+  RJ: "Rio de Janeiro",
+  RN: "Rio Grande do Norte",
+  RS: "Rio Grande do Sul",
+  RO: "Rondônia",
+  RR: "Roraima",
+  SC: "Santa Catarina",
+  SP: "São Paulo",
+  SE: "Sergipe",
+  TO: "Tocantins",
+};
+
+const UF_SET = new Set(Object.values(ESTADO_POR_NOME));
+
+// Só os países realmente presentes na base, mapeados pra grafia em português.
+const PAIS_ALIAS: Record<string, string> = {
+  eua: "Estados Unidos",
+  usa: "Estados Unidos",
+  "estados unidos": "Estados Unidos",
+  canada: "Canadá",
+  sweden: "Suécia",
+  suecia: "Suécia",
+  australia: "Austrália",
+  franca: "França",
+  espanha: "Espanha",
+  portugal: "Portugal",
+  argentina: "Argentina",
+  mexico: "México",
+  equador: "Equador",
+};
+
+// Igual a canonicalizeKey, mas também neutraliza hífen, barra e parênteses,
+// que aparecem em "Caravelas-BA" e "Mogi Guaçu (SP)".
+function canonicalizeRegion(v: string): string {
+  return v
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[.,\-/()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export interface Region {
+  value: string;
+  label: string;
+}
+
+export function parseRegion(raw?: string): Region | null {
+  if (!raw) return null;
+  const c = canonicalizeRegion(raw);
+
+  // Nome de estado por extenso. Os mais longos primeiro pra "mato grosso do
+  // sul" não casar antes como "mato grosso".
+  const nomes = Object.keys(ESTADO_POR_NOME).sort(
+    (a, b) => b.length - a.length,
+  );
+  for (const nome of nomes) {
+    if (new RegExp(`(^| )${nome}( |$)`).test(c)) {
+      const uf = ESTADO_POR_NOME[nome];
+      return { value: uf, label: `${NOME_POR_UF[uf]} (${uf})` };
+    }
+  }
+
+  // Sigla de UF isolada como token ("Natal, RN, Brasil").
+  for (const tok of c.split(" ")) {
+    const up = tok.toUpperCase();
+    if (tok.length === 2 && UF_SET.has(up)) {
+      return { value: up, label: `${NOME_POR_UF[up]} (${up})` };
+    }
+  }
+
+  for (const [alias, nome] of Object.entries(PAIS_ALIAS)) {
+    if (new RegExp(`(^| )${alias}( |$)`).test(c)) {
+      return { value: nome, label: nome };
+    }
+  }
+
+  if (/(^| )(brasil|brazil)( |$)/.test(c)) {
+    return { value: "Brasil", label: "Brasil (UF não informada)" };
+  }
+  return null;
+}
+
+// Ordena as opções de região: UFs brasileiras primeiro (alfabético), depois
+// "Brasil" genérico, depois países estrangeiros.
+export function compareRegions(a: Region, b: Region): number {
+  const rank = (r: Region) =>
+    UF_SET.has(r.value) ? 0 : r.value === "Brasil" ? 1 : 2;
+  const diff = rank(a) - rank(b);
+  return diff !== 0 ? diff : a.label.localeCompare(b.label, "pt-BR");
+}
+
 const LOWERCASE_CONNECTORS = new Set([
   "de",
   "da",

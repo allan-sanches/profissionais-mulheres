@@ -15,43 +15,16 @@ import {
   RACA_ORDER,
   ACEITA_ORDER,
   splitList,
-  normalizeAceitaPalestras,
   isGrupoTradicionalVazio,
   buildDedupIndex,
   formatPlace,
+  parseRegion,
+  compareRegions,
 } from "@/utils/labels";
+import { buildResearcherView } from "@/utils/researcher-view";
 
 // Fetch all researchers
 const researchers = await getCollection("researchers");
-
-const uniqueSorted = (values: (string | undefined)[]) =>
-  [...new Set(values.filter((v): v is string => Boolean(v)))].sort((a, b) =>
-    a.localeCompare(b, "pt-BR"),
-  );
-
-const orderedPresent = (order: string[], values: (string | undefined)[]) => {
-  const present = new Set(values.filter(Boolean));
-  return order.filter((v) => present.has(v));
-};
-
-const identidadeOptions = orderedPresent(
-  IDENTIDADE_ORDER,
-  researchers.map((r) => r.data.identidade_genero),
-)
-  .filter((v) => v !== "nao-informado")
-  .map((v) => ({ value: v, label: IDENTIDADE_LABELS[v] }));
-
-const racaOptions = orderedPresent(
-  RACA_ORDER,
-  researchers.map((r) => r.data.raca_etnia),
-)
-  .filter((v) => v !== "nao-informado")
-  .map((v) => ({ value: v, label: RACA_LABELS[v] }));
-
-const simNaoOptions = [
-  { value: "sim", label: "Sim" },
-  { value: "nao", label: "Não" },
-];
 
 // Texto livre da planilha vem com pontuação/espaçamento inconsistentes
 // ("Abaetetuba Pará Brasil" vs "Abaetetuba, Pará, Brasil"). buildDedupIndex
@@ -64,68 +37,131 @@ const grupoTradicionalIndex = buildDedupIndex(
       : r.data.grupo_tradicional,
   ),
 );
-const grupoTradicionalOptions = uniqueSorted(grupoTradicionalIndex.options).map(
-  (v) => ({ value: v, label: v }),
-);
-
 const localizacaoIndex = buildDedupIndex(
   researchers.map((r) => r.data.localizacao),
 );
-const resolveLocalizacaoFormatted = (raw?: string) =>
-  formatPlace(localizacaoIndex.resolve(raw));
-const localizacaoOptions = uniqueSorted(
-  localizacaoIndex.options.map((v) => formatPlace(v)),
-).map((v) => ({ value: v, label: v }));
-
-const nivelFormacaoOptions = orderedPresent(
-  NIVEL_ORDER,
-  researchers.map((r) => r.data.nivel_formacao),
-).map((v) => ({ value: v, label: NIVEL_LABELS[v] }));
-
 const trabalhoAtualIndex = buildDedupIndex(
   researchers.flatMap((r) => splitList(r.data.trabalho_atual)),
 );
-const trabalhoAtualOptions = uniqueSorted(trabalhoAtualIndex.options).map(
-  (v) => ({
-    value: v,
-    label: v,
-  }),
-);
-
 const instituicaoAtualIndex = buildDedupIndex(
   researchers.map((r) => r.data.instituicao_atual),
 );
-const resolveInstituicaoAtualFormatted = (raw?: string) =>
-  formatPlace(instituicaoAtualIndex.resolve(raw));
-const instituicaoAtualOptions = uniqueSorted(
-  instituicaoAtualIndex.options.map((v) => formatPlace(v)),
-).map((v) => ({ value: v, label: v }));
-
 const areasPesquisaIndex = buildDedupIndex(
   researchers.flatMap((r) => r.data.areas_pesquisa || []),
 );
-const areasPesquisaOptions = uniqueSorted(areasPesquisaIndex.options).map(
-  (v) => ({
-    value: v,
-    label: v,
-  }),
-);
-
 const gruposBiologicosIndex = buildDedupIndex(
   researchers.flatMap((r) => r.data.grupos_biologicos || []),
 );
-const gruposBiologicosOptions = uniqueSorted(gruposBiologicosIndex.options).map(
-  (v) => ({ value: v, label: v }),
+
+const resolveLocalizacaoFormatted = (raw?: string) =>
+  formatPlace(localizacaoIndex.resolve(raw));
+const resolveInstituicaoAtualFormatted = (raw?: string) =>
+  formatPlace(instituicaoAtualIndex.resolve(raw));
+
+const resolvers = {
+  resolveLocalizacao: resolveLocalizacaoFormatted,
+  resolveInstituicaoAtual: resolveInstituicaoAtualFormatted,
+  resolveGrupoTradicional: grupoTradicionalIndex.resolve,
+  resolveTrabalhoAtual: trabalhoAtualIndex.resolve,
+  resolveAreaPesquisa: areasPesquisaIndex.resolve,
+  resolveGrupoBiologico: gruposBiologicosIndex.resolve,
+};
+
+// As contagens de cada opção de filtro saem dos MESMOS data-* que a
+// filtragem no cliente compara. Derivar as duas coisas do view-model
+// garante que o número exibido bate com o resultado do filtro.
+const views = researchers.map((r) => buildResearcherView(r, resolvers));
+
+const countAttr = (attr: string, mode: "single" | "list" = "single") => {
+  const counts = new Map<string, number>();
+  for (const view of views) {
+    const raw = view.dataAttrs[attr] || "";
+    const values =
+      mode === "list" ? raw.split("|").filter(Boolean) : raw ? [raw] : [];
+    // Set: uma pesquisadora conta no máximo 1x por valor.
+    for (const value of new Set(values)) {
+      counts.set(value, (counts.get(value) || 0) + 1);
+    }
+  }
+  return counts;
+};
+
+// Opções ordenadas por uma ordem fixa (enums), descartando o que não ocorre.
+const optionsFromOrder = (
+  order: string[],
+  counts: Map<string, number>,
+  labels: Record<string, string>,
+  exclude: string[] = [],
+) =>
+  order
+    .filter((v) => !exclude.includes(v) && (counts.get(v) ?? 0) > 0)
+    .map((v) => ({ value: v, label: labels[v] ?? v, count: counts.get(v)! }));
+
+// Opções de texto livre: alfabético, já deduplicado pelo índice.
+const optionsFromCounts = (counts: Map<string, number>) =>
+  [...counts.entries()]
+    .map(([value, count]) => ({ value, label: value, count }))
+    .sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
+
+const identidadeOptions = optionsFromOrder(
+  IDENTIDADE_ORDER,
+  countAttr("data-identidade"),
+  IDENTIDADE_LABELS,
+  ["nao-informado"],
+);
+const racaOptions = optionsFromOrder(
+  RACA_ORDER,
+  countAttr("data-raca"),
+  RACA_LABELS,
+  ["nao-informado"],
+);
+const nivelFormacaoOptions = optionsFromOrder(
+  NIVEL_ORDER,
+  countAttr("data-nivel-formacao"),
+  NIVEL_LABELS,
+);
+const aceitaPalestrasOptions = optionsFromOrder(
+  ACEITA_ORDER,
+  countAttr("data-aceita-palestras"),
+  {},
 );
 
-const aceitaPalestrasOptions = orderedPresent(
-  ACEITA_ORDER,
-  researchers.map((r) =>
-    r.data.aceita_palestras
-      ? normalizeAceitaPalestras(r.data.aceita_palestras)
-      : undefined,
-  ),
-).map((v) => ({ value: v, label: v }));
+const simNaoCounts = (attr: string) => {
+  const counts = countAttr(attr);
+  return [
+    { value: "sim", label: "Sim", count: counts.get("sim") ?? 0 },
+    { value: "nao", label: "Não", count: counts.get("nao") ?? 0 },
+  ].filter((o) => o.count > 0);
+};
+const lgbtqiapOptions = simNaoCounts("data-lgbtqiap");
+const pcdOptions = simNaoCounts("data-pcd");
+
+const grupoTradicionalOptions = optionsFromCounts(
+  countAttr("data-grupo-tradicional"),
+);
+const trabalhoAtualOptions = optionsFromCounts(
+  countAttr("data-trabalho-atual", "list"),
+);
+const instituicaoAtualOptions = optionsFromCounts(
+  countAttr("data-instituicao-atual"),
+);
+const areasPesquisaOptions = optionsFromCounts(
+  countAttr("data-areas-pesquisa", "list"),
+);
+const gruposBiologicosOptions = optionsFromCounts(
+  countAttr("data-grupos-biologicos", "list"),
+);
+
+// Região: UF quando é Brasil, país quando é fora. O rótulo legível vem do
+// parseRegion; o value é o que fica no data-regiao das linhas.
+const regiaoCounts = countAttr("data-regiao");
+const regiaoOptions = [...regiaoCounts.entries()]
+  .map(([value, count]) => ({
+    value,
+    label: parseRegion(value)?.label ?? value,
+    count,
+  }))
+  .sort((a, b) => compareRegions(a, b));
 
 const title = "Pesquisadoras — Mulheres na Ecologia";
 const description =
@@ -184,7 +220,8 @@ const description =
         id="filters-sidebar"
         class="rounded-2xl border-gray-200/90 bg-white lg:sticky lg:top-6 lg:w-72 lg:shrink-0 lg:border lg:p-4 lg:shadow-sm"
       >
-        <div class="mb-2 flex items-center justify-between gap-1">
+        {/* Header do painel */}
+        <div class="mb-1 flex items-center justify-between gap-1">
           <h2
             class="flex items-center gap-1.5 font-epilogue text-sm font-bold text-gray-900"
           >
@@ -192,14 +229,19 @@ const description =
               name="mdi:filter-variant"
               class="size-4 text-meco-purple-primary"
             />
-            Filtrar pesquisadoras
+            Filtros
+            <span
+              id="filter-active-count"
+              class="hidden h-5 min-w-5 items-center justify-center rounded-full bg-meco-purple-primary px-1.5 text-[10px] font-bold text-white"
+              >0</span
+            >
           </h2>
           <div class="flex items-center gap-0.5">
             <button
               id="sidebar-pin-btn"
               type="button"
               class="rounded-lg p-1 text-meco-purple-primary transition-colors hover:bg-gray-100"
-              title="Fixar sidebar aberta"
+              title="Fixar painel aberto"
               aria-pressed="true"
             >
               <Icon name="mdi:pin-outline" class="size-4" />
@@ -216,18 +258,27 @@ const description =
           </div>
         </div>
 
+        <button
+          id="filter-clear-all"
+          type="button"
+          class="mb-3 text-xs text-gray-500 transition-colors hover:text-red-600"
+        >
+          Limpar todos os filtros
+        </button>
+
+        {/* Barra de ações */}
         <div class="mb-2 flex gap-2">
           <button
             id="filter-apply"
             type="button"
-            class="flex-1 rounded-xl bg-meco-purple-primary py-2 text-sm font-bold text-white transition-colors hover:bg-meco-purple-deep"
+            class="w-full rounded-xl bg-meco-purple-primary px-4 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-meco-purple-deep"
           >
             Aplicar filtros
           </button>
           <button
             id="filter-clear"
             type="button"
-            class="rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100"
+            class="rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-50"
           >
             Limpar
           </button>
@@ -241,49 +292,45 @@ const description =
         />
         <FilterGroup title="Raça/cor" name="raca" options={racaOptions} />
         <FilterGroup
+          title="Nível de formação"
+          name="nivel-formacao"
+          options={nivelFormacaoOptions}
+        />
+        <FilterGroup
+          title="Grupo biológico"
+          name="grupos-biologicos"
+          options={gruposBiologicosOptions}
+        />
+        <FilterGroup
+          title="Localização (UF / país)"
+          name="regiao"
+          options={regiaoOptions}
+        />
+        <FilterGroup
+          title="Instituição atual"
+          name="instituicao-atual"
+          options={instituicaoAtualOptions}
+        />
+        <FilterGroup
+          title="Área de pesquisa"
+          name="areas-pesquisa"
+          options={areasPesquisaOptions}
+        />
+        <FilterGroup
           title="LGBTQIAP+"
           name="lgbtqiap"
-          options={simNaoOptions}
+          options={lgbtqiapOptions}
         />
-        <FilterGroup title="PCD" name="pcd" options={simNaoOptions} />
+        <FilterGroup title="PCD" name="pcd" options={pcdOptions} />
         <FilterGroup
           title="Grupo tradicional"
           name="grupo-tradicional"
           options={grupoTradicionalOptions}
         />
         <FilterGroup
-          title="Localização"
-          name="localizacao"
-          options={localizacaoOptions}
-          searchable
-        />
-        <FilterGroup
-          title="Nível de formação"
-          name="nivel-formacao"
-          options={nivelFormacaoOptions}
-        />
-        <FilterGroup
           title="Trabalho atual"
           name="trabalho-atual"
           options={trabalhoAtualOptions}
-        />
-        <FilterGroup
-          title="Instituição atual"
-          name="instituicao-atual"
-          options={instituicaoAtualOptions}
-          searchable
-        />
-        <FilterGroup
-          title="Área de pesquisa"
-          name="areas-pesquisa"
-          options={areasPesquisaOptions}
-          searchable
-        />
-        <FilterGroup
-          title="Grupo biológico"
-          name="grupos-biologicos"
-          options={gruposBiologicosOptions}
-          searchable
         />
         <FilterGroup
           title="Aceita palestra"
@@ -303,11 +350,12 @@ const description =
         >
           <div class="flex max-w-xl flex-1 items-center gap-3">
             <button
-              id="sidebar-toggle-btn"
+              id="toggle-filters-btn"
               type="button"
               class="relative flex shrink-0 items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all hover:border-meco-purple-soft hover:bg-gray-50"
               title="Mostrar/ocultar filtros (Ctrl+B)"
               aria-pressed="true"
+              aria-expanded="true"
               aria-controls="filters-sidebar"
             >
               <Icon
@@ -331,34 +379,40 @@ const description =
                 id="filter-search"
                 type="search"
                 class="w-full rounded-xl border border-gray-300 bg-white py-2.5 pr-4 pl-10 text-sm shadow-sm transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
-                placeholder="Buscar por nome..."
+                placeholder="Buscar por nome ou instituição..."
               />
             </div>
           </div>
 
           <div
-            class="inline-flex shrink-0 items-center gap-2 self-start rounded-xl border border-gray-200/80 bg-gray-100 p-1 sm:self-auto"
-            role="group"
-            aria-label="Alternar visualização"
+            class="flex shrink-0 items-center justify-between gap-4 text-sm text-gray-500 sm:justify-end"
           >
-            <button
-              id="btn-view-table"
-              type="button"
-              class="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
-              aria-pressed="true"
+            <span id="results-counter"></span>
+
+            <div
+              class="inline-flex shrink-0 items-center gap-2 rounded-xl border border-gray-200/80 bg-gray-100 p-1"
+              role="group"
+              aria-label="Alternar visualização"
             >
-              <Icon name="mdi:view-list" class="size-4" />
-              Tabela
-            </button>
-            <button
-              id="btn-view-cards"
-              type="button"
-              class="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
-              aria-pressed="false"
-            >
-              <Icon name="mdi:view-grid-outline" class="size-4" />
-              Cards
-            </button>
+              <button
+                id="btn-view-table"
+                type="button"
+                class="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
+                aria-pressed="true"
+              >
+                <Icon name="mdi:view-list" class="size-4" />
+                Tabela
+              </button>
+              <button
+                id="btn-view-cards"
+                type="button"
+                class="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
+                aria-pressed="false"
+              >
+                <Icon name="mdi:view-grid-outline" class="size-4" />
+                Cards
+              </button>
+            </div>
           </div>
         </div>
 
@@ -384,15 +438,7 @@ const description =
               <tbody id="researchers-container" class="text-sm">
                 {
                   researchers.map((researcher: any) => (
-                    <ResearcherRow
-                      researcher={researcher}
-                      resolveLocalizacao={resolveLocalizacaoFormatted}
-                      resolveInstituicaoAtual={resolveInstituicaoAtualFormatted}
-                      resolveGrupoTradicional={grupoTradicionalIndex.resolve}
-                      resolveTrabalhoAtual={trabalhoAtualIndex.resolve}
-                      resolveAreaPesquisa={areasPesquisaIndex.resolve}
-                      resolveGrupoBiologico={gruposBiologicosIndex.resolve}
-                    />
+                    <ResearcherRow researcher={researcher} {...resolvers} />
                   ))
                 }
               </tbody>
@@ -407,15 +453,7 @@ const description =
         >
           {
             researchers.map((researcher: any) => (
-              <ResearcherCard
-                researcher={researcher}
-                resolveLocalizacao={resolveLocalizacaoFormatted}
-                resolveInstituicaoAtual={resolveInstituicaoAtualFormatted}
-                resolveGrupoTradicional={grupoTradicionalIndex.resolve}
-                resolveTrabalhoAtual={trabalhoAtualIndex.resolve}
-                resolveAreaPesquisa={areasPesquisaIndex.resolve}
-                resolveGrupoBiologico={gruposBiologicosIndex.resolve}
-              />
+              <ResearcherCard researcher={researcher} {...resolvers} />
             ))
           }
         </div>
@@ -516,7 +554,7 @@ const description =
     const isDesktop = () => window.matchMedia("(min-width: 1024px)").matches;
 
     const sidebar = document.getElementById("filters-sidebar");
-    const toggleBtn = document.getElementById("sidebar-toggle-btn");
+    const toggleBtn = document.getElementById("toggle-filters-btn");
     const collapseBtn = document.getElementById("sidebar-collapse-btn");
     const pinBtn = document.getElementById("sidebar-pin-btn");
 
@@ -554,8 +592,10 @@ const description =
         sidebar.classList.remove(...OVERLAY_CLASSES);
       }
 
-      toggleBtn?.classList.toggle("btn-active", showSidebar);
+      toggleBtn?.classList.toggle("border-meco-purple-soft", showSidebar);
+      toggleBtn?.classList.toggle("bg-meco-purple-bg/40", showSidebar);
       toggleBtn?.setAttribute("aria-pressed", String(showSidebar));
+      toggleBtn?.setAttribute("aria-expanded", String(showSidebar));
 
       if (pinBtn) {
         pinBtn.classList.toggle("text-primary", pinned);
@@ -686,7 +726,7 @@ const description =
       { name: "lgbtqiap", mode: "single" },
       { name: "pcd", mode: "single" },
       { name: "grupo-tradicional", mode: "single" },
-      { name: "localizacao", mode: "single" },
+      { name: "regiao", mode: "single" },
       { name: "nivel-formacao", mode: "single" },
       { name: "trabalho-atual", mode: "list" },
       { name: "instituicao-atual", mode: "single" },
@@ -876,6 +916,22 @@ const description =
     });
 
     const filterCountBadge = document.getElementById("filter-count-badge");
+    const filterActiveCount = document.getElementById("filter-active-count");
+    const clearAllBtn = document.getElementById("filter-clear-all");
+    const resultsCounter = document.getElementById("results-counter");
+    const totalResearchers = rowBySlug.size;
+
+    // Mantém os dois contadores de "filtros ativos" (o do botão da toolbar e o
+    // do header do painel) em sincronia.
+    function renderActiveCount(count: number) {
+      for (const el of [filterCountBadge, filterActiveCount]) {
+        if (!el) continue;
+        el.textContent = String(count);
+        // São círculos flex: alterna hidden/flex pra centralizar o número.
+        el.classList.toggle("hidden", count === 0);
+        el.classList.toggle("flex", count > 0);
+      }
+    }
 
     function filterResearchers() {
       const searchValue = (searchInput?.value || "").trim().toLowerCase();
@@ -884,22 +940,13 @@ const description =
         checked: getChecked(g.name),
       }));
 
-      const activeFilterCount = active.reduce(
-        (sum, f) => sum + f.checked.length,
-        0,
-      );
-      if (filterCountBadge) {
-        filterCountBadge.textContent = String(activeFilterCount);
-        // O contador é um círculo flex; alterna hidden/flex pra centralizar
-        // o número quando visível.
-        filterCountBadge.classList.toggle("hidden", activeFilterCount === 0);
-        filterCountBadge.classList.toggle("flex", activeFilterCount > 0);
-      }
+      renderActiveCount(active.reduce((sum, f) => sum + f.checked.length, 0));
 
       filteredSlugs = Array.from(rowBySlug.entries())
         .filter(([, row]) => {
-          const nome = row.getAttribute("data-nome") || "";
-          const matchSearch = !searchValue || nome.includes(searchValue);
+          // data-busca já vem com nome + instituição em minúsculas.
+          const haystack = row.getAttribute("data-busca") || "";
+          const matchSearch = !searchValue || haystack.includes(searchValue);
 
           const matchFilters = active.every((f) => {
             if (f.checked.length === 0) return true;
@@ -915,21 +962,50 @@ const description =
         })
         .map(([slug]) => slug);
 
+      if (resultsCounter) {
+        resultsCounter.innerHTML = `Exibindo <strong class="text-gray-900">${filteredSlugs.length}</strong> de <strong class="text-gray-900">${totalResearchers}</strong>`;
+      }
+
       currentPage = 1;
       renderPage();
     }
 
-    // A busca por nome filtra em tempo real; os checkboxes da sidebar só
-    // são aplicados quando a pessoa clica em "Aplicar filtros".
+    // Filtragem reativa: busca e checkboxes aplicam na hora. "Aplicar filtros"
+    // continua existindo pra fechar o painel no mobile (onde ele cobre a lista)
+    // e como confirmação explícita.
     searchInput?.addEventListener("input", filterResearchers);
-    applyBtn?.addEventListener("click", filterResearchers);
-    clearBtn?.addEventListener("click", () => {
+    document
+      .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
+      .forEach((el) => el.addEventListener("change", filterResearchers));
+
+    applyBtn?.addEventListener("click", () => {
+      filterResearchers();
+      if (!isDesktop()) closeSidebar();
+    });
+
+    function clearAllFilters() {
       if (searchInput) searchInput.value = "";
       document
         .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
         .forEach((el) => (el.checked = false));
+      // Limpa também as buscas internas das categorias e reexibe as opções
+      // que estavam escondidas por elas.
+      document
+        .querySelectorAll<HTMLInputElement>("input[data-option-search]")
+        .forEach((input) => {
+          input.value = "";
+          const list = document.querySelector<HTMLElement>(
+            `[data-option-list="${input.dataset.optionSearch}"]`,
+          );
+          list
+            ?.querySelectorAll<HTMLElement>("[data-option-label]")
+            .forEach((label) => (label.style.display = ""));
+        });
       filterResearchers();
-    });
+    }
+
+    clearBtn?.addEventListener("click", clearAllFilters);
+    clearAllBtn?.addEventListener("click", clearAllFilters);
 
     // Estado inicial: sem filtros aplicados ainda mostra a 1ª página de todas.
     filterResearchers();
