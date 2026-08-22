@@ -136,10 +136,10 @@ const description =
   <div class="mx-auto w-full max-w-[1800px] space-y-8 px-4 py-10 md:px-8">
     {/* Header */}
     <div
-      class="relative overflow-hidden rounded-box border border-base-300 bg-base-100 p-6 shadow-sm sm:p-8"
+      class="relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
     >
       <div
-        class="pointer-events-none absolute -top-10 -right-10 size-48 rounded-full bg-primary/10 blur-2xl"
+        class="pointer-events-none absolute -top-10 -right-10 size-48 rounded-full bg-meco-purple-bg blur-2xl"
         aria-hidden="true"
       >
       </div>
@@ -147,25 +147,29 @@ const description =
       <div
         class="relative mb-3 flex flex-wrap items-center justify-between gap-3"
       >
-        <span class="badge gap-1.5 badge-outline badge-primary">
-          <Icon name="mdi:account-group-outline" class="size-3.5" />
+        <span
+          class="inline-flex items-center gap-1.5 rounded-full border border-meco-purple-soft/50 bg-meco-purple-bg px-3 py-1 text-xs font-semibold text-meco-purple-deep"
+        >
+          <Icon
+            name="mdi:account-group-outline"
+            class="size-3.5 text-meco-purple-primary"
+          />
           {researchers.length} pesquisadoras cadastradas
         </span>
-        <div
-          class="flex items-center gap-2 text-xs font-medium text-base-content/50"
-        >
-          <span class="size-2 animate-pulse rounded-full bg-success"></span>
+        <div class="flex items-center gap-2 text-xs font-medium text-gray-500">
+          <span class="size-2 animate-pulse rounded-full bg-meco-green-primary"
+          ></span>
           Diretório atualizado
         </div>
       </div>
 
       <h1
-        class="relative text-3xl font-bold tracking-tight text-base-content sm:text-4xl md:text-5xl"
+        class="relative font-epilogue text-3xl font-black tracking-tight text-gray-900 sm:text-4xl"
       >
         {title}
       </h1>
       <p
-        class="relative mt-2 max-w-2xl text-base text-base-content/60 md:text-lg"
+        class="relative mt-2 max-w-3xl text-base leading-relaxed text-gray-600"
       >
         {description}
       </p>
@@ -178,46 +182,52 @@ const description =
       {/* Filters sidebar */}
       <aside
         id="filters-sidebar"
-        class="rounded-box border-base-300 bg-base-100 lg:sticky lg:top-6 lg:w-72 lg:shrink-0 lg:border lg:p-4"
+        class="rounded-2xl border-gray-200/90 bg-white lg:sticky lg:top-6 lg:w-72 lg:shrink-0 lg:border lg:p-4 lg:shadow-sm"
       >
-        <div class="mb-2 flex items-center justify-end gap-1">
-          <button
-            id="sidebar-pin-btn"
-            type="button"
-            class="btn btn-square btn-ghost text-primary btn-xs"
-            title="Fixar sidebar aberta"
-            aria-pressed="true"
+        <div class="mb-2 flex items-center justify-between gap-1">
+          <h2
+            class="flex items-center gap-1.5 font-epilogue text-sm font-bold text-gray-900"
           >
-            <Icon name="mdi:pin-outline" class="size-4" />
-          </button>
-          <button
-            id="sidebar-collapse-btn"
-            type="button"
-            class="btn btn-square btn-ghost btn-xs"
-            title="Minimizar (Ctrl+B)"
-            aria-label="Minimizar filtros"
-          >
-            <Icon name="mdi:arrow-collapse-left" class="size-4" />
-          </button>
+            <Icon
+              name="mdi:filter-variant"
+              class="size-4 text-meco-purple-primary"
+            />
+            Filtrar pesquisadoras
+          </h2>
+          <div class="flex items-center gap-0.5">
+            <button
+              id="sidebar-pin-btn"
+              type="button"
+              class="rounded-lg p-1 text-meco-purple-primary transition-colors hover:bg-gray-100"
+              title="Fixar sidebar aberta"
+              aria-pressed="true"
+            >
+              <Icon name="mdi:pin-outline" class="size-4" />
+            </button>
+            <button
+              id="sidebar-collapse-btn"
+              type="button"
+              class="rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700"
+              title="Minimizar (Ctrl+B)"
+              aria-label="Minimizar filtros"
+            >
+              <Icon name="mdi:arrow-collapse-left" class="size-4" />
+            </button>
+          </div>
         </div>
-
-        <h2 class="mb-2 flex items-center gap-1.5 text-sm font-semibold">
-          <Icon name="mdi:filter-variant" class="size-4" />
-          Filtros
-        </h2>
 
         <div class="mb-2 flex gap-2">
           <button
             id="filter-apply"
             type="button"
-            class="btn flex-1 btn-primary btn-sm"
+            class="flex-1 rounded-xl bg-meco-purple-primary py-2 text-sm font-bold text-white transition-colors hover:bg-meco-purple-deep"
           >
             Aplicar filtros
           </button>
           <button
             id="filter-clear"
             type="button"
-            class="btn btn-outline btn-sm"
+            class="rounded-xl border border-gray-300 px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100"
           >
             Limpar
           </button>
@@ -288,97 +298,112 @@ const description =
           /* Toolbar — botão que abre/fecha a sidebar de filtros, busca por nome
         e alternador de visualização (tabela/cards) */
         }
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
+        <div
+          class="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center"
+        >
+          <div class="flex max-w-xl flex-1 items-center gap-3">
             <button
               id="sidebar-toggle-btn"
               type="button"
-              class="btn gap-2 btn-outline btn-sm"
+              class="relative flex shrink-0 items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all hover:border-meco-purple-soft hover:bg-gray-50"
               title="Mostrar/ocultar filtros (Ctrl+B)"
               aria-pressed="true"
+              aria-controls="filters-sidebar"
             >
-              <Icon name="mdi:filter-variant" class="size-4" />
-              Filtrar
+              <Icon
+                name="mdi:filter-variant"
+                class="size-4 text-meco-purple-primary"
+              />
+              <span>Filtros</span>
               <span
                 id="filter-count-badge"
-                class="badge hidden badge-sm badge-primary">0</span
+                class="hidden h-5 w-5 items-center justify-center rounded-full bg-meco-purple-primary text-xs font-bold text-white"
+                >0</span
               >
             </button>
-            <label
-              class="input-bordered input flex w-full max-w-sm items-center gap-2 input-sm"
-            >
-              <Icon name="mdi:magnify" class="size-4 text-base-content/50" />
+
+            <div class="relative flex-1">
+              <Icon
+                name="mdi:magnify"
+                class="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-gray-400"
+              />
               <input
                 id="filter-search"
                 type="search"
-                class="grow"
+                class="w-full rounded-xl border border-gray-300 bg-white py-2.5 pr-4 pl-10 text-sm shadow-sm transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
                 placeholder="Buscar por nome..."
               />
-            </label>
+            </div>
           </div>
 
-          <div class="join" role="group" aria-label="Alternar visualização">
+          <div
+            class="inline-flex shrink-0 items-center gap-2 self-start rounded-xl border border-gray-200/80 bg-gray-100 p-1 sm:self-auto"
+            role="group"
+            aria-label="Alternar visualização"
+          >
             <button
-              id="view-table-btn"
+              id="btn-view-table"
               type="button"
-              class="btn join-item btn-outline btn-sm"
-              title="Visualização em lista"
+              class="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
               aria-pressed="true"
             >
               <Icon name="mdi:view-list" class="size-4" />
+              Tabela
             </button>
             <button
-              id="view-cards-btn"
+              id="btn-view-cards"
               type="button"
-              class="btn join-item btn-outline btn-sm"
-              title="Visualização em cards"
+              class="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
               aria-pressed="false"
             >
               <Icon name="mdi:view-grid-outline" class="size-4" />
+              Cards
             </button>
           </div>
         </div>
 
-        {/* Researchers Table */}
+        {/* Visão 1 — Tabela Clean Data Grid */}
         <div
-          id="view-table-wrapper"
-          class="overflow-x-auto rounded-box border border-base-300"
+          id="table-view-container"
+          class="overflow-hidden rounded-2xl border border-gray-200/90 bg-white shadow-sm"
         >
-          <table class="w-full text-left">
-            <thead>
-              <tr
-                class="border-b border-base-300 bg-base-200/50 text-xs tracking-wide text-base-content/50 uppercase"
-              >
-                <th class="px-4 py-3 font-medium">Nome</th>
-                <th class="px-4 py-3 font-medium">Instituição</th>
-                <th class="px-4 py-3 font-medium">Formação</th>
-                <th class="px-4 py-3 font-medium">Localização</th>
-                <th class="max-w-48 px-4 py-3 font-medium">Perfil</th>
-                <th class="px-4 py-3 font-medium">Links</th>
-              </tr>
-            </thead>
-            <tbody id="researchers-container">
-              {
-                researchers.map((researcher: any) => (
-                  <ResearcherRow
-                    researcher={researcher}
-                    resolveLocalizacao={resolveLocalizacaoFormatted}
-                    resolveInstituicaoAtual={resolveInstituicaoAtualFormatted}
-                    resolveGrupoTradicional={grupoTradicionalIndex.resolve}
-                    resolveTrabalhoAtual={trabalhoAtualIndex.resolve}
-                    resolveAreaPesquisa={areasPesquisaIndex.resolve}
-                    resolveGrupoBiologico={gruposBiologicosIndex.resolve}
-                  />
-                ))
-              }
-            </tbody>
-          </table>
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse text-left">
+              <thead>
+                <tr
+                  class="border-b border-gray-200 bg-gray-50/80 text-xs font-bold tracking-wider text-gray-500 uppercase"
+                >
+                  <th class="px-6 py-4">Pesquisadora</th>
+                  <th class="px-4 py-4">Instituição</th>
+                  <th class="px-4 py-4">Formação</th>
+                  <th class="px-4 py-4">Localização</th>
+                  <th class="px-4 py-4">Perfil &amp; Atuação</th>
+                  <th class="px-6 py-4 text-right">Ações / Perfil</th>
+                </tr>
+              </thead>
+              <tbody id="researchers-container" class="text-sm">
+                {
+                  researchers.map((researcher: any) => (
+                    <ResearcherRow
+                      researcher={researcher}
+                      resolveLocalizacao={resolveLocalizacaoFormatted}
+                      resolveInstituicaoAtual={resolveInstituicaoAtualFormatted}
+                      resolveGrupoTradicional={grupoTradicionalIndex.resolve}
+                      resolveTrabalhoAtual={trabalhoAtualIndex.resolve}
+                      resolveAreaPesquisa={areasPesquisaIndex.resolve}
+                      resolveGrupoBiologico={gruposBiologicosIndex.resolve}
+                    />
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        {/* Researchers Cards */}
+        {/* Visão 2 — Grade de Cards de Perfil */}
         <div
-          id="view-cards-wrapper"
-          class="grid hidden grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+          id="cards-view-container"
+          class="hidden grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
         >
           {
             researchers.map((researcher: any) => (
@@ -398,13 +423,13 @@ const description =
         {/* Pagination */}
         <div
           id="pagination-bar"
-          class="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between"
+          class="flex flex-col items-center justify-between gap-4 rounded-2xl border border-gray-200/90 bg-white px-6 py-4 text-sm text-gray-600 shadow-sm sm:flex-row"
         >
           <div class="flex items-center gap-2">
-            <span class="text-base-content/60">Mostrar</span>
+            <span>Itens por página:</span>
             <select
               id="page-size-select"
-              class="select-bordered select select-sm"
+              class="rounded-lg border border-gray-300 bg-white px-2.5 py-1 text-xs font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
             >
               <option value="5">5</option>
               <option value="10">10</option>
@@ -412,47 +437,50 @@ const description =
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
-            <span class="text-base-content/60">por página</span>
           </div>
 
-          <div id="pagination-info" class="text-base-content/60"></div>
+          <div id="pagination-info" class="text-gray-500"></div>
 
-          <div class="join">
+          <div class="flex items-center gap-1">
             <button
               id="page-first"
               type="button"
-              class="btn join-item btn-outline btn-sm"
+              class="rounded-lg border border-gray-200 bg-white p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
               title="Primeira página"
+              aria-label="Primeira página"
             >
-              <Icon name="mdi:page-first" class="size-4" />
+              <Icon name="mdi:page-first" class="size-3.5" />
             </button>
             <button
               id="page-prev"
               type="button"
-              class="btn join-item btn-outline btn-sm"
+              class="rounded-lg border border-gray-200 bg-white p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
               title="Página anterior"
+              aria-label="Página anterior"
             >
-              <Icon name="mdi:chevron-left" class="size-4" />
+              <Icon name="mdi:chevron-left" class="size-3.5" />
             </button>
             <span
               id="page-indicator"
-              class="btn pointer-events-none join-item min-w-32 justify-center btn-outline btn-sm"
+              class="px-3 text-xs font-semibold whitespace-nowrap text-gray-700"
             ></span>
             <button
               id="page-next"
               type="button"
-              class="btn join-item btn-outline btn-sm"
+              class="rounded-lg border border-gray-200 bg-white p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
               title="Próxima página"
+              aria-label="Próxima página"
             >
-              <Icon name="mdi:chevron-right" class="size-4" />
+              <Icon name="mdi:chevron-right" class="size-3.5" />
             </button>
             <button
               id="page-last"
               type="button"
-              class="btn join-item btn-outline btn-sm"
+              class="rounded-lg border border-gray-200 bg-white p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
               title="Última página"
+              aria-label="Última página"
             >
-              <Icon name="mdi:page-last" class="size-4" />
+              <Icon name="mdi:page-last" class="size-3.5" />
             </button>
           </div>
         </div>
@@ -460,13 +488,13 @@ const description =
         {/* Empty State */}
         <div
           id="empty-state"
-          class="hidden flex-col items-center gap-3 py-16 text-center"
+          class="hidden flex-col items-center gap-3 rounded-2xl border border-gray-200/90 bg-white py-16 text-center shadow-sm"
         >
           <Icon
             name="mdi:account-search-outline"
-            class="size-16 text-base-content/30"
+            class="size-16 text-gray-300"
           />
-          <p class="text-lg text-base-content/60">
+          <p class="text-lg text-gray-500">
             Nenhuma pesquisadora encontrada com esses filtros.
           </p>
         </div>
@@ -673,7 +701,7 @@ const description =
     const applyBtn = document.getElementById("filter-apply");
     const clearBtn = document.getElementById("filter-clear");
     const tableContainer = document.getElementById("researchers-container");
-    const cardsContainer = document.getElementById("view-cards-wrapper");
+    const cardsContainer = document.getElementById("cards-view-container");
     const emptyState = document.getElementById("empty-state");
 
     const getChecked = (name: string): string[] =>
@@ -704,11 +732,11 @@ const description =
       });
 
     // Visualização (tabela/cards) — persistida em localStorage.
-    const LS_VIEW = "pesquisadoras:view-mode";
-    const tableWrapper = document.getElementById("view-table-wrapper");
-    const cardsWrapper = document.getElementById("view-cards-wrapper");
-    const viewTableBtn = document.getElementById("view-table-btn");
-    const viewCardsBtn = document.getElementById("view-cards-btn");
+    const LS_VIEW = "meco_view_mode";
+    const tableWrapper = document.getElementById("table-view-container");
+    const cardsWrapper = document.getElementById("cards-view-container");
+    const viewTableBtn = document.getElementById("btn-view-table");
+    const viewCardsBtn = document.getElementById("btn-view-cards");
 
     let currentView: "table" | "cards" = "table";
     try {
@@ -718,19 +746,26 @@ const description =
     } catch {}
 
     function applyView() {
-      tableWrapper?.classList.toggle("hidden", currentView !== "table");
-      cardsWrapper?.classList.toggle("hidden", currentView !== "cards");
+      const showTable = currentView === "table";
 
-      viewTableBtn?.classList.toggle("btn-active", currentView === "table");
-      viewTableBtn?.setAttribute(
-        "aria-pressed",
-        String(currentView === "table"),
-      );
-      viewCardsBtn?.classList.toggle("btn-active", currentView === "cards");
-      viewCardsBtn?.setAttribute(
-        "aria-pressed",
-        String(currentView === "cards"),
-      );
+      tableWrapper?.classList.toggle("hidden", !showTable);
+      // O container de cards é um grid: alterna hidden/grid pra não perder o
+      // layout de colunas ao reexibir.
+      cardsWrapper?.classList.toggle("hidden", showTable);
+      cardsWrapper?.classList.toggle("grid", !showTable);
+
+      for (const [btn, isActive] of [
+        [viewTableBtn, showTable],
+        [viewCardsBtn, !showTable],
+      ] as const) {
+        if (!btn) continue;
+        btn.classList.toggle("bg-white", isActive);
+        btn.classList.toggle("text-gray-900", isActive);
+        btn.classList.toggle("shadow-sm", isActive);
+        btn.classList.toggle("text-gray-500", !isActive);
+        btn.classList.toggle("hover:text-gray-900", !isActive);
+        btn.setAttribute("aria-pressed", String(isActive));
+      }
     }
 
     function setView(view: "table" | "cards") {
@@ -855,7 +890,10 @@ const description =
       );
       if (filterCountBadge) {
         filterCountBadge.textContent = String(activeFilterCount);
+        // O contador é um círculo flex; alterna hidden/flex pra centralizar
+        // o número quando visível.
         filterCountBadge.classList.toggle("hidden", activeFilterCount === 0);
+        filterCountBadge.classList.toggle("flex", activeFilterCount > 0);
       }
 
       filteredSlugs = Array.from(rowBySlug.entries())

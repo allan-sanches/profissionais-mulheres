@@ -5,6 +5,8 @@ import {
   isGrupoTradicionalVazio,
   formatName,
   formatPlace,
+  IDENTIDADE_LABELS,
+  RACA_LABELS,
 } from "@/utils/labels";
 
 export interface ResearcherResolvers {
@@ -174,6 +176,26 @@ export function buildResearcherView(
     "data-nome": (r.nome || "").toLowerCase(),
   };
 
+  // Lista unificada de badges de perfil. A ordem define quais aparecem
+  // inline e quais caem no popover "+{N}": a especificação manda priorizar
+  // identidade e grupos biológicos, então esses vêm primeiro e os marcadores
+  // adicionais (LGBTQIAP+, PCD, grupo tradicional) ficam no overflow.
+  const badges: { key: string; label: string }[] = [
+    ...(showIdentidade
+      ? [{ key: "identidade", label: IDENTIDADE_LABELS[r.identidade_genero!] }]
+      : []),
+    ...(showRaca ? [{ key: "raca", label: RACA_LABELS[r.raca_etnia!] }] : []),
+    ...gruposBiologicosList.map((grupo) => ({
+      key: "grupoBiologico",
+      label: grupo,
+    })),
+    ...(showLgbtqiap ? [{ key: "lgbtqiap", label: "LGBTQIAP+" }] : []),
+    ...(showPcd ? [{ key: "pcd", label: "PCD" }] : []),
+    ...(showGrupoTradicional
+      ? [{ key: "grupoTradicional", label: r.grupo_tradicional! }]
+      : []),
+  ];
+
   return {
     r,
     show,
@@ -183,6 +205,7 @@ export function buildResearcherView(
     showPcd,
     showGrupoTradicional,
     gruposBiologicosList,
+    badges,
     nomeFormatado,
     primeiroNome,
     restoNome,

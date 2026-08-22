@@ -121,3 +121,27 @@
   --shadow-main: var(--shadow-main);
   --font-display: var(--font-display);
 }
+
+/*
+ * Tokens nomeados do brandbook oficial (Sabrina Carrard) — usados pelo
+ * diretório de pesquisadoras. Geram utilitários tipo bg-meco-purple-bg,
+ * text-meco-purple-deep, border-meco-purple-primary, sem mexer nos tokens
+ * primary/secondary/accent do daisyUI usados no resto do site.
+ *
+ * font-epilogue é um alias da fonte já carregada em --font-display.
+ */
+@theme {
+  --color-meco-purple-electric: #9c00ff;
+  --color-meco-purple-primary: #7d1cd4;
+  --color-meco-purple-deep: #613ba8;
+  --color-meco-purple-bg: #f0defc;
+  --color-meco-purple-soft: #bf9ee3;
+  --color-meco-purple-muted: #ab99d9;
+
+  --color-meco-green-primary: #0d9426;
+  --color-meco-green-dark: #297552;
+  --color-meco-green-soft: #9cd4b8;
+  --color-meco-green-bg: #d1ebd1;
+
+  --font-epilogue: var(--font-display);
+}

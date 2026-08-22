@@ -1,29 +1,104 @@
-// Cor + ícone por categoria de badge — usado tanto na linha da tabela quanto
-// no bento do perfil, pra a mesma categoria ser sempre reconhecível pela cor.
-// Cores puxadas da paleta oficial da marca (ver theme.css): roxo vivo
-// #9C00FF (primary), verde #0D9426 (secondary), violeta #7D1CD4 (accent),
-// verde escuro #297552 (neutral), slate #45597D (info), roxo profundo
-// #613BA8 (só aqui, sem token daisyUI dedicado). Escolhidas pra não colidir
-// dentro do mesmo agrupamento visual (badges de identidade aparecem juntos
-// tanto na coluna "Perfil" da tabela quanto na célula de identidade do bento).
+// Cor + ícone por categoria de badge — usado na tabela, nos cards e no
+// perfil, pra a mesma categoria ser sempre reconhecível pela cor.
+//
+// O brandbook define só duas famílias de fundo pra pílula: roxo (#F0DEFC)
+// e verde (#D1EBD1). A regra aqui segue a especificação: categorias
+// identitárias usam a família roxa, categorias de pesquisa (áreas, grupos
+// biológicos, colaboração) usam a verde, e metadados neutros (titulação,
+// localização) ficam em cinza. O ícone é o que distingue categorias da
+// mesma família.
 export const CATEGORY_BADGE: Record<string, { color: string; icon: string }> = {
-  localizacao: { color: "badge-warning", icon: "mdi:map-marker-outline" },
+  localizacao: {
+    color: "bg-gray-100 text-gray-600 border-gray-200",
+    icon: "mdi:map-marker-outline",
+  },
   nivelFormacao: {
-    color: "bg-[#613BA8] text-white",
+    color: "bg-gray-100 text-gray-700 border-gray-200",
     icon: "mdi:school-outline",
   },
-  identidade: { color: "badge-secondary", icon: "mdi:gender-transgender" },
-  raca: { color: "badge-accent", icon: "mdi:account-multiple-outline" },
-  lgbtqiap: { color: "badge-primary", icon: "mdi:flag-variant-outline" },
-  pcd: { color: "badge-info", icon: "mdi:wheelchair-accessibility" },
+  identidade: {
+    color: "bg-meco-purple-bg text-meco-purple-deep border-meco-purple-soft/50",
+    icon: "mdi:gender-transgender",
+  },
+  raca: {
+    color:
+      "bg-meco-purple-bg/60 text-meco-purple-deep border-meco-purple-soft/40",
+    icon: "mdi:account-multiple-outline",
+  },
+  lgbtqiap: {
+    color:
+      "bg-meco-purple-bg text-meco-purple-primary border-meco-purple-soft/50",
+    icon: "mdi:flag-variant-outline",
+  },
+  pcd: {
+    color:
+      "bg-meco-purple-bg/60 text-meco-purple-primary border-meco-purple-soft/40",
+    icon: "mdi:wheelchair-accessibility",
+  },
   grupoTradicional: {
-    color: "badge-neutral",
+    color:
+      "bg-meco-purple-bg text-meco-purple-deep border-meco-purple-muted/50",
     icon: "mdi:account-group-outline",
   },
-  grupoBiologico: { color: "badge-warning", icon: "mdi:paw-outline" },
-  areaPesquisa: { color: "badge-primary", icon: "mdi:flask-outline" },
-  formaColaboracao: { color: "badge-accent", icon: "mdi:handshake-outline" },
+  grupoBiologico: {
+    color: "bg-meco-green-bg text-meco-green-dark border-meco-green-soft/60",
+    icon: "mdi:paw-outline",
+  },
+  areaPesquisa: {
+    color: "bg-meco-green-bg/70 text-meco-green-dark border-meco-green-soft/50",
+    icon: "mdi:flask-outline",
+  },
+  formaColaboracao: {
+    color: "bg-meco-green-bg text-meco-green-dark border-meco-green-soft/60",
+    icon: "mdi:handshake-outline",
+  },
 };
+
+// Classe base compartilhada do formato "pill" — usar junto com
+// CATEGORY_BADGE[x].color.
+export const PILL_BASE =
+  "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap";
+
+// Ícone descritivo por forma de colaboração, pros mini-cards do perfil.
+// As chaves são fragmentos em minúsculo casados por `includes` — o texto vem
+// livre da planilha e tem variações ("Mentoria" vs "Mentoria ou orientação de
+// estudantes"), então casamos por trecho em vez de igualdade exata.
+const COLABORACAO_ICONS: [string, string][] = [
+  ["palestra", "mdi:presentation"],
+  ["workshop", "mdi:human-male-board"],
+  ["mentoria", "mdi:school-outline"],
+  ["orientação", "mdi:school-outline"],
+  ["banca", "mdi:account-tie-outline"],
+  ["revisão de texto", "mdi:file-document-edit-outline"],
+  ["revisão de divulgação", "mdi:bullhorn-outline"],
+  ["revisão de artigos", "mdi:file-check-outline"],
+  ["divulgação", "mdi:bullhorn-outline"],
+  ["organização de eventos", "mdi:calendar-star"],
+  ["análises estatísticas", "mdi:chart-bar"],
+  ["análise de dados", "mdi:chart-bar"],
+  ["modelagem", "mdi:function-variant"],
+  ["programação", "mdi:code-braces"],
+  ["mapas", "mdi:map-outline"],
+  ["tradução", "mdi:translate"],
+  ["traduação", "mdi:translate"],
+  ["materiais visuais", "mdi:palette-outline"],
+  ["consultoria", "mdi:briefcase-outline"],
+  ["assessoria", "mdi:briefcase-outline"],
+  ["relatório", "mdi:file-chart-outline"],
+  ["identificação de espécies", "mdi:magnify-scan"],
+  ["campo", "mdi:pine-tree"],
+  ["educação ambiental", "mdi:leaf"],
+  ["projetos", "mdi:lightbulb-outline"],
+  ["rede", "mdi:account-network-outline"],
+];
+
+export function colaboracaoIcon(forma: string): string {
+  const n = forma.toLowerCase();
+  for (const [needle, icon] of COLABORACAO_ICONS) {
+    if (n.includes(needle)) return icon;
+  }
+  return "mdi:handshake-outline";
+}
 
 export const NIVEL_LABELS: Record<string, string> = {
   graduacao: "Graduação",

@@ -1,12 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
-import {
-  NIVEL_LABELS,
-  IDENTIDADE_LABELS,
-  RACA_LABELS,
-  CATEGORY_BADGE,
-} from "@/utils/labels";
+import { NIVEL_LABELS, CATEGORY_BADGE, PILL_BASE } from "@/utils/labels";
 import {
   buildResearcherView,
   type ResearcherResolvers,
@@ -19,173 +14,125 @@ interface Props extends ResearcherResolvers {
 const { researcher, ...resolvers } = Astro.props;
 const vm = buildResearcherView(researcher, resolvers);
 const { r } = vm;
+
+// Até 3 pílulas inline; o excedente vai pro popover flutuante, que não
+// altera a altura da linha.
+const VISIBLE_BADGES = 3;
+const visibleBadges = vm.badges.slice(0, VISIBLE_BADGES);
+const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
 ---
 
 <tr
-  class="group border-b border-base-300 transition-colors last:border-b-0 hover:bg-base-200/60"
+  class="group border-b border-gray-100 transition-colors last:border-b-0 hover:bg-meco-purple-bg/20"
   {...vm.dataAttrs}
 >
-  <td class="max-w-64 min-w-48 px-4 py-3">
+  {/* Pesquisadora */}
+  <td class="px-6 py-4">
     <a
       href={`/pesquisadoras/${researcher.id}`}
       class="group/link flex items-center gap-3"
     >
-      <div class="avatar avatar-placeholder shrink-0">
-        <div
-          class="mask w-8 bg-gradient-to-br from-primary/20 to-secondary/20 mask-squircle text-primary"
-        >
-          <span class="text-xs font-semibold">{vm.initials}</span>
-        </div>
+      <div
+        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-meco-purple-primary/15 to-meco-green-primary/15 font-epilogue text-xs font-bold text-meco-purple-primary"
+      >
+        {vm.initials}
       </div>
-      <span class="flex min-w-0 flex-col">
-        <span
-          class="truncate text-base leading-tight font-semibold text-primary group-hover/link:underline"
+      <div class="min-w-0">
+        <h4
+          class="truncate font-epilogue font-bold text-gray-900 transition-colors group-hover/link:text-meco-purple-primary"
         >
           {vm.primeiroNome}
-        </span>
+        </h4>
         {
           vm.restoNome && (
-            <span class="truncate text-xs leading-tight text-base-content/50">
-              {vm.restoNome}
-            </span>
+            <p class="truncate text-xs text-gray-500">{vm.restoNome}</p>
           )
         }
-      </span>
+      </div>
     </a>
   </td>
 
-  <td class="max-w-56 truncate px-4 py-3 text-sm text-base-content/70">
+  {/* Instituição */}
+  <td class="max-w-56 truncate px-4 py-4 text-sm font-medium text-gray-800">
     {vm.instituicaoFormatada || "—"}
   </td>
 
-  <td class="max-w-56 truncate px-4 py-3 text-sm">
-    <div class="flex flex-col gap-1">
-      {
-        r.nivel_formacao && (
-          <span
-            class={`badge ${CATEGORY_BADGE.nivelFormacao.color} w-fit gap-1 badge-xs`}
-          >
-            <Icon name={CATEGORY_BADGE.nivelFormacao.icon} class="size-2.5" />
-            {NIVEL_LABELS[r.nivel_formacao]}
-          </span>
-        )
-      }
-      <span class="truncate text-xs text-base-content/50">
-        {vm.show("formacao", r.formacao) ? r.formacao : "—"}
-      </span>
-    </div>
+  {/* Formação */}
+  <td class="max-w-48 px-4 py-4">
+    {
+      r.nivel_formacao && (
+        <span class="inline-block rounded-md bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-700">
+          {NIVEL_LABELS[r.nivel_formacao]}
+        </span>
+      )
+    }
+    {
+      vm.show("formacao", r.formacao) && (
+        <p class="mt-0.5 max-w-[180px] truncate text-xs text-gray-400">
+          {r.formacao}
+        </p>
+      )
+    }
   </td>
 
-  <td class="px-4 py-3 text-sm">
+  {/* Localização */}
+  <td class="px-4 py-4 text-sm whitespace-nowrap text-gray-600">
     {
       vm.localizacaoFormatada ? (
-        <span class="inline-flex items-center gap-1 whitespace-nowrap text-base-content/70">
+        <>
           <Icon
             name="mdi:map-marker-outline"
-            class="size-3.5 text-base-content/40"
+            class="mr-1.5 inline size-3 text-gray-400"
           />
           {vm.localizacaoFormatada}
-        </span>
+        </>
       ) : (
         "—"
       )
     }
   </td>
 
-  <td class="max-w-48 px-4 py-3">
-    <div class="flex flex-wrap gap-1">
+  {/* Perfil & Atuação */}
+  <td class="px-4 py-4">
+    <div class="flex flex-wrap items-center gap-1.5">
       {
-        vm.showIdentidade && (
-          <span
-            class={`badge ${CATEGORY_BADGE.identidade.color} gap-1 badge-sm whitespace-nowrap`}
-          >
-            <Icon name={CATEGORY_BADGE.identidade.icon} class="size-3" />
-            {IDENTIDADE_LABELS[r.identidade_genero!]}
-          </span>
-        )
-      }
-      {
-        vm.showRaca && (
-          <span
-            class={`badge ${CATEGORY_BADGE.raca.color} gap-1 badge-sm whitespace-nowrap`}
-          >
-            <Icon name={CATEGORY_BADGE.raca.icon} class="size-3" />
-            {RACA_LABELS[r.raca_etnia!]}
-          </span>
-        )
-      }
-      {
-        vm.showLgbtqiap && (
-          <span
-            class={`badge ${CATEGORY_BADGE.lgbtqiap.color} gap-1 badge-sm whitespace-nowrap`}
-          >
-            <Icon name={CATEGORY_BADGE.lgbtqiap.icon} class="size-3" />
-            LGBTQIAP+
-          </span>
-        )
-      }
-      {
-        vm.showPcd && (
-          <span
-            class={`badge ${CATEGORY_BADGE.pcd.color} gap-1 badge-sm whitespace-nowrap`}
-          >
-            <Icon name={CATEGORY_BADGE.pcd.icon} class="size-3" />
-            PCD
-          </span>
-        )
-      }
-      {
-        vm.showGrupoTradicional && (
-          <span
-            class={`badge ${CATEGORY_BADGE.grupoTradicional.color} gap-1 badge-sm whitespace-nowrap`}
-          >
-            <Icon name={CATEGORY_BADGE.grupoTradicional.icon} class="size-3" />
-            {r.grupo_tradicional}
-          </span>
-        )
-      }
-      {
-        vm.gruposBiologicosList.map((grupo) => (
-          <span
-            class={`badge ${CATEGORY_BADGE.grupoBiologico.color} gap-1 badge-sm whitespace-nowrap`}
-          >
-            <Icon name={CATEGORY_BADGE.grupoBiologico.icon} class="size-3" />
-            {grupo}
+        visibleBadges.map((badge) => (
+          <span class={`${PILL_BASE} ${CATEGORY_BADGE[badge.key].color}`}>
+            <Icon name={CATEGORY_BADGE[badge.key].icon} class="size-3" />
+            {badge.label}
           </span>
         ))
       }
+
       {
-        !vm.showIdentidade &&
-          !vm.showRaca &&
-          !vm.showLgbtqiap &&
-          !vm.showPcd &&
-          !vm.showGrupoTradicional &&
-          vm.gruposBiologicosList.length === 0 && (
-            <span class="text-base-content/40">—</span>
-          )
+        remainingBadges.length > 0 && (
+          <div class="group/popover relative inline-block">
+            <span class="cursor-pointer rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-bold text-gray-600 transition-colors hover:bg-gray-200">
+              +{remainingBadges.length}
+            </span>
+            <div class="absolute bottom-full left-1/2 z-50 mb-2 hidden w-64 -translate-x-1/2 flex-wrap gap-1.5 rounded-xl border border-gray-100 bg-white p-2.5 shadow-xl group-hover/popover:flex">
+              {remainingBadges.map((badge) => (
+                <span class="rounded-full bg-meco-purple-bg px-2 py-0.5 text-[10px] font-semibold text-meco-purple-deep">
+                  {badge.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        )
       }
+
+      {vm.badges.length === 0 && <span class="text-gray-400">—</span>}
     </div>
   </td>
 
-  <td class="px-4 py-3">
-    <div class="flex flex-wrap items-center gap-1">
-      {
-        vm.links.length > 0 ? (
-          vm.links.map((link) => (
-            <a
-              href={link.href}
-              target={link.href?.startsWith("http") ? "_blank" : undefined}
-              rel="noopener noreferrer"
-              title={link.title}
-              class="btn btn-square btn-ghost text-base-content/50 btn-xs hover:bg-primary/10 hover:text-primary"
-            >
-              <Icon name={link.icon} class="size-4" />
-            </a>
-          ))
-        ) : (
-          <span class="text-base-content/40">—</span>
-        )
-      }
-    </div>
+  {/* Ações / Perfil */}
+  <td class="px-6 py-4 text-right whitespace-nowrap">
+    <a
+      href={`/pesquisadoras/${researcher.id}`}
+      class="inline-flex items-center gap-1 rounded-lg border border-meco-purple-soft/50 bg-meco-purple-bg px-3 py-1.5 text-xs font-bold text-meco-purple-deep transition-all hover:bg-meco-purple-primary hover:text-white"
+    >
+      Ver perfil
+      <Icon name="mdi:arrow-right" class="size-3" />
+    </a>
   </td>
 </tr>
