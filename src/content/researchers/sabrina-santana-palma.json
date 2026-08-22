@@ -1,0 +1,37 @@
+{
+  "nome": "Sabrina Santana Palma",
+  "email": "sapalma90@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/9432632829990071",
+  "instagram": "https://www.instagram.com/sabrinidae",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Ilhéus, Bahia, Brasil",
+  "localizacao": "Salvador, Bahia, Brasil",
+  "bio": "Análise da distribuição de organismos bentônicos estuarinos em um contexto global",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Ecologia: Teoria, Aplicação E Valores (PPG ECOTAV)",
+  "instituicao": "Universidade Federal da Bahia (UFBA)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Conservação da biodiversidade",
+    "Modelagem ecológica"
+  ],
+  "grupos_biologicos": ["Moluscos", "Crustáceos", "Outros invertebrados"],
+  "formas_colaboracao": [
+    "Programação em R",
+    "Criação de mapas",
+    "Criação de materiais visuais",
+    "Revisão de divulgação científica",
+    "Palestras",
+    "Workshops",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "parda",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.350Z"
+}

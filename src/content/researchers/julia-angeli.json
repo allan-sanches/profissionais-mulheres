@@ -1,0 +1,39 @@
+{
+  "nome": "Júlia Angeli",
+  "email": "juliaangeli34@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/2345681529538775",
+  "instagram": "@juliaangeli_",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Formiga, Minas Gerais, Brasil",
+  "localizacao": "Ilhéus, Bahia, Brasil",
+  "bio": "Minha pesquisa busca responder o impacto das mudanças climáticas na distribuição e diversidade de espécies utilizando modelagem de nicho ecológico.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de pós Graduação em Ecologia e Conservação da Biodiversidade (PPGECB)",
+  "instituicao": "Universidade Estadual de Santa Cruz (UESC)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Conservação da biodiversidade",
+    "Modelagem ecológica",
+    "Mudanças climáticas"
+  ],
+  "grupos_biologicos": ["Angiospermas"],
+  "formas_colaboracao": [
+    "Programação em R",
+    "Modelagem ecológica ou matemática",
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.343Z"
+}

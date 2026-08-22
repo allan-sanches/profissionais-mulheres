@@ -1,0 +1,35 @@
+{
+  "nome": "Rosalia de Aguiar Araújo",
+  "email": "rosabiog@gmail.com",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Goioerê, Paraná, Brasil",
+  "localizacao": "Juara, Mato Grosso, Brasil",
+  "bio": "Etnoecologia na alimentação do povo Kayabi",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de pós graduação em Ciências Ambientais e Conservação",
+  "instituicao": "Universidade Federal do Rio de Janeiro (UFRJ)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de populações",
+    "Conservação da biodiversidade",
+    "Antropologia"
+  ],
+  "grupos_biologicos": ["Mamíferos", "Aves", "Répteis", "Anfíbios", "Peixes"],
+  "formas_colaboracao": [
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Organização de eventos científicos",
+    "Mentoria"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "preta",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.343Z"
+}

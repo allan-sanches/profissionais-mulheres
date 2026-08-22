@@ -1,0 +1,45 @@
+{
+  "nome": "Bárbara Inês Arcanjo Xavier",
+  "email": "barbaraines_arcanjo@hotmail.com",
+  "curriculo": "http://lattes.cnpq.br/4888458952042643",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Salvador, Bahia, Brasil",
+  "localizacao": "Salvador, Bahia, Brasil",
+  "bio": "Busco entender a ecoepidemiologia de Toxoplasma gondii em favelas de Salvador, com análises sorológicas das populações e análises de contaminação ambiental na água de esgoto e solo.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Saúde Coletiva (PPGSC)",
+  "instituicao": "Universidade Federal da Bahia (UFBA)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia urbana",
+    "Parasitologia e doenças",
+    "Modelagem ecológica"
+  ],
+  "grupos_biologicos": [
+    "Mamíferos",
+    "Invertebrados parasitos",
+    "Fungos",
+    "Bactérias",
+    "Protozoários",
+    "Vírus",
+    "Humanos"
+  ],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "preta",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.347Z"
+}

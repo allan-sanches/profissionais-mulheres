@@ -1,0 +1,33 @@
+{
+  "nome": "Paula Roriz",
+  "email": "paula.roriz@live.com",
+  "curriculo": "http://lattes.cnpq.br/1815268299682708",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Brasília, Distrito Federal, Brasil",
+  "localizacao": "São Sebastião, São Paulo, Brasil",
+  "bio": "Interações entre corais e invertebrados associados, com foco nas pressões ambientais que influenciam essas associações, como mudanças climáticas e bioinvasão.",
+  "aceita_palestras": "Sim",
+  "formacao": "Pós-Graduação em Ecologia (PPG Ecologia USP)",
+  "instituicao": "Universidade de São Paulo (USP)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Mudanças climáticas",
+    "Ecologia marinha"
+  ],
+  "grupos_biologicos": ["Crustáceos", "Outros invertebrados"],
+  "formas_colaboracao": [
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.343Z"
+}

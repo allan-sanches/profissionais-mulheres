@@ -1,0 +1,31 @@
+{
+  "nome": "Mariana Gondim Pereira",
+  "email": "maariana815@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/7420247441762053",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Juiz de Fora, MG, Brasil",
+  "localizacao": "Salvador, BA, Brasil",
+  "bio": "Impacto do Som Antropogênico em Invertebrados Marinhos (Crustáceos e Moluscos)",
+  "aceita_palestras": "Talvez",
+  "formacao": "Universidade Federal da Bahia (UFBA)",
+  "instituicao": "Universidade Federal da Bahia (UFBA)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Conservação da biodiversidade",
+    "Monitoramento ambiental",
+    "Ecologia marinha"
+  ],
+  "grupos_biologicos": ["Moluscos", "Crustáceos"],
+  "formas_colaboracao": [
+    "Revisão de divulgação científica",
+    "Tradução inglês/português"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.351Z"
+}

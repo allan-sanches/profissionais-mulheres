@@ -1,14 +1,15 @@
 const site = {
   // --- Site Metadata ---
   meta: {
-    title: "Breeze",
-    description: "A minimal Astro theme for personal websites",
-    author: "Your Name",
+    title: "Pesquisadoras — Mulheres na Ecologia",
+    description:
+      "Portfólio de pesquisadoras cadastradas no programa Mulheres na Ecologia.",
+    author: "Mulheres na Ecologia",
     logo: "/logo.svg",
     ogImage: "/og-image.png",
     // HTML lang attribute, affects page language and date formatting
     // Options: "zh-CN", "en", "ja", etc.
-    lang: "en",
+    lang: "pt-BR",
   },
 
   // --- Navigation ---
@@ -18,14 +19,14 @@ const site = {
   ],
 
   // --- Social Links ---
-  social: [
-    {
-      name: "GitHub",
-      href: "https://github.com/your-username",
-      icon: "mdi:github",
-    },
-    { name: "Email", href: "mailto:hello@example.com", icon: "mdi:email" },
-  ],
+  social: [] as { name: string; href: string; icon: string }[],
+
+  // --- Site principal (Wix) ---
+  // Link de continuidade exibido no rodapé, apontando para o site principal do projeto.
+  mainSite: {
+    label: "mulheresnaecologia.com",
+    href: "https://www.mulheresnaecologia.com/",
+  },
 
   // --- Homepage Hero ---
   hero: {
@@ -45,8 +46,7 @@ const site = {
 
   // --- Footer ---
   footer: {
-    copyright: "© 2025 Breeze",
-    builtWith: "Built with Astro",
+    copyright: "Mulheres na Ecologia",
   },
 
   // --- Comments ---

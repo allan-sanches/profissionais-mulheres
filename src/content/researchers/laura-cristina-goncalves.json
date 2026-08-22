@@ -1,0 +1,53 @@
+{
+  "nome": "Laura Cristina Gonçalves",
+  "email": "lauracris12011@hotmail.com",
+  "curriculo": "http://lattes.cnpq.br/6278798081554321",
+  "instagram": "https://www.instagram.com/laura.gcristina?igsh=MWtvMGJ2ZnlxMWUydw==",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Campinas, SP - Brasil",
+  "localizacao": "Campinas, SP - Brasil",
+  "bio": "Promover educação e divulgação científica sobre o oceano, englobando a construção de matérias, publicadas em diferentes veículos, que abordam a biodiversidade marinha, preservação e conservação ambiental, a problemática das mudanças climáticas e os impactos no ecossistema.",
+  "aceita_palestras": "Sim",
+  "formacao": "Geografia",
+  "instituicao": "Universidade Estadual de Campinas (Unicamp)",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Ecologia de paisagens",
+    "Ecologia urbana",
+    "Conservação da biodiversidade",
+    "Restauração ecológica",
+    "Políticas públicas ambientais",
+    "Ecologia marinha",
+    "Educação ambiental"
+  ],
+  "grupos_biologicos": [
+    "Mamíferos",
+    "Aves",
+    "Anfíbios",
+    "Peixes",
+    "Moluscos",
+    "Crustáceos",
+    "Outros invertebrados",
+    "Algas"
+  ],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Criação de mapas",
+    "Criação de materiais visuais",
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": true,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.351Z"
+}

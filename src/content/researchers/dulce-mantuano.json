@@ -1,0 +1,38 @@
+{
+  "nome": "Dulce Mantuano",
+  "email": "dulcemantuano.ufrj@gmail.com",
+  "curriculo": "https://lattes.cnpq.br/3426238035851990",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Rio de Janeiro, RJ, Brasil",
+  "localizacao": "Rio de Janeiro, RJ, Brasil;",
+  "trabalho_atual": "Docente universitária efetiva",
+  "instituicao_atual": "UFRJ",
+  "bio": "Ecofisiologia Vegetal",
+  "aceita_palestras": "Sim",
+  "formacao": "Escola Nacional de Botânica Tropical (ENBT-JBRJ)",
+  "instituicao": "Jardim Botânico do Rio de Janeiro",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de paisagens",
+    "Ecologia funcional",
+    "Restauração ecológica",
+    "Mudanças climáticas",
+    "Ecologia da Fotossíntese"
+  ],
+  "grupos_biologicos": ["Angiospermas"],
+  "formas_colaboracao": [
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Palestras",
+    "Workshops",
+    "Consultoria e assessoria técnica - licenciamento ambiental e outros projetos ambientais"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.346Z"
+}

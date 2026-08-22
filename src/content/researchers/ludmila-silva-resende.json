@@ -1,0 +1,37 @@
+{
+  "nome": "Ludmila Silva Resende",
+  "email": "ludmila.silva.resende@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/0193365567858563",
+  "site_pessoal": "https://sites.google.com/view/ludmila-silva-resende/p%C3%A1gina-inicial",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Morrinhos, Goiás, Brasil",
+  "localizacao": "Goiânia, Goiás, Brasil",
+  "bio": "Valoração do serviço ecossistêmico de polinização",
+  "aceita_palestras": "Sim",
+  "observacoes": "Apesar de eu ter utilizado as abelhas como sistema para a modelagem do serviço ecossistêmico de polinização, tenho interesse em colaborar com qualquer sistema de estudo no que diz respeito à modelagem e análise estatística de dados ecológicos.",
+  "formacao": "Ecologia e Evolução (Ecoevol)",
+  "instituicao": "Universidade Federal de Goiás (UFG)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Conservação da biodiversidade",
+    "Modelagem ecológica"
+  ],
+  "grupos_biologicos": ["Insetos - Abelhas"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Programação em outras linguagens",
+    "Modelagem ecológica ou matemática",
+    "Palestras",
+    "Workshops"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.348Z"
+}

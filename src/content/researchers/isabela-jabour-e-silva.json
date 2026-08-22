@@ -1,0 +1,38 @@
+{
+  "nome": "Isabela Jabour e Silva",
+  "email": "isabelajabour8@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/0981143510915511",
+  "instagram": "@isabelajabour",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Teixeira de Freitas, Bahia, Brasil",
+  "localizacao": "São Mateus, Espirito Santo, Brasil",
+  "bio": "Ecologia da fauna bentônica marinha. Com foco em avaliar padrões e os efeitos dos impactos antrópicos na fauna.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Ciências Biológicas (Biologia Animal) (PPGBAN)",
+  "instituicao": "Universidade Federal do Espirito Santo (UFES)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Monitoramento ambiental",
+    "Ecologia marinha"
+  ],
+  "grupos_biologicos": ["Moluscos", "Crustáceos", "Outros invertebrados"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos",
+    "Relatórios de consultoria ambiental",
+    "Consultoria ambiental dos grupos de interesse em minha pesquisa",
+    "Identificação de espécies dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.351Z"
+}

@@ -1,8 +1,5 @@
 import { file, glob } from "astro/loaders";
 import { reference, z, defineCollection } from "astro:content";
-import { fileURLToPath } from "url";
-import path from "path";
-import fs from "fs/promises";
 
 function slug() {
   return z
@@ -105,57 +102,65 @@ const pages = defineCollection({
   }),
 });
 
-const researchersLoader = async () => {
-  const __dirname = fileURLToPath(new URL(".", import.meta.url));
-  const filePath = path.resolve(__dirname, "./content/researchers.json");
-
-  try {
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const jsonData = JSON.parse(fileContent);
-    const researchersData = Array.isArray(jsonData)
-      ? jsonData
-      : jsonData.researchers || [];
-
-    return researchersData.map((researcher: any) => ({
-      // O Astro usa o 'id' na raiz para indexar
-      id: String(researcher.id || researcher.slug || Math.random()),
-      // Retornamos as propriedades diretamente para que fiquem em entry.data
-      nome: researcher.nome,
-      email: researcher.email,
-      slug: researcher.slug,
-      data_sincronizacao: researcher.data_sincronizacao,
-      telefone: researcher.telefone,
-      formacao: researcher.formacao,
-      imagem: researcher.imagem,
-      curriculo: researcher.curriculo,
-      researchgate: researcher.researchgate,
-      instagram: researcher.instagram,
-      site_pessoal: researcher.site_pessoal,
-      genero: researcher.genero,
-      localizacao: researcher.localizacao,
-    }));
-  } catch (error) {
-    console.error("Error loading researchers:", error);
-    return [];
-  }
-};
-
 const researchers = defineCollection({
-  loader: researchersLoader,
+  loader: glob({
+    pattern: "*.json",
+    base: "./src/content/researchers",
+    generateId: ({ entry }) => entry.replace(/\.json$/, ""),
+  }),
   schema: z.object({
     nome: z.string().optional(),
     email: z.string().optional(),
-    slug: z.string().optional(),
     data_sincronizacao: z.coerce.date().optional(),
     telefone: z.string().optional(),
     formacao: z.string().optional(),
+    nivel_formacao: z
+      .enum(["graduacao", "mestrado", "doutorado", "outro"])
+      .optional(),
+    bio: z.string().optional(),
+    instituicao: z.string().optional(),
+    identidade_genero: z
+      .enum([
+        "mulher-cis",
+        "mulher-trans",
+        "homem-cis",
+        "homem-trans",
+        "nao-binario",
+        "nao-informado",
+      ])
+      .optional(),
+    raca_etnia: z
+      .enum([
+        "branca",
+        "preta",
+        "parda",
+        "amarela",
+        "indigena",
+        "nao-informado",
+      ])
+      .optional(),
     imagem: z.string().optional(),
     curriculo: z.string().optional(),
     researchgate: z.string().optional(),
     instagram: z.string().optional(),
     site_pessoal: z.string().optional(),
-    genero: z.string().optional(),
+    linkedin: z.string().optional(),
+    orcid: z.string().optional(),
     localizacao: z.string().optional(),
+    genero: z.string().optional(),
+    lgbtqiap: z.boolean().optional(),
+    pcd: z.boolean().optional(),
+    grupo_tradicional: z.string().optional(),
+    cidade_natal: z.string().optional(),
+    trabalho_atual: z.string().optional(),
+    instituicao_atual: z.string().optional(),
+    aceita_palestras: z.string().optional(),
+    observacoes: z.string().optional(),
+    areas_pesquisa: z.array(z.string()).optional().default([]),
+    grupos_biologicos: z.array(z.string()).optional().default([]),
+    formas_colaboracao: z.array(z.string()).optional().default([]),
+    campos_ocultos: z.array(z.string()).optional().default([]),
+    gerenciado_pela_planilha: z.boolean().optional().default(false),
   }),
 });
 

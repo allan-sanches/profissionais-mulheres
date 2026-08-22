@@ -1,10 +1,23 @@
 ---
 import site from "@/config/site";
+import { Icon } from "astro-icon/components";
+
+const year = new Date().getFullYear();
 ---
 
-<footer
-  class="mt-20 flex items-center justify-between border-t border-border pt-8 font-mono text-[10px] tracking-widest text-muted-foreground/40 uppercase"
->
-  <span>{site.footer.copyright}</span>
-  <span>{site.footer.builtWith}</span>
+<footer class="mt-16 border-t border-base-300 pt-8 pb-4">
+  <div class="flex flex-col items-center gap-4 text-center">
+    <a
+      href={site.mainSite.href}
+      class="btn rounded-full btn-outline btn-primary"
+    >
+      <Icon name="mdi:arrow-left" class="size-4" />
+      Voltar para {site.mainSite.label}
+      <Icon name="mdi:open-in-new" class="size-3.5 opacity-60" />
+    </a>
+    <p class="text-xs text-base-content/50">
+      © {year}
+      {site.footer.copyright}
+    </p>
+  </div>
 </footer>

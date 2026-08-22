@@ -1,0 +1,33 @@
+{
+  "nome": "Ana Grazielle Rocha de Santana",
+  "email": "anagrazielle9885@gmail.com",
+  "curriculo": "https://lattes.cnpq.br/0968121346719632",
+  "instagram": "anaa.grx",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Salvador, Bahia, Brasil",
+  "localizacao": "Lauro de Freitas, Bahia, Brasil",
+  "bio": "Busco entender a variação espacial e temporal da macrofauna bentônica na Baía de Todos os Santos",
+  "aceita_palestras": "Sim",
+  "formacao": "Ciências Biológicas",
+  "instituicao": "Universidade Federal da Bahia (UFBA)",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Ecologia de populações",
+    "Ecologia de comunidades",
+    "Monitoramento ambiental"
+  ],
+  "grupos_biologicos": ["Moluscos", "Crustáceos", "Outros invertebrados"],
+  "formas_colaboracao": [
+    "Palestras",
+    "Workshops",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "preta",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.351Z"
+}

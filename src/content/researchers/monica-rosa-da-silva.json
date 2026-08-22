@@ -1,0 +1,35 @@
+{
+  "nome": "Mônica Rosa da Silva",
+  "email": "monicarosa.bio@gmail.com",
+  "curriculo": "https://lattes.cnpq.br/3288361806662401",
+  "instagram": "@monicarosaa1",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Catalão, Goiás, Brasil",
+  "localizacao": "Caldas Novas, Goiás, Brasil",
+  "bio": "Tenho interesse em desenvolver pesquisas na área de biologia reprodutiva de plantas, com foco em interações planta-polinizador, heterostilia, comportamento de polinizadores e processos de coevolução.",
+  "aceita_palestras": "Sim",
+  "observacoes": "Divulgação científica",
+  "formacao": "Ciências Biológicas",
+  "instituicao": "Universidade Federal de Catalão (UFCAT)",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Conservação da biodiversidade",
+    "Interações ecológicas"
+  ],
+  "grupos_biologicos": ["Aves", "Insetos - Abelhas", "Angiospermas"],
+  "formas_colaboracao": [
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "parda",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.348Z"
+}

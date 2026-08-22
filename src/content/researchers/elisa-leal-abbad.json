@@ -1,0 +1,41 @@
+{
+  "nome": "Elisa Leal Abbad",
+  "email": "eeabbad@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/8970485499319585",
+  "researchgate": "https://www.researchgate.net/profile/Elisa-Abbad?ev=hdr_xprf",
+  "instagram": "@eeabbad",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Santa Maria, Rio Grande do Sul, Brazil",
+  "localizacao": "Santa Maria, Rio Grande do Sul, Brazil",
+  "bio": "Procuro avaliar a eficiência dos projetos de monitoramento da biodiversidade na região neotropical",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Biodiversidade Animal",
+  "instituicao": "Universidade Federal de Santa Maria (UFSM)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Conservação da biodiversidade",
+    "Monitoramento ambiental"
+  ],
+  "grupos_biologicos": ["Peixes", "Outros invertebrados"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Criação de mapas",
+    "Criação de materiais visuais",
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Tradução inglês/português"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.350Z"
+}

@@ -1,0 +1,27 @@
+{
+  "nome": "Tatiana Aparecida Vasconcelos",
+  "email": "tatianavasconcelos156@hotmail.com",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Caiçara",
+  "cidade_natal": "Santos/ SP/ Brasil",
+  "localizacao": "Santos/ SP/Brasil",
+  "bio": "Para ter cada dia sabedoria .",
+  "aceita_palestras": "Não",
+  "observacoes": "Nao",
+  "formacao": "Técnico de nutrição",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Ecologia urbana",
+    "Educação ambiental"
+  ],
+  "grupos_biologicos": ["Mamíferos", "Peixes", "Humanos"],
+  "formas_colaboracao": ["Palestras"],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "parda",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.351Z"
+}

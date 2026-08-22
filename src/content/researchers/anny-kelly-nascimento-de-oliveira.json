@@ -1,0 +1,39 @@
+{
+  "nome": "Anny Kelly Nascimento de Oliveira",
+  "email": "annykelly1.ak@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/9161323154418273",
+  "researchgate": "https://www.researchgate.net/profile/Anny-Nascimento-De-Oliveira/research",
+  "instagram": "@anny.gif",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Edéia, Goiás, Brasil",
+  "localizacao": "Goiânia, Goiás, Brasil",
+  "bio": "Busco compreender como fatores ambientais (físico-químicos e hidrológicos) e potenciais estressores (eutrofização, uso do solo, variações sazonais) estruturam a metacomunidade de fitoplâncton em diferentes habitats lacustres (lagos naturais e reservatórios). Nestes projetos desenvolvo trabalho de identificação taxonômica dos indivíduos, também utilizo todo ferramental estatístico multivariado, desenvolvimento de modelos, geoprocessamento, desenvolvidos principalmente no software QGis, na linguagem R e Python.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Ecologia e Evolução (PPG EcoEvol)",
+  "instituicao": "Universidade Federal de Goiás (UFG)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Ecologia urbana",
+    "Limnologia"
+  ],
+  "grupos_biologicos": ["Algas"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Programação em outras linguagens",
+    "Criação de mapas",
+    "Revisão de texto científico",
+    "Mentoria ou orientação de estudantes",
+    "Consultoria ambiental dos grupos de interesse em minha pesquisa",
+    "Identificação de espécies dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "parda",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.348Z"
+}

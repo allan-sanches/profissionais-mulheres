@@ -1,0 +1,33 @@
+{
+  "nome": "Andria Maitê da Silva Sampaio",
+  "email": "andria.sampaio@ufam.edu.br",
+  "curriculo": "https://lattes.cnpq.br/1981807662385260",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Manaus, Amazonas, Brasil",
+  "localizacao": "Manaus, Amazonas, Brasil",
+  "bio": "Biografia e evolução, gostaria de colocar meu foco em herpetologia",
+  "aceita_palestras": "Sim",
+  "formacao": "Ciências Biológicas",
+  "instituicao": "Universidade federal do Amazonas (UFAM)",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Ecologia de populações",
+    "Evolução",
+    "Biogeografia",
+    "Conservação da biodiversidade",
+    "Genética da conservação"
+  ],
+  "grupos_biologicos": ["Mamíferos", "Répteis", "Anfíbios", "Peixes"],
+  "formas_colaboracao": [
+    "Tradução inglês/português",
+    "Traduação espanhol/português"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "parda",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.348Z"
+}

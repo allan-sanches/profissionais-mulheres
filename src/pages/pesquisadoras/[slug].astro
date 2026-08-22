@@ -1,0 +1,425 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Footer from "@/components/layout/Footer.astro";
+import BentoCard from "@/components/blocks/BentoCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import {
+  isGrupoTradicionalVazio,
+  formatName,
+  formatPlace,
+  CATEGORY_BADGE,
+} from "@/utils/labels";
+
+export async function getStaticPaths() {
+  const researchers = await getCollection("researchers");
+  return researchers.map((researcher) => ({
+    params: { slug: researcher.id },
+    props: { researcher },
+  }));
+}
+
+interface Props {
+  researcher: CollectionEntry<"researchers">;
+}
+
+const { researcher } = Astro.props;
+const r = researcher.data;
+
+const hidden = new Set(r.campos_ocultos || []);
+const show = (campo: string, valor?: string | string[]) =>
+  Boolean(valor && (Array.isArray(valor) ? valor.length : true)) &&
+  !hidden.has(campo);
+
+const NIVEL_LABELS: Record<string, string> = {
+  graduacao: "Graduação",
+  mestrado: "Mestrado",
+  doutorado: "Doutorado",
+  outro: "Não informado",
+};
+
+const IDENTIDADE_LABELS: Record<string, string> = {
+  "mulher-cis": "Mulher cis",
+  "mulher-trans": "Mulher trans",
+  "homem-cis": "Homem cis",
+  "homem-trans": "Homem trans",
+  "nao-binario": "Não binário",
+  "nao-informado": "Não informado",
+};
+
+const RACA_LABELS: Record<string, string> = {
+  branca: "Branca",
+  preta: "Preta",
+  parda: "Parda",
+  amarela: "Amarela",
+  indigena: "Indígena",
+  "nao-informado": "Não informado",
+};
+
+const showIdentidade =
+  show("identidade_genero", r.identidade_genero) &&
+  r.identidade_genero !== "nao-informado";
+const showRaca =
+  show("raca_etnia", r.raca_etnia) && r.raca_etnia !== "nao-informado";
+const showLgbtqiap = !hidden.has("lgbtqiap") && r.lgbtqiap === true;
+const showPcd = !hidden.has("pcd") && r.pcd === true;
+const showGrupoTradicional =
+  show("grupo_tradicional", r.grupo_tradicional) &&
+  !isGrupoTradicionalVazio(r.grupo_tradicional);
+
+const handleInstagramLink = (instagram?: string) => {
+  if (!instagram) return "";
+  return instagram.startsWith("http")
+    ? instagram
+    : `https://instagram.com/${instagram.replace(/^@/, "")}`;
+};
+
+const handleLinkedinLink = (linkedin?: string) => {
+  if (!linkedin) return "";
+  return linkedin.startsWith("http")
+    ? linkedin
+    : `https://linkedin.com/in/${linkedin}`;
+};
+
+const handleOrcidLink = (orcid?: string) => {
+  if (!orcid) return "";
+  return orcid.startsWith("http") ? orcid : `https://orcid.org/${orcid}`;
+};
+
+const initials = (r.nome || "?")
+  .split(" ")
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((part) => part[0])
+  .join("")
+  .toUpperCase();
+
+const links = [
+  {
+    show: show("curriculo", r.curriculo),
+    href: r.curriculo,
+    icon: "academicons:lattes",
+    label: "Currículo Lattes",
+  },
+  {
+    show: show("researchgate", r.researchgate),
+    href: r.researchgate,
+    icon: "academicons:researchgate",
+    label: "ResearchGate",
+  },
+  {
+    show: show("orcid", r.orcid),
+    href: handleOrcidLink(r.orcid),
+    icon: "academicons:orcid",
+    label: "ORCID",
+  },
+  {
+    show: show("linkedin", r.linkedin),
+    href: handleLinkedinLink(r.linkedin),
+    icon: "mdi:linkedin",
+    label: "LinkedIn",
+  },
+  {
+    show: show("instagram", r.instagram),
+    href: handleInstagramLink(r.instagram),
+    icon: "mdi:instagram",
+    label: "Instagram",
+  },
+  {
+    show: show("site_pessoal", r.site_pessoal),
+    href: r.site_pessoal,
+    icon: "mdi:web",
+    label: "Site pessoal",
+  },
+].filter((link) => link.show);
+
+const nomeFormatado = formatName(r.nome) || "Pesquisadora sem nome";
+const instituicaoFormatada = show("instituicao", r.instituicao)
+  ? formatPlace(r.instituicao)
+  : "";
+const localizacaoFormatada = show("localizacao", r.localizacao)
+  ? formatPlace(r.localizacao)
+  : "";
+const trabalhoAtual = show("trabalho_atual", r.trabalho_atual)
+  ? r.trabalho_atual
+  : "";
+const instituicaoAtualFormatada = show("instituicao_atual", r.instituicao_atual)
+  ? formatPlace(r.instituicao_atual)
+  : "";
+
+const title = formatName(r.nome) || "Pesquisadora";
+const description =
+  r.bio || `Perfil de ${title} no diretório de pesquisadoras.`;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="mx-auto w-full max-w-[1600px] space-y-6 px-4 py-10 md:px-8">
+    <a
+      href="/"
+      class="inline-flex items-center gap-1 text-sm text-base-content/60 hover:text-primary"
+    >
+      <Icon name="mdi:arrow-left" class="size-4" />
+      Voltar para pesquisadoras
+    </a>
+
+    {
+      /* Bento grid — inspirado no dashboard do Rinco: canvas mais escuro,
+        cards "glass" com cantos arredondados e col-span/row-span
+        assimétricos pra criar ritmo. */
+    }
+    <div
+      class="grid grid-cols-1 gap-4 rounded-box bg-base-200/60 p-4 sm:grid-cols-2 md:grid-cols-6 md:p-6"
+    >
+      {/* Identidade — célula grande */}
+      <BentoCard class="sm:col-span-2 md:col-span-4 md:row-span-2">
+        <div
+          class="flex flex-col items-start gap-4 sm:flex-row sm:items-center"
+        >
+          <div class="avatar avatar-placeholder shrink-0">
+            <div
+              class="mask w-20 bg-gradient-to-br from-primary/20 to-secondary/20 mask-squircle text-primary"
+            >
+              <span class="text-2xl font-semibold">{initials}</span>
+            </div>
+          </div>
+          <div class="space-y-1">
+            <h1 class="text-3xl font-bold tracking-tight text-base-content">
+              {nomeFormatado}
+            </h1>
+            {
+              show("formacao", r.formacao) && (
+                <p class="text-lg text-base-content/70">
+                  {r.formacao}
+                  {instituicaoFormatada && (
+                    <span class="text-base-content/50">
+                      {" "}
+                      — {instituicaoFormatada}
+                    </span>
+                  )}
+                </p>
+              )
+            }
+            {
+              trabalhoAtual && (
+                <p class="text-sm text-base-content/60">
+                  Atualmente: {trabalhoAtual}
+                  {instituicaoAtualFormatada && (
+                    <span> · {instituicaoAtualFormatada}</span>
+                  )}
+                </p>
+              )
+            }
+          </div>
+        </div>
+
+        {
+          (show("localizacao", r.localizacao) ||
+            showIdentidade ||
+            showRaca ||
+            showLgbtqiap ||
+            showPcd ||
+            showGrupoTradicional ||
+            r.nivel_formacao) && (
+            <div class="mt-5 flex flex-wrap gap-2">
+              {localizacaoFormatada && (
+                <span class={`badge ${CATEGORY_BADGE.localizacao.color} gap-1`}>
+                  <Icon
+                    name={CATEGORY_BADGE.localizacao.icon}
+                    class="size-3.5"
+                  />
+                  {localizacaoFormatada}
+                </span>
+              )}
+              {r.nivel_formacao && (
+                <span
+                  class={`badge ${CATEGORY_BADGE.nivelFormacao.color} gap-1`}
+                >
+                  <Icon
+                    name={CATEGORY_BADGE.nivelFormacao.icon}
+                    class="size-3.5"
+                  />
+                  {NIVEL_LABELS[r.nivel_formacao]}
+                </span>
+              )}
+              {showIdentidade && (
+                <span class={`badge ${CATEGORY_BADGE.identidade.color} gap-1`}>
+                  <Icon
+                    name={CATEGORY_BADGE.identidade.icon}
+                    class="size-3.5"
+                  />
+                  {IDENTIDADE_LABELS[r.identidade_genero!]}
+                </span>
+              )}
+              {showRaca && (
+                <span class={`badge ${CATEGORY_BADGE.raca.color} gap-1`}>
+                  <Icon name={CATEGORY_BADGE.raca.icon} class="size-3.5" />
+                  {RACA_LABELS[r.raca_etnia!]}
+                </span>
+              )}
+              {showLgbtqiap && (
+                <span class={`badge ${CATEGORY_BADGE.lgbtqiap.color} gap-1`}>
+                  <Icon name={CATEGORY_BADGE.lgbtqiap.icon} class="size-3.5" />
+                  LGBTQIAP+
+                </span>
+              )}
+              {showPcd && (
+                <span class={`badge ${CATEGORY_BADGE.pcd.color} gap-1`}>
+                  <Icon name={CATEGORY_BADGE.pcd.icon} class="size-3.5" />
+                  PCD
+                </span>
+              )}
+              {showGrupoTradicional && (
+                <span
+                  class={`badge ${CATEGORY_BADGE.grupoTradicional.color} gap-1`}
+                >
+                  <Icon
+                    name={CATEGORY_BADGE.grupoTradicional.icon}
+                    class="size-3.5"
+                  />
+                  {r.grupo_tradicional}
+                </span>
+              )}
+            </div>
+          )
+        }
+      </BentoCard>
+
+      {/* Pesquisa em uma frase */}
+      {
+        show("bio", r.bio) && (
+          <BentoCard
+            title="Pesquisa"
+            icon="mdi:format-quote-open"
+            class="sm:col-span-2 md:col-span-2 md:row-span-2"
+          >
+            <p class="flex-1 text-lg leading-relaxed text-base-content/80 italic">
+              “{r.bio}”
+            </p>
+          </BentoCard>
+        )
+      }
+
+      {/* Áreas da pesquisa */}
+      {
+        show("areas_pesquisa", r.areas_pesquisa) && (
+          <BentoCard
+            title="Áreas da pesquisa"
+            icon="mdi:flask-outline"
+            class="md:col-span-2"
+          >
+            <div class="flex flex-wrap gap-1.5">
+              {r.areas_pesquisa!.map((area) => (
+                <span
+                  class={`badge ${CATEGORY_BADGE.areaPesquisa.color} gap-1`}
+                >
+                  <Icon
+                    name={CATEGORY_BADGE.areaPesquisa.icon}
+                    class="size-3"
+                  />
+                  {area}
+                </span>
+              ))}
+            </div>
+          </BentoCard>
+        )
+      }
+
+      {/* Grupos biológicos */}
+      {
+        show("grupos_biologicos", r.grupos_biologicos) && (
+          <BentoCard
+            title="Grupos biológicos"
+            icon="mdi:paw-outline"
+            class="md:col-span-2"
+          >
+            <div class="flex flex-wrap gap-1.5">
+              {r.grupos_biologicos!.map((grupo) => (
+                <span
+                  class={`badge ${CATEGORY_BADGE.grupoBiologico.color} gap-1`}
+                >
+                  <Icon
+                    name={CATEGORY_BADGE.grupoBiologico.icon}
+                    class="size-3"
+                  />
+                  {grupo}
+                </span>
+              ))}
+            </div>
+          </BentoCard>
+        )
+      }
+
+      {/* Formas de colaboração */}
+      {
+        show("formas_colaboracao", r.formas_colaboracao) && (
+          <BentoCard
+            title="Formas de colaboração"
+            icon="mdi:handshake-outline"
+            class="md:col-span-2"
+          >
+            <div class="flex flex-wrap gap-1.5">
+              {r.formas_colaboracao!.map((forma) => (
+                <span
+                  class={`badge ${CATEGORY_BADGE.formaColaboracao.color} gap-1`}
+                >
+                  <Icon
+                    name={CATEGORY_BADGE.formaColaboracao.icon}
+                    class="size-3"
+                  />
+                  {forma}
+                </span>
+              ))}
+            </div>
+          </BentoCard>
+        )
+      }
+
+      {/* Contato + Links — faixa larga */}
+      {
+        (show("email", r.email) ||
+          show("telefone", r.telefone) ||
+          links.length > 0) && (
+          <BentoCard
+            title="Contato"
+            icon="mdi:card-account-mail-outline"
+            class="sm:col-span-2 md:col-span-6"
+          >
+            <div class="flex flex-wrap items-center gap-3">
+              {show("email", r.email) && (
+                <a
+                  href={`mailto:${r.email}`}
+                  class="btn rounded-full btn-outline btn-primary btn-sm"
+                >
+                  <Icon name="mdi:email-outline" class="size-4" />
+                  {r.email}
+                </a>
+              )}
+              {show("telefone", r.telefone) && (
+                <a
+                  href={`tel:${r.telefone}`}
+                  class="btn rounded-full btn-outline btn-sm"
+                >
+                  <Icon name="mdi:phone-outline" class="size-4" />
+                  {r.telefone}
+                </a>
+              )}
+              {links.map((link) => (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn rounded-full btn-outline btn-sm"
+                >
+                  <Icon name={link.icon} class="size-4" />
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </BentoCard>
+        )
+      }
+    </div>
+
+    <Footer />
+  </div>
+</BaseLayout>

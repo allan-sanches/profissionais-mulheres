@@ -5,6 +5,8 @@ import mdx from "@astrojs/mdx";
 import icon from "astro-icon";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
+import react from "@astrojs/react";
+import keystatic from "@keystatic/astro";
 
 export default defineConfig({
   site: "https://profissionais-mulheres.vercel.app",
@@ -13,9 +15,16 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      // O scanner de dependências do Vite (esbuild) não sabe resolver esse
+      // módulo virtual do Keystatic — só o plugin dele resolve em runtime.
+      // Excluir daqui evita o erro cosmético "Could not resolve
+      // virtual:keystatic-config" no início do dev server.
+      exclude: ["virtual:keystatic-config"],
+    },
   },
 
-  integrations: [mdx(), icon(), sitemap()],
+  integrations: [mdx(), icon(), sitemap(), react(), keystatic()],
 
   env: {
     schema: {
@@ -49,8 +58,9 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.fontsource(),
-      name: "Space Grotesk",
+      name: "Epilogue",
       cssVariable: "--font-display",
+      weights: ["100 900"],
     },
   ],
 });

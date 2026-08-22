@@ -1,0 +1,43 @@
+{
+  "nome": "Samanta Brito",
+  "email": "brito.samanta25@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/4300592909714065",
+  "instagram": "gteca_",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Manaus, Amazonas, Brasil.",
+  "localizacao": "Manaus, Amazonas, Brasil.",
+  "bio": "Bioprospecção de peçonha de vespas sociais, bem como seus comportamentos e a ecotoxicologia nesses insetos.",
+  "aceita_palestras": "Sim",
+  "observacoes": "Participação em Disciplinas Relacionadas, Parcerias com Laboratórios,",
+  "formacao": "Programa de Pós-Graduação em Entomologia do Instituto Nacional de Pesquisas da Amazônia (PPGEnt-INPA)",
+  "instituicao": "Instituto Nacional de Pesquisas da Amazônia (INPA)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecotoxicologia",
+    "Ecologia comportamental",
+    "Parasitologia e doenças",
+    "Agroecologia",
+    "Interação com Ecossistemas - bioprospecção"
+  ],
+  "grupos_biologicos": ["Insetos - Abelhas", "Outros insetos"],
+  "formas_colaboracao": [
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos",
+    "Relatórios de consultoria ambiental",
+    "Consultoria ambiental dos grupos de interesse em minha pesquisa",
+    "Identificação de espécies dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.344Z"
+}

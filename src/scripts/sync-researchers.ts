@@ -1,5 +1,8 @@
 import { runFullSync } from "../utils/google-sheets";
-import "dotenv/config";
+import { config } from "dotenv";
+import path from "path";
+
+config({ path: path.resolve(process.cwd(), ".env.local") });
 
 async function main() {
   console.log("🚀 Iniciando sincronização via Script...");

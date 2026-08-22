@@ -40,7 +40,7 @@ jobs:
       - name: Check for changes
         id: verify-changed-files
         run: |
-          if git diff --quiet src/content/researchers.json; then
+          if git diff --quiet src/content/researchers/; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -51,7 +51,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add src/content/researchers.json
+          git add src/content/researchers/
           git commit -m "🔄 chore: sync researchers from Google Sheets"
           git push
 

@@ -1,0 +1,80 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  title: string;
+  name: string;
+  options: Option[];
+  open?: boolean;
+  searchable?: boolean;
+}
+
+const { title, name, options, open = false, searchable = false } = Astro.props;
+---
+
+<details
+  class="filter-accordion-item border-b border-base-300 py-3"
+  open={open}
+>
+  <summary
+    class="group flex cursor-pointer list-none items-center justify-between text-sm font-semibold [&::-webkit-details-marker]:hidden"
+  >
+    <span>
+      {title}
+      <span class="font-normal text-base-content/40">({options.length})</span>
+    </span>
+    <Icon
+      name="mdi:chevron-down"
+      class="size-4 shrink-0 text-base-content/50 transition-transform group-open:rotate-180"
+    />
+  </summary>
+
+  {
+    searchable && (
+      <label class="input-bordered input mt-2 flex w-full items-center gap-2 input-sm">
+        <Icon name="mdi:magnify" class="size-4 text-base-content/50" />
+        <input
+          type="search"
+          class="grow"
+          data-option-search={name}
+          placeholder={`Buscar ${title.toLowerCase()}...`}
+        />
+      </label>
+    )
+  }
+
+  <div
+    class:list={[
+      "mt-2 flex flex-col gap-0.5 pr-1",
+      searchable && "max-h-48 overflow-y-auto",
+    ]}
+    data-option-list={name}
+  >
+    {
+      options.length === 0 && (
+        <p class="py-1 text-xs text-base-content/40">Nenhuma opção</p>
+      )
+    }
+    {
+      options.map((opt) => (
+        <label
+          class="flex cursor-pointer items-start gap-2 rounded px-1 py-1 text-sm hover:bg-base-200"
+          data-option-label={opt.label.toLowerCase()}
+        >
+          <input
+            type="checkbox"
+            class="checkbox mt-0.5 shrink-0 checkbox-xs"
+            data-filter-group={name}
+            value={opt.value}
+          />
+          <span class="leading-tight">{opt.label}</span>
+        </label>
+      ))
+    }
+  </div>
+</details>

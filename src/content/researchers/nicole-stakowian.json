@@ -1,0 +1,41 @@
+{
+  "nome": "Nicole Stakowian",
+  "email": "stakowian.zoo@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/5305263092528211",
+  "researchgate": "https://www.researchgate.net/profile/Nicole-Stakowian-3?ev=hdr_xprf",
+  "instagram": "https://www.instagram.com/nistakowian/",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Comunidade de terreiro",
+  "cidade_natal": "Curitiba, Paraná, Brasil",
+  "localizacao": "Salvador, Bahia, Brasil",
+  "trabalho_atual": "Pós-doutorado",
+  "instituicao_atual": "Universidade Federal da Bahia (UFBA)",
+  "bio": "Atualmente investigo como fatores ambientais, especialmente temperatura e urbanização costeira, influenciam a fisiologia e os biomarcadores de bivalves marinhos, unindo análises bioquímicas e abordagens espaciais para compreender respostas adaptativas e prever impactos ecológicos.",
+  "aceita_palestras": "Talvez",
+  "observacoes": "Tenho especial interesse em projetos e eventos de popularização científica :)",
+  "formacao": "Programa de Pós-graduação em Zoologia (PPGZOO)",
+  "instituicao": "Universidade Federal do Paraná (UFPR)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de ecossitemas",
+    "Conservação da biodiversidade",
+    "Manejo e conservação de recursos naturais",
+    "Monitoramento ambiental",
+    "Mudanças climáticas",
+    "Ecologia marinha"
+  ],
+  "grupos_biologicos": ["Moluscos", "Crustáceos", "Outros invertebrados"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Revisão de divulgação científica",
+    "Palestras"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "indigena",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.351Z"
+}

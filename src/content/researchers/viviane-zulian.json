@@ -1,0 +1,41 @@
+{
+  "nome": "Viviane Zulian",
+  "email": "zulian.vi@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/9762027113864240",
+  "researchgate": "https://www.researchgate.net/profile/Viviane-Zulian-2",
+  "instagram": "vivianezul",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Campinas do Sul, Rio Grande do Sul, Brasil",
+  "localizacao": "Central, South Carolina, USA",
+  "trabalho_atual": "Pós-doutorado",
+  "instituicao_atual": "Clemson University",
+  "bio": "Como a distribuição e a abundância de especies muda ao longo do tempo usando modelos estatísticos em uma abordagem bayesiana.",
+  "aceita_palestras": "Talvez",
+  "formacao": "Programa de Pos-Graduacao em Ecologia (PPG Ecologia UFRGS)",
+  "instituicao": "Universidade Federal do Rio Grande do Sul (UFRGS)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de populações",
+    "Ecologia de comunidades",
+    "Modelagem ecológica"
+  ],
+  "grupos_biologicos": ["Aves", "Peixes"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Programação em outras linguagens",
+    "Modelagem ecológica ou matemática",
+    "Criação de mapas",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.344Z"
+}

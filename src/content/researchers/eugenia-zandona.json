@@ -1,0 +1,30 @@
+{
+  "nome": "Eugenia Zandonà",
+  "email": "eugenia.zandona@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/2826166359236157",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Padova, Itália",
+  "localizacao": "Rio de Janeiro, RJ, Brasil",
+  "trabalho_atual": "Docente universitária efetiva",
+  "instituicao_atual": "Universidade do Estado do Rio de Janeiro (UERJ)",
+  "bio": "Ecologia de Ecossistemas aquáticos, ecologia evolutiva, mulheres na ciência",
+  "aceita_palestras": "Sim",
+  "formacao": "Environmental Sciences",
+  "instituicao": "Drexel University, EUA",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": ["Evolução", "Ecologia de ecossitemas", "Limnologia"],
+  "grupos_biologicos": ["Anfíbios", "Peixes", "Outros insetos", "Crustáceos"],
+  "formas_colaboracao": [
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.350Z"
+}

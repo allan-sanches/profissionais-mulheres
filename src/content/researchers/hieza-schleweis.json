@@ -1,0 +1,35 @@
+{
+  "nome": "Hieza Schleweis",
+  "email": "hiezaufrj@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/1771631667872525",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Manhuaçú, MG, Brasil",
+  "localizacao": "Rio de Janeiro, RJ, Brasil",
+  "bio": "Minha pesquisa investiga a resistêcia ao estresse hídrico e à seca de espécies utilizadas na restauração ecológica da Mata Atlântica.",
+  "aceita_palestras": "Sim",
+  "formacao": "Universiade Estadual do Rio de Janeiro (UERJ)",
+  "instituicao": "Universiade Estadual do Rio de Janeiro (UERJ)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecologia funcional",
+    "Restauração ecológica",
+    "Ecofisiologia Vegetal"
+  ],
+  "grupos_biologicos": ["Angiospermas"],
+  "formas_colaboracao": [
+    "Programação em R",
+    "Criação de materiais visuais",
+    "Revisão de divulgação científica",
+    "Palestras",
+    "Workshops",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.348Z"
+}

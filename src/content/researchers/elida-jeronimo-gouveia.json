@@ -1,0 +1,37 @@
+{
+  "nome": "Élida Jeronimo Gouveia",
+  "email": "elidajgouveia@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/6792694937182142",
+  "instagram": "elida.gouveia",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Caarapó, MS, Brasil",
+  "localizacao": "Maringá, PR, Brasil",
+  "trabalho_atual": "Consultoria ambiental",
+  "instituicao_atual": "L2 Consultoria Ambiental",
+  "bio": "Impacto do reservatório sobre o desembarque pesqueiro.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Ecologia de Ambientes Aquáticos Continentais (PEA)",
+  "instituicao": "Universidade Estadual de Maringá (UEM)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de populações",
+    "Ecologia de comunidades",
+    "Conservação da biodiversidade"
+  ],
+  "grupos_biologicos": ["Peixes"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Revisão de texto científico",
+    "Revisão de artigos submetidos para publicação",
+    "Mentoria ou orientação de estudantes"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "preta",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.348Z"
+}

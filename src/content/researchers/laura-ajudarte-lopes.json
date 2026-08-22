@@ -1,0 +1,35 @@
+{
+  "nome": "Laura Ajudarte Lopes",
+  "email": "laura.a.lopes@unesp.br",
+  "instagram": "Laura.alopes",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Campinas SP - Brasil",
+  "localizacao": "Rio Claro, SP - Brasil",
+  "aceita_palestras": "Sim",
+  "formacao": "Ecologia",
+  "instituicao": "Universidade estadual Júlio de Mesquita Filho (UNESP",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Ecologia urbana",
+    "Políticas públicas ambientais",
+    "Mudanças climáticas",
+    "Ecologia marinha",
+    "Educação ambiental",
+    "Etonoecologia",
+    "Ecologia Humanas"
+  ],
+  "grupos_biologicos": ["Humanos"],
+  "formas_colaboracao": [
+    "Revisão de divulgação científica",
+    "Revisão de artigos submetidos para publicação",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.347Z"
+}

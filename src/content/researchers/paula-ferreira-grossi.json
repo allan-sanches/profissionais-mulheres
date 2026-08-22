@@ -1,0 +1,39 @@
+{
+  "nome": "Paula Ferreira Grossi",
+  "email": "grossi.paula@live.com",
+  "curriculo": "http://lattes.cnpq.br/1390427114783112",
+  "researchgate": "https://www.researchgate.net/profile/Paula-Grossi",
+  "instagram": "https://www.instagram.com/grossipf/profilecard/?igsh=MTFja2drdnB5enVpcQ==",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Rio de Janeiro, RJ - Brasil",
+  "localizacao": "Rio de Janeiro, RJ - Brasil",
+  "bio": "Minha tese investiga como a fragmentação da Mata Atlântica influencia as redes de interação entre aves frugívoras e plantas",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de pós graduação em Ciências Ambientais e Florestais (PPGCAF)",
+  "instituicao": "Universidade Federal Rural do Rio de Janeiro",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Conservação da biodiversidade",
+    "Interações ecológicas"
+  ],
+  "grupos_biologicos": ["Aves"],
+  "formas_colaboracao": [
+    "Programação em R",
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.344Z"
+}

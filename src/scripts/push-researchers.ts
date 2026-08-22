@@ -7,7 +7,6 @@ import { google } from "googleapis";
 config({ path: path.resolve(process.cwd(), ".env.local") });
 
 interface Researcher {
-  id: string;
   nome: string;
   email: string;
   telefone?: string;
@@ -17,17 +16,28 @@ interface Researcher {
   researchgate?: string;
   instagram?: string;
   site_pessoal?: string;
-  genero?: string;
+  linkedin?: string;
+  orcid?: string;
+  bio?: string;
   localizacao?: string;
-  slug: string;
+  instituicao?: string;
+  identidade_genero?: string;
+  raca_etnia?: string;
+  areas_pesquisa?: string[];
+  grupos_biologicos?: string[];
+  formas_colaboracao?: string[];
   data_sincronizacao: string;
 }
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, "../..");
-const OUTPUT_DIR = path.join(PROJECT_ROOT, "src", "content");
-const OUTPUT_FILE = path.join(OUTPUT_DIR, "researchers.json");
+const RESEARCHERS_DIR = path.join(
+  PROJECT_ROOT,
+  "src",
+  "content",
+  "researchers",
+);
 
 async function authenticateGoogle() {
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
@@ -69,9 +79,19 @@ async function getSheetTitle(sheets: google.sheets_v4.Sheets): Promise<string> {
 }
 
 async function readLocalResearchers(): Promise<Researcher[]> {
-  const content = await fs.readFile(OUTPUT_FILE, "utf-8");
-  const data = JSON.parse(content);
-  return (data.researchers || []) as Researcher[];
+  const files = await fs.readdir(RESEARCHERS_DIR);
+  const researchers = await Promise.all(
+    files
+      .filter((file) => file.endsWith(".json"))
+      .map(async (file) => {
+        const content = await fs.readFile(
+          path.join(RESEARCHERS_DIR, file),
+          "utf-8",
+        );
+        return JSON.parse(content) as Researcher;
+      }),
+  );
+  return researchers.sort((a, b) => a.nome.localeCompare(b.nome));
 }
 
 function buildSheetRows(researchers: Researcher[]): (string | number)[][] {
@@ -85,8 +105,17 @@ function buildSheetRows(researchers: Researcher[]): (string | number)[][] {
     "ResearchGate",
     "Instagram",
     "Site Pessoal",
-    "Genero",
+    "(coluna não usada)",
     "Localizacao",
+    "LinkedIn",
+    "ORCID",
+    "Bio",
+    "Instituicao",
+    "Identidade de Genero",
+    "Raca/Etnia",
+    "Areas da Pesquisa",
+    "Grupos Biologicos",
+    "Formas de Colaboracao",
   ];
 
   const rows = researchers.map((researcher) => [
@@ -99,8 +128,17 @@ function buildSheetRows(researchers: Researcher[]): (string | number)[][] {
     researcher.researchgate || "",
     researcher.instagram || "",
     researcher.site_pessoal || "",
-    researcher.genero || "",
+    "",
     researcher.localizacao || "",
+    researcher.linkedin || "",
+    researcher.orcid || "",
+    researcher.bio || "",
+    researcher.instituicao || "",
+    researcher.identidade_genero || "",
+    researcher.raca_etnia || "",
+    (researcher.areas_pesquisa || []).join(", "),
+    (researcher.grupos_biologicos || []).join(", "),
+    (researcher.formas_colaboracao || []).join(", "),
   ]);
 
   return [header, ...rows];
@@ -111,7 +149,7 @@ async function pushResearchers() {
   const sheetTitle = await getSheetTitle(sheets);
   const researchers = await readLocalResearchers();
   const values = buildSheetRows(researchers);
-  const range = `${sheetTitle}!A1:K${values.length}`;
+  const range = `${sheetTitle}!A1:T${values.length}`;
 
   console.log(
     `🔄 Pushing ${researchers.length} researchers to Google Sheet (${range})...`,
@@ -119,7 +157,7 @@ async function pushResearchers() {
 
   await sheets.spreadsheets.values.clear({
     spreadsheetId: process.env.GOOGLE_SHEET_ID!,
-    range: `${sheetTitle}!A:K`,
+    range: `${sheetTitle}!A:T`,
   });
 
   await sheets.spreadsheets.values.update({

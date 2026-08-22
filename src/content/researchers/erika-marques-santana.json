@@ -1,0 +1,41 @@
+{
+  "nome": "Erika Marques Santana",
+  "email": "erika.ms@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/4873694782558406",
+  "researchgate": "https://www.researchgate.net/profile/Erika-M-Santana",
+  "instagram": "https://www.instagram.com/vcoloridos/",
+  "site_pessoal": "https://erikamsantana.mozello.com/",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Santos, São Paulo, Brasil",
+  "localizacao": "São Paulo, São Paulo, Brasil",
+  "trabalho_atual": "Pós-doutorado",
+  "instituicao_atual": "Instituto de Biociências da Universidade de São Paulo (IB-USP)",
+  "bio": "Sou uma ecóloga comportamental interessada em interações interindividuais, interações ecológicas, seleção sexual e estratégias reprodutivas. Embora meu foco principal seja em anfíbios, conduzo pesquisas com vários táxons, incluindo ecologia teórica.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa Pós-Graduação em Ecologia (PPGE)",
+  "instituicao": "Universidade de São Paulo (USP)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecotoxicologia",
+    "Evolução",
+    "Ecologia comportamental",
+    "Ecologia teórica",
+    "Interações ecológicas"
+  ],
+  "grupos_biologicos": ["Anfíbios", "Outros insetos", "Grupo teórico"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Revisão de texto científico",
+    "Palestras",
+    "Mentoria ou orientação de estudantes"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.344Z"
+}

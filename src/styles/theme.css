@@ -1,67 +1,111 @@
 @import "tailwindcss";
 
 /*
- * Theme Color Customization
- * -------------------------
- * All colors are based on OKLch color space with a consistent hue value.
- * To change the entire color palette, find-and-replace the hue number:
- *
- *   Current hue: 165 (sage green)
- *
- * Preset hue values:
- *   165 = Sage Green (default)
- *   250 = Ocean Blue
- *   280 = Lavender Purple
- *   330 = Rose Pink
- *    30 = Warm Orange
- *    45 = Golden Yellow
- *   200 = Teal
+ * Theme Color Customization — Mulheres na Ecologia
+ * -------------------------------------------------
+ * Paleta oficial da proposta de marca (scarrard.co, maio/2026):
+ *   Verde   #0D9426  |  Verde escuro #297552
+ *   Slate   #45597D  |  Roxo profundo #613BA8
+ *   Violeta #7D1CD4  |  Roxo vivo #9C00FF (cor principal da marca)
+ *   Tints: #D1EBD1 #9CD4B8 #B5C9EB #AB99D9 #BF9EE3 #F0DEFC
  */
 
 :root {
-  /* --- Light Mode: Sage Mist --- */
-  --background: oklch(0.98 0.008 165);
-  --foreground: oklch(0.25 0.02 165);
+  /* --- Light Mode --- */
+  --background: #ffffff;
+  --foreground: #0a0a0a;
 
-  --card: oklch(0.99 0.005 165);
-  --card-foreground: oklch(0.25 0.02 165);
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
 
-  --primary: oklch(0.5 0.12 165);
-  --primary-foreground: oklch(0.98 0.01 165);
+  --primary: #9c00ff;
+  --primary-foreground: #ffffff;
 
-  --muted: oklch(0.94 0.01 165);
-  --muted-foreground: oklch(0.35 0.02 165);
+  --muted: #f5f0fa;
+  --muted-foreground: #4a4458;
 
-  --border: oklch(0.92 0.01 165);
-  --shadow-main: 0 10px 40px -10px oklch(0.3 0.05 165 / 0.05);
+  --border: #e4daf0;
+  --shadow-main: 0 10px 40px -10px rgb(156 0 255 / 0.08);
 
-  --callout-info: oklch(0.65 0.12 250);
+  --callout-info: #45597d;
   --callout-warning: oklch(0.7 0.15 85);
   --callout-danger: oklch(0.62 0.18 28);
-  --callout-success: oklch(0.6 0.14 160);
+  --callout-success: #0d9426;
+
+  /* --- daisyUI bridge (Light) --- */
+  --color-base-100: var(--card);
+  --color-base-200: #f5f0fa;
+  --color-base-300: #e4daf0;
+  --color-base-content: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-content: var(--primary-foreground);
+  --color-secondary: #0d9426;
+  --color-secondary-content: #ffffff;
+  --color-accent: #7d1cd4;
+  --color-accent-content: #ffffff;
+  --color-neutral: #297552;
+  --color-neutral-content: #ffffff;
+  --color-info: var(--callout-info);
+  --color-info-content: #ffffff;
+  --color-success: var(--callout-success);
+  --color-success-content: #ffffff;
+  --color-warning: var(--callout-warning);
+  --color-warning-content: oklch(0.2 0.05 85);
+  --color-error: var(--callout-danger);
+  --color-error-content: oklch(0.98 0.01 28);
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
 }
 
 .dark {
-  /* --- Dark Mode: Deep Moss --- */
-  --background: oklch(0.14 0.02 165);
-  --foreground: oklch(0.92 0.005 165);
+  /* --- Dark Mode --- */
+  --background: #000000;
+  --foreground: #f5f5f5;
 
-  --card: oklch(0.18 0.02 165);
-  --card-foreground: oklch(0.88 0.01 165);
+  --card: #121212;
+  --card-foreground: #f0f0f0;
 
-  --primary: oklch(0.75 0.15 160);
-  --primary-foreground: oklch(0.1 0.02 165);
+  --primary: #9c00ff;
+  --primary-foreground: #ffffff;
 
-  --muted: oklch(0.28 0.02 160);
-  --muted-foreground: oklch(0.75 0.015 165);
+  --muted: #1a1625;
+  --muted-foreground: #c9bdd9;
 
-  --border: oklch(0.26 0.02 165);
-  --shadow-main: 0 30px 60px -15px oklch(0 0 0 / 0.5);
+  --border: #2a2438;
+  --shadow-main: 0 30px 60px -15px rgb(0 0 0 / 0.6);
 
-  --callout-info: oklch(0.75 0.12 250);
+  --callout-info: #b5c9eb;
   --callout-warning: oklch(0.8 0.15 85);
   --callout-danger: oklch(0.75 0.18 28);
-  --callout-success: oklch(0.72 0.14 160);
+  --callout-success: #9cd4b8;
+
+  /* --- daisyUI bridge (Dark) --- */
+  --color-base-100: var(--card);
+  --color-base-200: #1a1625;
+  --color-base-300: #2a2438;
+  --color-base-content: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-content: var(--primary-foreground);
+  --color-secondary: #9cd4b8;
+  --color-secondary-content: #0a1f14;
+  --color-accent: #bf9ee3;
+  --color-accent-content: #1f0a33;
+  --color-neutral: #d1ebd1;
+  --color-neutral-content: #0a1f14;
+  --color-info: var(--callout-info);
+  --color-info-content: #0a1a33;
+  --color-success: var(--callout-success);
+  --color-success-content: #0a1f14;
+  --color-warning: var(--callout-warning);
+  --color-warning-content: oklch(0.15 0.03 85);
+  --color-error: var(--callout-danger);
+  --color-error-content: oklch(0.15 0.03 28);
 }
 
 @theme inline {

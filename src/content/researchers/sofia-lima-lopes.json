@@ -1,0 +1,35 @@
+{
+  "nome": "Sofia Lima Lopes",
+  "email": "sofisl2001@hotmail.com",
+  "curriculo": "http://lattes.cnpq.br/5130202476075987",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "São Paulo, SP - Brasil",
+  "localizacao": "Rio Claro, SP - Brasil",
+  "bio": "Estou pesquisando a aplicação de nanopartículas de óxido nítrico como indutoras de vigor de sementes e mudas de espécies nativas sensíveis a alta temperatura (espécies foco para restauração)",
+  "aceita_palestras": "Talvez",
+  "formacao": "Ecologia",
+  "instituicao": "Universidade Estadual Paulista \"Júlio de Mesquita Filho\" (UNESP)",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Conservação da biodiversidade",
+    "Restauração ecológica",
+    "Interações ecológicas",
+    "Mudanças climáticas",
+    "Fisiologia Vegetal"
+  ],
+  "grupos_biologicos": ["Angiospermas"],
+  "formas_colaboracao": [
+    "Criação de materiais visuais",
+    "Revisão de divulgação científica",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.347Z"
+}

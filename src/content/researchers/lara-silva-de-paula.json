@@ -1,0 +1,33 @@
+{
+  "nome": "Lara Silva de Paula",
+  "email": "lsp.larapaula@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/3613383047778637",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Presidente Pudente, São Paulo, Brasil",
+  "localizacao": "Campos dos Goytacazes, Rio de Janeiro, Brasil",
+  "bio": "Investigação de contaminação por metais e metaloides em fauna marinha.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Ecologia e Recursos Naturais (PPGERN)",
+  "instituicao": "Universidade Estadual do Norte Fluminense (UENF)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": ["Ecotoxicologia", "Monitoramento ambiental"],
+  "grupos_biologicos": ["Mamíferos", "Aves", "Peixes"],
+  "formas_colaboracao": [
+    "Criação de materiais visuais",
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Tradução inglês/português",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.350Z"
+}

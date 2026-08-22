@@ -1,0 +1,32 @@
+{
+  "nome": "Perla Karina Inacio",
+  "email": "perlainacio@outlook.com",
+  "curriculo": "http://lattes.cnpq.br/5630219973366581",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Araxá, Minas Gerais, Brasil",
+  "localizacao": "Araxá, Minas Gerais, Brasil",
+  "aceita_palestras": "Não",
+  "formacao": "Ciências Biológicas",
+  "instituicao": "Centro Universitário do Planalto de Araxá",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Conservação da biodiversidade",
+    "Monitoramento ambiental"
+  ],
+  "grupos_biologicos": ["Mamíferos"],
+  "formas_colaboracao": [
+    "Revisão de texto científico",
+    "Relatórios de consultoria ambiental",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.342Z"
+}

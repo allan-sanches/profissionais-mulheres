@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import fs from "fs/promises";
+import path from "path";
 
 interface SyncLog {
   timestamp: string;
@@ -34,6 +36,13 @@ try {
       })
       .reverse();
   }
+} catch (e) {}
+
+let documentacao = "";
+try {
+  const docPath = path.resolve("./src/content/documentacao.json");
+  const raw = await fs.readFile(docPath, "utf-8");
+  documentacao = JSON.parse(raw).conteudo || "";
 } catch (e) {}
 ---
 
@@ -106,6 +115,29 @@ try {
           </p>
         </div>
       </div>
+
+      <section class="rounded-xl border bg-white p-8 dark:bg-neutral-950">
+        <div class="mb-4 flex items-center justify-between gap-4">
+          <h2 class="font-serif text-2xl italic">Documentação</h2>
+          <a
+            href="/keystatic/singleton/documentacao"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="shrink-0 rounded-lg border px-4 py-2 text-sm font-bold text-neutral-700 transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+          >
+            ✏️ Editar no Keystatic
+          </a>
+        </div>
+        <p class="mb-4 text-sm text-neutral-500">
+          Explicação de como usar o Keystatic e os botões do painel. Esta seção
+          é atualizada aos poucos direto pelo link acima.
+        </p>
+        <div
+          class="rounded-lg bg-neutral-50 p-6 text-sm leading-relaxed whitespace-pre-wrap text-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
+        >
+          {documentacao || "Nenhuma documentação cadastrada ainda."}
+        </div>
+      </section>
     </div>
   </div>
 

@@ -1,0 +1,39 @@
+{
+  "nome": "Livia Vieira Cavalcanti",
+  "email": "livia_cavalcanti@hotmail.com",
+  "curriculo": "http://lattes.cnpq.br/4426124452115852",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Natal",
+  "localizacao": "Rio Grande do Norte",
+  "bio": "Pesquisa aplicada na área da conservação ambiental, cuja temática específica são áreas protegidas privadas, especialmente as brasileiras, representadas pelas Reservas Particulares do Patrimônio Natural (RPPNs).",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Ecologia da UFRN (PPGECO/UFRN)",
+  "instituicao": "Universidade Federal do Rio Grande do Norte (UFRN)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de paisagens",
+    "Conservação da biodiversidade",
+    "Manejo e conservação de recursos naturais",
+    "Políticas públicas ambientais",
+    "Gestão de áreas protegias"
+  ],
+  "grupos_biologicos": ["Humanos"],
+  "formas_colaboracao": [
+    "Criação de materiais visuais",
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Palestras",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos",
+    "Relatórios de consultoria ambiental",
+    "Consultoria ambiental dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "parda",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.346Z"
+}

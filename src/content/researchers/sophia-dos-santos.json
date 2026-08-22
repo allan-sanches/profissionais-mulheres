@@ -1,0 +1,27 @@
+{
+  "nome": "sophia dos santos",
+  "email": "sophiadossantos04@hotmail.com",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Rio de janeiro, RJ - Brasil",
+  "localizacao": "Rio de janeiro, RJ - Brasil",
+  "bio": "Planejamento urbano",
+  "aceita_palestras": "Sim",
+  "formacao": "Ciencias ambientais",
+  "instituicao": "Universidade federal do Rio de janeiro - UNIRIO",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Ecologia de ecossitemas",
+    "Conservação da biodiversidade",
+    "Educação ambiental"
+  ],
+  "grupos_biologicos": ["Mamíferos"],
+  "formas_colaboracao": ["Palestras", "Workshops"],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "preta",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.343Z"
+}

@@ -1,0 +1,32 @@
+{
+  "nome": "Julia Nader Acquaviva",
+  "email": "julianader95@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/5218423653953486",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "São Paulo, SP",
+  "localizacao": "Campinas, SP",
+  "bio": "Busco compreender os efeitos da coevolução mutualística na estruturação de metacomunidades ecológicas, através de um modelo evolutivo teórico e da análise de redes de interação.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós Graduação em Ecologia da Universidade Estadual de Campinas (PPG_ ECO / UNICAMP)",
+  "instituicao": "Universidade Estadual de Campinas (Unicamp)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": ["Ecologia de comunidades", "Evolução", "Ecologia teórica"],
+  "grupos_biologicos": ["Insetos - Abelhas", "Grupo teórico"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Modelagem ecológica ou matemática",
+    "Revisão de texto científico",
+    "Palestras",
+    "Tradução inglês/português",
+    "Traduação espanhol/português"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.347Z"
+}

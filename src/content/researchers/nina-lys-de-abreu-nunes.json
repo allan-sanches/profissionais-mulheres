@@ -1,0 +1,43 @@
+{
+  "nome": "Nina Lys de Abreu Nunes",
+  "email": "ninalys@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/1407947268657576",
+  "researchgate": "Orcid",
+  "instagram": "@ninalys",
+  "site_pessoal": "www.linkedin.com/in/ninalysnunes",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Prefiro não responder",
+  "cidade_natal": "Rio de Janeiro",
+  "localizacao": "São Paulo",
+  "trabalho_atual": "Pós-doutorado, Consultoria ambiental",
+  "instituicao_atual": "Usp",
+  "bio": "Bioeconomia",
+  "aceita_palestras": "Sim",
+  "formacao": "Ie pped",
+  "instituicao": "Ufrj",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Conservação da biodiversidade",
+    "Manejo e conservação de recursos naturais",
+    "Políticas públicas ambientais",
+    "Etonoecologia"
+  ],
+  "grupos_biologicos": ["Angiospermas", "Gimnospermas", "Humanos"],
+  "formas_colaboracao": [
+    "Programação em R",
+    "Modelagem ecológica ou matemática",
+    "Criação de mapas",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Consultoria e assessoria técnica - licenciamento ambiental e outros projetos ambientais",
+    "Consultoria ambiental dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "nao-informado",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.349Z"
+}

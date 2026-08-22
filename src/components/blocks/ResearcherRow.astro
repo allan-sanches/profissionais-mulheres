@@ -1,0 +1,191 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import {
+  NIVEL_LABELS,
+  IDENTIDADE_LABELS,
+  RACA_LABELS,
+  CATEGORY_BADGE,
+} from "@/utils/labels";
+import {
+  buildResearcherView,
+  type ResearcherResolvers,
+} from "@/utils/researcher-view";
+
+interface Props extends ResearcherResolvers {
+  researcher: CollectionEntry<"researchers">;
+}
+
+const { researcher, ...resolvers } = Astro.props;
+const vm = buildResearcherView(researcher, resolvers);
+const { r } = vm;
+---
+
+<tr
+  class="group border-b border-base-300 transition-colors last:border-b-0 hover:bg-base-200/60"
+  {...vm.dataAttrs}
+>
+  <td class="max-w-64 min-w-48 px-4 py-3">
+    <a
+      href={`/pesquisadoras/${researcher.id}`}
+      class="group/link flex items-center gap-3"
+    >
+      <div class="avatar avatar-placeholder shrink-0">
+        <div
+          class="mask w-8 bg-gradient-to-br from-primary/20 to-secondary/20 mask-squircle text-primary"
+        >
+          <span class="text-xs font-semibold">{vm.initials}</span>
+        </div>
+      </div>
+      <span class="flex min-w-0 flex-col">
+        <span
+          class="truncate text-base leading-tight font-semibold text-primary group-hover/link:underline"
+        >
+          {vm.primeiroNome}
+        </span>
+        {
+          vm.restoNome && (
+            <span class="truncate text-xs leading-tight text-base-content/50">
+              {vm.restoNome}
+            </span>
+          )
+        }
+      </span>
+    </a>
+  </td>
+
+  <td class="max-w-56 truncate px-4 py-3 text-sm text-base-content/70">
+    {vm.instituicaoFormatada || "—"}
+  </td>
+
+  <td class="max-w-56 truncate px-4 py-3 text-sm">
+    <div class="flex flex-col gap-1">
+      {
+        r.nivel_formacao && (
+          <span
+            class={`badge ${CATEGORY_BADGE.nivelFormacao.color} w-fit gap-1 badge-xs`}
+          >
+            <Icon name={CATEGORY_BADGE.nivelFormacao.icon} class="size-2.5" />
+            {NIVEL_LABELS[r.nivel_formacao]}
+          </span>
+        )
+      }
+      <span class="truncate text-xs text-base-content/50">
+        {vm.show("formacao", r.formacao) ? r.formacao : "—"}
+      </span>
+    </div>
+  </td>
+
+  <td class="px-4 py-3 text-sm">
+    {
+      vm.localizacaoFormatada ? (
+        <span class="inline-flex items-center gap-1 whitespace-nowrap text-base-content/70">
+          <Icon
+            name="mdi:map-marker-outline"
+            class="size-3.5 text-base-content/40"
+          />
+          {vm.localizacaoFormatada}
+        </span>
+      ) : (
+        "—"
+      )
+    }
+  </td>
+
+  <td class="max-w-48 px-4 py-3">
+    <div class="flex flex-wrap gap-1">
+      {
+        vm.showIdentidade && (
+          <span
+            class={`badge ${CATEGORY_BADGE.identidade.color} gap-1 badge-sm whitespace-nowrap`}
+          >
+            <Icon name={CATEGORY_BADGE.identidade.icon} class="size-3" />
+            {IDENTIDADE_LABELS[r.identidade_genero!]}
+          </span>
+        )
+      }
+      {
+        vm.showRaca && (
+          <span
+            class={`badge ${CATEGORY_BADGE.raca.color} gap-1 badge-sm whitespace-nowrap`}
+          >
+            <Icon name={CATEGORY_BADGE.raca.icon} class="size-3" />
+            {RACA_LABELS[r.raca_etnia!]}
+          </span>
+        )
+      }
+      {
+        vm.showLgbtqiap && (
+          <span
+            class={`badge ${CATEGORY_BADGE.lgbtqiap.color} gap-1 badge-sm whitespace-nowrap`}
+          >
+            <Icon name={CATEGORY_BADGE.lgbtqiap.icon} class="size-3" />
+            LGBTQIAP+
+          </span>
+        )
+      }
+      {
+        vm.showPcd && (
+          <span
+            class={`badge ${CATEGORY_BADGE.pcd.color} gap-1 badge-sm whitespace-nowrap`}
+          >
+            <Icon name={CATEGORY_BADGE.pcd.icon} class="size-3" />
+            PCD
+          </span>
+        )
+      }
+      {
+        vm.showGrupoTradicional && (
+          <span
+            class={`badge ${CATEGORY_BADGE.grupoTradicional.color} gap-1 badge-sm whitespace-nowrap`}
+          >
+            <Icon name={CATEGORY_BADGE.grupoTradicional.icon} class="size-3" />
+            {r.grupo_tradicional}
+          </span>
+        )
+      }
+      {
+        vm.gruposBiologicosList.map((grupo) => (
+          <span
+            class={`badge ${CATEGORY_BADGE.grupoBiologico.color} gap-1 badge-sm whitespace-nowrap`}
+          >
+            <Icon name={CATEGORY_BADGE.grupoBiologico.icon} class="size-3" />
+            {grupo}
+          </span>
+        ))
+      }
+      {
+        !vm.showIdentidade &&
+          !vm.showRaca &&
+          !vm.showLgbtqiap &&
+          !vm.showPcd &&
+          !vm.showGrupoTradicional &&
+          vm.gruposBiologicosList.length === 0 && (
+            <span class="text-base-content/40">—</span>
+          )
+      }
+    </div>
+  </td>
+
+  <td class="px-4 py-3">
+    <div class="flex flex-wrap items-center gap-1">
+      {
+        vm.links.length > 0 ? (
+          vm.links.map((link) => (
+            <a
+              href={link.href}
+              target={link.href?.startsWith("http") ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              title={link.title}
+              class="btn btn-square btn-ghost text-base-content/50 btn-xs hover:bg-primary/10 hover:text-primary"
+            >
+              <Icon name={link.icon} class="size-4" />
+            </a>
+          ))
+        ) : (
+          <span class="text-base-content/40">—</span>
+        )
+      }
+    </div>
+  </td>
+</tr>

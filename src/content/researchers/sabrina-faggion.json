@@ -1,0 +1,41 @@
+{
+  "nome": "Sabrina Faggion",
+  "email": "sabrinafaggion@discente.ufg.br",
+  "curriculo": "http://lattes.cnpq.br/6393154083287304",
+  "instagram": "sabrinafaggion",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Buritis, MG, Brasil",
+  "localizacao": "Goiânia, GO, Brasil",
+  "bio": "Busco entender processos relacionados a distribuição de espécies raras, SDMs e análises de lacunas.",
+  "aceita_palestras": "Sim",
+  "formacao": "programa de Pós Graduação em Biodiversidade Animal (PPGBAN)",
+  "instituicao": "Universidade Federal de Goiás (UFG)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Ecologia de paisagens",
+    "Conservação da biodiversidade",
+    "Manejo e conservação de recursos naturais"
+  ],
+  "grupos_biologicos": ["Aves"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Modelagem ecológica ou matemática",
+    "Revisão de texto científico",
+    "Revisão de artigos submetidos para publicação",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Relatórios de consultoria ambiental",
+    "Consultoria e assessoria técnica - licenciamento ambiental e outros projetos ambientais",
+    "Consultoria ambiental dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.346Z"
+}

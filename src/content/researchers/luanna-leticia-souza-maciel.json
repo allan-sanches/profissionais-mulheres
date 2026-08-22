@@ -1,0 +1,38 @@
+{
+  "nome": "Luanna Letícia Souza Maciel",
+  "email": "Luannamaci@outlook.com",
+  "curriculo": "https://lattes.cnpq.br/2844519771399256",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Belém, Para, Brasil",
+  "localizacao": "Parnaíba, Piauí, Brasil",
+  "bio": "Procuro entender os fatores ambientais que determinam a presença de peixes-boi em áreas estuarinas por meio de modelagem estatística (Maxent)",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de pós-graduação em biodiversidade e conservação (PPGBC)",
+  "instituicao": "Universidade federal do Piauí",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecologia de populações",
+    "Conservação da biodiversidade",
+    "Modelagem ecológica"
+  ],
+  "grupos_biologicos": ["Mamíferos"],
+  "formas_colaboracao": [
+    "Modelagem ecológica ou matemática",
+    "Criação de mapas",
+    "Criação de materiais visuais",
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos",
+    "Identificação de espécies dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "parda",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.349Z"
+}

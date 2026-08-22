@@ -1,0 +1,35 @@
+{
+  "nome": "Bruna Andreotti da Silva Amaral",
+  "email": "brunaandreotti@hotmail.com",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Curitiba PR",
+  "localizacao": "Valence. França",
+  "bio": "Desenvolvimento e aplicação de metodologias ecotoxicológicas para avaliar os impactos de substâncias químicas em organismos aquáticos, com foco em normas internacionais e redução de testes em animais.",
+  "aceita_palestras": "Sim",
+  "formacao": "Mestrado em biodiversidade ecolodia e evolução com enfase em dinamica e modelagem da biodiversidade (Dynamo)",
+  "instituicao": "Université Grenoble Alpes",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecologia de populações",
+    "Ecotoxicologia",
+    "Modelagem ecológica"
+  ],
+  "grupos_biologicos": ["Anfíbios", "Peixes", "Insetos - Abelhas", "Algas"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Modelagem ecológica ou matemática",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Tradução inglês/português"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.344Z"
+}

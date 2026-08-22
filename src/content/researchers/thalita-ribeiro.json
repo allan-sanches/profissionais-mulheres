@@ -1,0 +1,40 @@
+{
+  "nome": "Thalita Ribeiro",
+  "email": "thalita.ribeiro@unemat.br",
+  "curriculo": "http://lattes.cnpq.br/3011159992636241",
+  "researchgate": "https://www.researchgate.net/profile/Thalita-Ribeiro-2",
+  "instagram": "@litha.ri",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Três Lagoas, Mato Grosso, Brasil",
+  "localizacao": "Cáceres, Mato Grosso, Brasil",
+  "bio": "Diversidade de morcegos urbanos utilizando redes de neblina e gravadores autônomos",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Ciências Ambientais (PPGCA)",
+  "instituicao": "Universidade do Estado de Mato Grosso (UNEMAT)",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Ecologia funcional",
+    "Ecologia urbana"
+  ],
+  "grupos_biologicos": ["Mamíferos"],
+  "formas_colaboracao": [
+    "Programação em R",
+    "Criação de mapas",
+    "Criação de materiais visuais",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Consultoria e assessoria técnica - licenciamento ambiental e outros projetos ambientais",
+    "Consultoria ambiental dos grupos de interesse em minha pesquisa",
+    "Identificação de espécies dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "parda",
+  "lgbtqiap": true,
+  "pcd": true,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.349Z"
+}

@@ -1,0 +1,40 @@
+{
+  "nome": "Mariana Mira Vasconcellos",
+  "email": "marimiravasc@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/1881762718218903",
+  "researchgate": "https://www.researchgate.net/profile/Mariana-M-Vasconcellos",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Rio de Janeiro",
+  "localizacao": "São Paulo",
+  "trabalho_atual": "Pós-doutorado",
+  "instituicao_atual": "Universidade de São Paulo",
+  "bio": "Respostas populacionais a mudanças climáticas em nível genômico. Filogeografia e bases genômica da adaptação local em várias espécies de répteis e anfíbios.",
+  "aceita_palestras": "Talvez",
+  "formacao": "Ecology, Evolution and Behavior Graduate Program",
+  "instituicao": "University of Texas (UT)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Evolução",
+    "Ecologia molecular",
+    "Filogeografia",
+    "Modelagem ecológica",
+    "Mudanças climáticas"
+  ],
+  "grupos_biologicos": ["Répteis", "Anfíbios"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Modelagem ecológica ou matemática",
+    "Apoio em análise de dados genômicos ou bioinformáticos",
+    "Criação de mapas",
+    "Revisão de texto científico"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.343Z"
+}

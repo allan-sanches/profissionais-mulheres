@@ -1,0 +1,38 @@
+{
+  "nome": "Virginia Carrara",
+  "email": "virginia.carrara@unesp.br",
+  "curriculo": "https://lattes.cnpq.br/4602088639420475",
+  "researchgate": "https://www.researchgate.net/profile/Virginia-Carrara",
+  "instagram": "vivi.carrara",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "São Carlos, São Paulo, Brasil",
+  "localizacao": "Santos, São Paulo, Brasil",
+  "bio": "Como marine heatwaves afeta o metabolismo secundário de algas e consequentemente a cadeia trófica.",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-graduação em Ciências Biológicas (Zoologia)",
+  "instituicao": "Instituto de Biociências - Câmpus de Botucatu (IBB-UNESP)",
+  "nivel_formacao": "doutorado",
+  "areas_pesquisa": [
+    "Mudanças climáticas",
+    "Ecologia marinha",
+    "Ecologia química"
+  ],
+  "grupos_biologicos": ["Peixes", "Crustáceos", "Algas"],
+  "formas_colaboracao": [
+    "Apoio em análise de dados genômicos ou bioinformáticos",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos",
+    "Relatórios de consultoria ambiental",
+    "Identificação de espécies dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.348Z"
+}

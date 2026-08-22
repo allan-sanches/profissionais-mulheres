@@ -1,5 +1,6 @@
 # build output
 dist/
+storybook-static/
 # generated types
 .astro/
 
@@ -28,3 +29,6 @@ pnpm-debug.log*
 .vercel
 dist
 .astro
+
+# local Claude Code session settings (tool permission cache, not project config)
+.claude/

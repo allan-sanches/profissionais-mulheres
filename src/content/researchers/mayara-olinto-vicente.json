@@ -1,0 +1,40 @@
+{
+  "nome": "Mayara Olinto Vicente",
+  "email": "mayaraolinto27@gmail.com",
+  "curriculo": "http://lattes.cnpq.br/8046749711806638",
+  "instagram": "@mayolinto",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Jacaraú, Paraíba, Brasil",
+  "localizacao": "Jacaraú, Paraíba, Brasil",
+  "bio": "Monitoramento de fauna em áreas de",
+  "aceita_palestras": "Sim",
+  "formacao": "Programa de Pós-Graduação em Ecologia e Monitoramento Ambiental",
+  "instituicao": "Universidade Federal da Paraíba - UFPB",
+  "nivel_formacao": "mestrado",
+  "areas_pesquisa": [
+    "Ecologia de comunidades",
+    "Conservação da biodiversidade",
+    "Monitoramento ambiental"
+  ],
+  "grupos_biologicos": ["Mamíferos", "Aves", "Répteis", "Anfíbios"],
+  "formas_colaboracao": [
+    "Revisão de texto científico",
+    "Revisão de divulgação científica",
+    "Palestras",
+    "Workshops",
+    "Mentoria ou orientação de estudantes",
+    "Organização de eventos científicos",
+    "Relatórios de consultoria ambiental",
+    "Consultoria e assessoria técnica - licenciamento ambiental e outros projetos ambientais",
+    "Consultoria ambiental dos grupos de interesse em minha pesquisa",
+    "Identificação de espécies dos grupos de interesse em minha pesquisa"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "preta",
+  "lgbtqiap": false,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.343Z"
+}

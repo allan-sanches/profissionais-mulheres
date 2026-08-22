@@ -1,0 +1,34 @@
+{
+  "nome": "Rosana do Socorro dos Santos Araujo",
+  "email": "rosana.araujo@discente.ufra.edu.br",
+  "curriculo": "http://lattes.cnpq.br/2212824159467302",
+  "genero": "Feminino / Cisgênero",
+  "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
+  "cidade_natal": "Belém, Pará, Brasil",
+  "localizacao": "Belém, Pará, Brasil",
+  "bio": "Procuro responder sobre o que fazer para melhorar a vida das comunidades e uso QGis.",
+  "aceita_palestras": "Sim",
+  "formacao": "Engenharia Ambiental",
+  "instituicao": "Universidade Federal Rural da Amazônia (UFRA)",
+  "nivel_formacao": "graduacao",
+  "areas_pesquisa": [
+    "Manejo e conservação de recursos naturais",
+    "Interações ecológicas",
+    "Mudanças climáticas"
+  ],
+  "grupos_biologicos": ["Mamíferos", "Aves", "Humanos"],
+  "formas_colaboracao": [
+    "Análises estatísticas",
+    "Programação em R",
+    "Modelagem ecológica ou matemática",
+    "Criação de mapas",
+    "Relatórios de consultoria ambiental"
+  ],
+  "identidade_genero": "mulher-cis",
+  "raca_etnia": "branca",
+  "lgbtqiap": true,
+  "pcd": false,
+  "campos_ocultos": [],
+  "gerenciado_pela_planilha": true,
+  "data_sincronizacao": "2026-08-14T14:05:08.350Z"
+}
