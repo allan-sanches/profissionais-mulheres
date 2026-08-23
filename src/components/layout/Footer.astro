@@ -3,21 +3,161 @@ import site from "@/config/site";
 import { Icon } from "astro-icon/components";
 
 const year = new Date().getFullYear();
+const { footer } = site;
 ---
 
-<footer class="mt-16 border-t border-base-300 pt-8 pb-4">
-  <div class="flex flex-col items-center gap-4 text-center">
-    <a
-      href={site.mainSite.href}
-      class="btn rounded-full btn-outline btn-primary"
+{
+  /* Faixa clara: volta ao site principal + redes sociais.
+  Full-bleed: as páginas ficam num container com padding, então o rodapé
+  estica pra borda com margin negativa compensando esse padding. */
+}
+<footer class="-mx-4 mt-16 md:-mx-8">
+  <div class="bg-gray-50 px-4 py-12 md:px-8">
+    <div class="mx-auto flex max-w-3xl flex-col items-center gap-8 text-center">
+      <a
+        href={site.mainSite.href}
+        class="inline-flex items-center gap-2 rounded-xl border border-meco-purple-soft/50 bg-meco-purple-bg px-5 py-2.5 text-sm font-bold text-meco-purple-deep transition-colors hover:bg-meco-purple-primary hover:text-white"
+      >
+        <Icon name="mdi:arrow-left" class="size-4" />
+        Voltar para {site.mainSite.label}
+        <Icon name="mdi:open-in-new" class="size-3.5 opacity-60" />
+      </a>
+
+      <div class="space-y-5">
+        <h2 class="font-epilogue text-2xl font-bold text-gray-700">
+          {footer.socialHeading}
+        </h2>
+        <ul class="flex items-center justify-center gap-4">
+          {
+            footer.social.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={item.name}
+                  aria-label={item.name}
+                  class="flex size-14 items-center justify-center rounded-full bg-meco-green-bg text-meco-green-primary transition-colors hover:bg-meco-green-primary hover:text-white"
+                >
+                  <Icon name={item.icon} class="size-6" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {/* Faixa escura: logo + copyright, links do site e newsletter */}
+  <div class="bg-meco-green-dark px-4 py-12 text-white md:px-8">
+    <div
+      class="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-3 md:gap-8"
     >
-      <Icon name="mdi:arrow-left" class="size-4" />
-      Voltar para {site.mainSite.label}
-      <Icon name="mdi:open-in-new" class="size-3.5 opacity-60" />
-    </a>
-    <p class="text-xs text-base-content/50">
-      © {year}
-      {site.footer.copyright}
-    </p>
+      {/* Logo + copyright */}
+      <div class="space-y-6">
+        <a
+          href={site.mainSite.href}
+          class="flex items-center gap-3 transition-opacity hover:opacity-80"
+        >
+          <img
+            src={site.meta.logo}
+            alt=""
+            width="40"
+            height="40"
+            class="size-10 shrink-0"
+          />
+          <span class="font-epilogue text-lg font-medium">
+            {footer.copyright}
+          </span>
+        </a>
+        <p class="text-sm leading-relaxed text-white/80">
+          Copyright © {year}
+          {footer.copyright}
+          <br />
+          {footer.tagline}
+        </p>
+      </div>
+
+      {/* Links do site */}
+      <nav aria-labelledby="footer-links-heading">
+        <h2
+          id="footer-links-heading"
+          class="mb-4 font-epilogue text-xl font-bold"
+        >
+          {footer.linksHeading}
+        </h2>
+        <ul class="space-y-3">
+          {
+            footer.links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-white/90 transition-colors hover:text-white hover:underline"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      {/* Newsletter */}
+      <div>
+        <h2 class="mb-4 text-base leading-relaxed">
+          {footer.newsletter.heading}
+        </h2>
+        <form
+          id="newsletter-form"
+          class="flex flex-wrap items-start gap-3"
+          action={footer.newsletter.action || undefined}
+          method="post"
+          data-configured={footer.newsletter.action ? "true" : "false"}
+        >
+          <label for="newsletter-email" class="sr-only">
+            {footer.newsletter.placeholder}
+          </label>
+          <input
+            id="newsletter-email"
+            name="email"
+            type="email"
+            required
+            placeholder={footer.newsletter.placeholder}
+            class="min-w-0 flex-1 rounded-xl border border-transparent bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-meco-green-soft focus:outline-none"
+          />
+          <button
+            type="submit"
+            class="shrink-0 rounded-xl bg-meco-green-primary px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-meco-green-dark hover:ring-2 hover:ring-white/40"
+          >
+            {footer.newsletter.submitLabel}
+          </button>
+          <p
+            id="newsletter-message"
+            class="hidden w-full text-xs text-white/80"
+            role="status"
+          >
+          </p>
+        </form>
+      </div>
+    </div>
   </div>
 </footer>
+
+<script>
+  // Enquanto não houver endpoint configurado (site.footer.newsletter.action),
+  // o formulário avisa em vez de recarregar a página sem enviar nada.
+  const form = document.getElementById(
+    "newsletter-form",
+  ) as HTMLFormElement | null;
+  const message = document.getElementById("newsletter-message");
+
+  form?.addEventListener("submit", (e) => {
+    if (form.dataset.configured === "true") return; // deixa enviar de verdade
+    e.preventDefault();
+    if (!message) return;
+    message.textContent =
+      "A inscrição na newsletter ainda não está conectada. Em breve!";
+    message.classList.remove("hidden");
+  });
+</script>

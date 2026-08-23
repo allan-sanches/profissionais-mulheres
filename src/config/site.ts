@@ -45,8 +45,65 @@ const site = {
   },
 
   // --- Footer ---
+  // TODO(links): trocar pelos endereços definitivos quando forem passados.
+  // TODO(logo): substituir /logo.svg pelo novo logo da marca.
   footer: {
     copyright: "Mulheres na Ecologia",
+    tagline: "Todos os direitos reservados",
+
+    socialHeading: "Siga-nos nas redes sociais:",
+    social: [
+      {
+        name: "Instagram",
+        href: "https://www.instagram.com/mulheresnaecologia/",
+        icon: "mdi:instagram",
+      },
+      {
+        name: "LinkedIn",
+        href: "https://www.linkedin.com/company/mulheres-na-ecologia/",
+        icon: "mdi:linkedin",
+      },
+      {
+        name: "YouTube",
+        href: "https://www.youtube.com/@mulheresnaecologia",
+        icon: "mdi:youtube",
+      },
+      {
+        name: "TikTok",
+        href: "https://www.tiktok.com/@mulheresnaecologia",
+        // Ícone local (src/icons/tiktok.svg) — o set mdi não traz esse.
+        icon: "tiktok",
+      },
+    ],
+
+    linksHeading: "Acesse nosso site:",
+    links: [
+      { label: "Início", href: "https://www.mulheresnaecologia.com/" },
+      {
+        label: "Quem somos?",
+        href: "https://www.mulheresnaecologia.com/quem-somos",
+      },
+      {
+        label: "Linhas editoriais",
+        href: "https://www.mulheresnaecologia.com/linhas-editoriais",
+      },
+      {
+        label: "Contribua",
+        href: "https://www.mulheresnaecologia.com/contribua",
+      },
+      { label: "Ações", href: "https://www.mulheresnaecologia.com/acoes" },
+    ],
+
+    newsletter: {
+      heading:
+        "Acompanhe as novidades do nosso projeto por meio da nossa newsletter:",
+      placeholder: "Digite seu e-mail",
+      submitLabel: "Enviar",
+      // TODO(newsletter): endpoint do serviço de inscrição. Enquanto estiver
+      // vazio o formulário avisa que ainda não está conectado, em vez de
+      // fingir que enviou.
+      action: "",
+    },
   },
 
   // --- Comments ---
