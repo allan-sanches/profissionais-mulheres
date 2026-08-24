@@ -262,6 +262,21 @@ const description =
           >
             <span id="results-counter"></span>
 
+            <label class="flex items-center gap-1.5 whitespace-nowrap">
+              <span class="sr-only">Itens por página</span>
+              <select
+                data-page-size
+                class="rounded-lg border border-gray-300 bg-white px-2 py-1 text-xs font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20" selected>20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <span class="text-xs">por página</span>
+            </label>
+
             <div
               class="inline-flex shrink-0 items-center gap-2 rounded-xl border border-gray-200/80 bg-gray-100 p-1"
               role="group"
@@ -408,7 +423,7 @@ const description =
           <div class="flex items-center gap-2">
             <span>Itens por página:</span>
             <select
-              id="page-size-select"
+              data-page-size
               class="rounded-lg border border-gray-300 bg-white px-2.5 py-1 text-xs font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
             >
               <option value="5">5</option>
@@ -840,9 +855,11 @@ const description =
     let currentPage = 1;
     let filteredSlugs: string[] = [];
 
-    const pageSizeSelect = document.getElementById(
-      "page-size-select",
-    ) as HTMLSelectElement | null;
+    // Há dois seletores de itens por página (toolbar e barra de paginação):
+    // mudar um espelha no outro pra não mostrarem valores diferentes.
+    const pageSizeSelects = Array.from(
+      document.querySelectorAll<HTMLSelectElement>("select[data-page-size]"),
+    );
     const paginationBar = document.getElementById("pagination-bar");
     const paginationInfo = document.getElementById("pagination-info");
     const pageIndicator = document.getElementById("page-indicator");
@@ -859,7 +876,10 @@ const description =
       "page-last",
     ) as HTMLButtonElement | null;
 
-    if (pageSizeSelect) pageSizeSelect.value = String(pageSize);
+    const syncPageSizeSelects = () => {
+      for (const select of pageSizeSelects) select.value = String(pageSize);
+    };
+    syncPageSizeSelects();
 
     function renderPage() {
       rowBySlug.forEach((row) => (row.style.display = "none"));
@@ -911,16 +931,19 @@ const description =
       goToPage(Math.max(1, Math.ceil(filteredSlugs.length / pageSize))),
     );
 
-    pageSizeSelect?.addEventListener("change", () => {
-      const value = Number(pageSizeSelect.value);
-      if (!PAGE_SIZES.includes(value)) return;
-      pageSize = value;
-      try {
-        localStorage.setItem(LS_PAGE_SIZE, String(value));
-      } catch {}
-      currentPage = 1;
-      renderPage();
-    });
+    for (const select of pageSizeSelects) {
+      select.addEventListener("change", () => {
+        const value = Number(select.value);
+        if (!PAGE_SIZES.includes(value)) return;
+        pageSize = value;
+        try {
+          localStorage.setItem(LS_PAGE_SIZE, String(value));
+        } catch {}
+        syncPageSizeSelects();
+        currentPage = 1;
+        renderPage();
+      });
+    }
 
     const filterCountBadge = document.getElementById("filter-count-badge");
     const filterActiveCount = document.getElementById("filter-active-count");
