@@ -71,6 +71,24 @@ export function normalizePrivateKey(raw: string): string {
     .replace(/\\n/g, "\n");
 }
 
+// Quando a chave esta deformada o OpenSSL responde sempre o mesmo
+// ERR_OSSL_UNSUPPORTED, sem dizer o que ha de errado - e num secret de CI nao
+// da pra simplesmente olhar o valor. Descreve o formato (nunca o conteudo)
+// pra que a proxima falha ja venha com o diagnostico junto.
+export function describePrivateKey(raw: string): string {
+  const k = normalizePrivateKey(raw);
+  const quebras = (k.match(/\n/g) || []).length;
+  return [
+    `${raw.length} caracteres`,
+    `${quebras} quebras de linha`,
+    `cabecalho BEGIN: ${k.startsWith("-----BEGIN PRIVATE KEY-----")}`,
+    `rodape END: ${k.trimEnd().endsWith("-----END PRIVATE KEY-----")}`,
+    `tem "\\n" literal: ${raw.includes("\\n")}`,
+    `tem aspas: ${/["']/.test(raw)}`,
+    `tem espacos no lugar de quebras: ${/-----BEGIN PRIVATE KEY----- /.test(raw)}`,
+  ].join("\n     ");
+}
+
 export const HEADER_MAP = {
   nome: "Nome completo:",
   email: "E-mail para contato:",

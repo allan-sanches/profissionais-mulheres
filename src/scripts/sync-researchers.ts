@@ -1,4 +1,4 @@
-import { runFullSync } from "../utils/google-sheets";
+import { runFullSync, describePrivateKey } from "../utils/google-sheets";
 import { config } from "dotenv";
 import path from "path";
 
@@ -24,6 +24,12 @@ async function main() {
     console.log(`✅ Sucesso! ${count} pesquisadoras sincronizadas no JSON.`);
   } catch (error) {
     console.error("❌ Falha na sincronização:", error);
+    if ((error as { code?: string })?.code === "ERR_OSSL_UNSUPPORTED") {
+      console.error(
+        "\n🔑 A chave privada não foi aceita pelo OpenSSL. Formato recebido:\n     " +
+          describePrivateKey(GOOGLE_PRIVATE_KEY),
+      );
+    }
     process.exit(1);
   }
 }
