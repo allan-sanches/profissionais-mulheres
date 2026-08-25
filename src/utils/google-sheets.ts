@@ -59,6 +59,18 @@ interface ResearcherRecord {
 // "Mulheres na Ecologia" (confirmado direto na planilha em 2026-08-14).
 // Telefone/LinkedIn/ORCID/Imagem não existem no formulário ainda — ficam
 // sob curadoria manual no Keystatic até serem adicionados por lá.
+// A chave privada chega de origens diferentes - .env.local, secret do GitHub,
+// painel da Vercel - e cada uma preserva um formato: quebras reais, "\n"
+// escapado, e as vezes as aspas do .env coladas junto no copiar/colar. Se
+// qualquer sobra dessas passar, o OpenSSL rejeita com ERR_OSSL_UNSUPPORTED e o
+// erro nao diz qual das tres coisas aconteceu. Normaliza todas aqui.
+export function normalizePrivateKey(raw: string): string {
+  return raw
+    .trim()
+    .replace(/^["']|["']$/g, "")
+    .replace(/\\n/g, "\n");
+}
+
 export const HEADER_MAP = {
   nome: "Nome completo:",
   email: "E-mail para contato:",
@@ -108,7 +120,7 @@ export async function runFullSync(credentials: {
 }) {
   const auth = new google.auth.JWT({
     email: credentials.email,
-    key: credentials.key.replace(/\\n/g, "\n"),
+    key: normalizePrivateKey(credentials.key),
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
   });
 

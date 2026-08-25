@@ -8,7 +8,7 @@
 import { google } from "googleapis";
 import { config } from "dotenv";
 import path from "path";
-import { HEADER_MAP } from "../utils/google-sheets";
+import { HEADER_MAP, normalizePrivateKey } from "../utils/google-sheets";
 
 config({ path: path.resolve(process.cwd(), ".env.local") });
 
@@ -29,7 +29,7 @@ if (!GOOGLE_CLIENT_EMAIL || !GOOGLE_PRIVATE_KEY || !sheetId) {
 
 const auth = new google.auth.JWT({
   email: GOOGLE_CLIENT_EMAIL,
-  key: GOOGLE_PRIVATE_KEY.replace(/\n/g, "\n"),
+  key: normalizePrivateKey(GOOGLE_PRIVATE_KEY),
   scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
 });
 const sheets = google.sheets({ version: "v4", auth });

@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import { google } from "googleapis";
+import { normalizePrivateKey } from "../utils/google-sheets";
 
 config({ path: path.resolve(process.cwd(), ".env.local") });
 
@@ -41,7 +42,8 @@ const RESEARCHERS_DIR = path.join(
 
 async function authenticateGoogle() {
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  const privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  const rawKey = process.env.GOOGLE_PRIVATE_KEY;
+  const privateKey = rawKey ? normalizePrivateKey(rawKey) : undefined;
   const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
   if (!clientEmail || !privateKey || !spreadsheetId) {
