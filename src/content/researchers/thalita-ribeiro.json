@@ -7,7 +7,7 @@
   "genero": "Feminino / Cisgênero",
   "grupo_tradicional": "Não pertenço a nenhum grupo mencionado",
   "cidade_natal": "Três Lagoas, Mato Grosso, Brasil",
-  "localizacao": "Cáceres, Mato Grosso, Brasil",
+  "localizacao": "Cáceres, Mato Grosso,  Brasil",
   "bio": "Diversidade de morcegos urbanos utilizando redes de neblina e gravadores autônomos",
   "aceita_palestras": "Sim",
   "formacao": "Programa de Pós-Graduação em Ciências Ambientais (PPGCA)",
@@ -36,5 +36,5 @@
   "pcd": true,
   "campos_ocultos": [],
   "gerenciado_pela_planilha": true,
-  "data_sincronizacao": "2026-08-14T14:05:08.349Z"
+  "data_sincronizacao": "2026-08-25T12:45:51.940Z"
 }

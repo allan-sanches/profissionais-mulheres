@@ -26,6 +26,23 @@ import { buildResearcherView } from "@/utils/researcher-view";
 // Fetch all researchers
 const researchers = await getCollection("researchers");
 
+// Cada pesquisadora carrega o carimbo do sync que a gravou. O mais recente é
+// a data em que a planilha oficial foi lida pela última vez — como o site é
+// estático, essa data também é a do conteúdo que está no ar.
+const ultimaSincronizacao = researchers.reduce<Date | undefined>((maior, r) => {
+  const d = r.data.data_sincronizacao;
+  return d && (!maior || d > maior) ? d : maior;
+}, undefined);
+
+const ultimaSincronizacaoLabel = ultimaSincronizacao
+  ? new Intl.DateTimeFormat("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      timeZone: "America/Sao_Paulo",
+    }).format(ultimaSincronizacao)
+  : null;
+
 // Texto livre da planilha vem com pontuação/espaçamento inconsistentes
 // ("Abaetetuba Pará Brasil" vs "Abaetetuba, Pará, Brasil"). buildDedupIndex
 // agrupa essas variações; os resolvers são repassados pra cada linha da
@@ -195,7 +212,18 @@ const description =
         <div class="flex items-center gap-2 text-xs font-medium text-gray-500">
           <span class="size-2 animate-pulse rounded-full bg-meco-green-primary"
           ></span>
-          Diretório atualizado
+          {
+            ultimaSincronizacaoLabel ? (
+              <span>
+                Diretório atualizado em{" "}
+                <time datetime={ultimaSincronizacao!.toISOString()}>
+                  {ultimaSincronizacaoLabel}
+                </time>
+              </span>
+            ) : (
+              "Diretório atualizado"
+            )
+          }
         </div>
       </div>
 

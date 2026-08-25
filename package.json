@@ -12,7 +12,8 @@
     "push:researchers": "tsx ./src/scripts/push-researchers.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate:stories": "node scripts/generate-storybook-stories.mjs"
+    "generate:stories": "node scripts/generate-storybook-stories.mjs",
+    "check:sheet": "tsx ./src/scripts/check-sheet.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",

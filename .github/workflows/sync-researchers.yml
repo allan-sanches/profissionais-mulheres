@@ -14,6 +14,9 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     name: Sync Researchers from Google Sheets
+    # As credenciais do Google estão cadastradas como secrets do ambiente
+    # "Production", então o job precisa declarar o ambiente pra enxergá-las.
+    environment: Production
 
     steps:
       - name: Checkout code

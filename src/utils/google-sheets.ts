@@ -59,7 +59,7 @@ interface ResearcherRecord {
 // "Mulheres na Ecologia" (confirmado direto na planilha em 2026-08-14).
 // Telefone/LinkedIn/ORCID/Imagem não existem no formulário ainda — ficam
 // sob curadoria manual no Keystatic até serem adicionados por lá.
-const HEADER_MAP = {
+export const HEADER_MAP = {
   nome: "Nome completo:",
   email: "E-mail para contato:",
   curriculo: "Link do currículo lattes:",
