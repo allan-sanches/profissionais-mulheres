@@ -125,10 +125,19 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
             >
               +{remainingBadges.length}
             </summary>
-            <div class="absolute bottom-full left-1/2 z-50 mb-2 flex w-max max-w-xs -translate-x-1/2 flex-wrap gap-1.5 rounded-lg border border-gray-200 bg-white p-2.5 shadow-md">
+            {/* Ancorado pela direita, e nao centrado no badge: o "+N" fica na
+            ultima coluna, entao um popover centrado projetava metade da largura
+            pra fora da borda direita da tabela — e o wrapper tem overflow-x-auto,
+            que respondia criando rolagem horizontal. Com right-0 ele cresce pra
+            dentro da tabela, onde ja ha espaco. */}
+            <div class="absolute right-0 bottom-full z-50 mb-2 flex w-max max-w-xs flex-wrap gap-1.5 rounded-lg border border-gray-200 bg-white p-2.5 shadow-md">
+              {/* Mesma cor por categoria das etiquetas inline: transbordar pro
+              popover nao pode mudar a familia. Com a cor fixa que estava aqui,
+              um grupo biologico (verde) reaparecia roxo e passava a se ler como
+              dado de perfil. */}
               {remainingBadges.map((badge) => (
                 <span
-                  class="max-w-full rounded-full bg-meco-purple-bg px-2 py-0.5 text-xs font-semibold break-words text-meco-purple-deep"
+                  class={`max-w-full rounded-full border px-2 py-0.5 text-xs font-semibold break-words ${CATEGORY_BADGE[badge.key].color}`}
                   title={badge.full !== badge.label ? badge.full : undefined}
                 >
                   {badge.label}

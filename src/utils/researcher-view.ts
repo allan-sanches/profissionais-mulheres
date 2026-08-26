@@ -231,10 +231,22 @@ export function buildResearcherView(
       .toLowerCase(),
   };
 
-  // Lista unificada de badges de perfil. A ordem define quais aparecem
-  // inline e quais caem no popover "+{N}": a especificação manda priorizar
-  // identidade e grupos biológicos, então esses vêm primeiro e os marcadores
-  // adicionais (LGBTQIAP+, PCD, grupo tradicional) ficam no overflow.
+  // Lista unificada de etiquetas, agrupada pelas duas famílias de cor do
+  // brandbook — e é a cor que carrega o significado, então elas não podem se
+  // intercalar:
+  //
+  //   roxo  = quem a pesquisadora é   (identidade, raça, LGBTQIAP+, PCD,
+  //                                    grupo tradicional)
+  //   verde = sobre o que ela pesquisa (grupos biológicos)
+  //
+  // Antes os grupos biológicos vinham em segundo lugar, entre raça e
+  // LGBTQIAP+, e a linha alternava roxo-verde-roxo — a cor deixava de separar
+  // as duas leituras. As chaves apontam pro CATEGORY_BADGE, que define a cor;
+  // ao mexer aqui, confira lá se a família bate.
+  //
+  // A ordem também decide o que aparece inline e o que cai no popover "+{N}":
+  // com o perfil na frente, é ele que sobrevive ao corte na tabela, onde só
+  // três etiquetas cabem.
   //
   // `label` e o texto exibido, ja com teto; `full` e o original, que os
   // componentes poem no title. Os rotulos de enum (identidade, raca, LGBTQIAP+,
@@ -247,16 +259,19 @@ export function buildResearcherView(
   });
 
   const badges: { key: string; label: string; full: string }[] = [
+    // ── Perfil (roxo) ──────────────────────────────────────────────────
     ...(showIdentidade
       ? [badge("identidade", IDENTIDADE_LABELS[r.identidade_genero!])]
       : []),
     ...(showRaca ? [badge("raca", RACA_LABELS[r.raca_etnia!])] : []),
-    ...gruposBiologicosList.map((grupo) => badge("grupoBiologico", grupo)),
     ...(showLgbtqiap ? [badge("lgbtqiap", "LGBTQIAP+")] : []),
     ...(showPcd ? [badge("pcd", "PCD")] : []),
     ...(showGrupoTradicional
       ? [badge("grupoTradicional", r.grupo_tradicional!)]
       : []),
+
+    // ── Pesquisa (verde) ───────────────────────────────────────────────
+    ...gruposBiologicosList.map((grupo) => badge("grupoBiologico", grupo)),
   ];
 
   return {
