@@ -21,9 +21,7 @@ const linkRows = Math.ceil(footer.links.length / 2);
     /* Padding inferior menor que o superior: a ultima linha ja vem com o
     respiro do mt-12 e do filete, entao 56px embaixo viravam vazio. */
   }
-  <div
-    class="bg-gradient-to-b from-[#0d9426] to-[#613ba8] px-8 pt-14 pb-8 text-white md:px-16"
-  >
+  <div class="bg-gray-100 px-8 pt-14 pb-8 text-gray-900 md:px-16">
     {
       /* Sem largura máxima própria: herda a do container da página. Um max-w
       fixo aqui desalinharia, e mudaria a cada página que usasse um container
@@ -93,7 +91,7 @@ const linkRows = Math.ceil(footer.links.length / 2);
       <div>
         <h2
           id="footer-social-heading"
-          class="mb-4 font-epilogue text-xl font-bold text-gray-900"
+          class="mb-4 font-epilogue text-xl font-bold text-gray-700"
         >
           {footer.socialHeading}
         </h2>
@@ -126,13 +124,13 @@ const linkRows = Math.ceil(footer.links.length / 2);
       um filete discreto pra ler como rodape do rodape. */
     }
     <div
-      class="mt-12 border-t border-gray-200 pt-6 text-center text-sm text-gray-600"
+      class="mt-12 border-t border-gray-200 pt-6 text-center text-sm text-gray-700"
     >
       <p>
         Copyright © {year}
         {footer.copyright} · CNPJ {footer.cnpj} · {footer.tagline}
       </p>
-      <p class="mt-1 text-gray-500">Desenvolvido por {footer.developer}</p>
+      <p class="mt-1 text-gray-600">Desenvolvido por {footer.developer}</p>
     </div>
   </div>
 </footer>
