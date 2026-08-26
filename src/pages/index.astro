@@ -375,9 +375,15 @@ const description =
   </div>
 
   {/* ── Drawer de filtros (off-canvas) ───────────────────────────── */}
+  {
+    /* Sem a classe `flex` aqui: ela viria de folha de autor e venceria o
+    `dialog:not([open]) { display: none }` do navegador, deixando o drawer
+    pintado mesmo fechado. O display fica no <style> do fim do arquivo,
+    condicionado ao [open]. */
+  }
   <dialog
     id="filter-drawer"
-    class="fixed inset-y-0 left-0 m-0 flex h-screen max-h-screen flex-col rounded-none p-0 backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm"
+    class="fixed inset-y-0 left-0 m-0 h-screen max-h-screen flex-col rounded-none p-0 backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm"
     style="width: 24rem"
     aria-labelledby="filter-drawer-title"
   >
@@ -506,8 +512,9 @@ const description =
     const drawerCloseBtn = document.getElementById("filter-drawer-close");
     const toggleBtn = document.getElementById("toggle-filters-btn");
 
-    // Garante que o drawer começa fechado
-    drawer?.close();
+    // Rede de segurança: se o navegador restaurar a página do bfcache com o
+    // dialog aberto, a volta do perfil cairia numa tela travada.
+    if (drawer?.open) drawer.close();
 
     toggleBtn?.addEventListener("click", () => {
       if (drawer?.open) {
@@ -1196,20 +1203,23 @@ const description =
       }
     };
 
-    // CSS para garantir que o dialog comece fechado
-    const style = document.createElement("style");
-    style.textContent = `
-      #filter-drawer {
-        display: none !important;
-      }
-      #filter-drawer[open] {
-        display: flex !important;
-      }
-    `;
-    document.head.appendChild(style);
-
     // Estado inicial: sem filtros aplicados ainda mostra a 1ª página de todas.
     filterResearchers();
     updateURL();
   </script>
+
+  {
+    /* O display do drawer mora aqui, e não numa classe utilitária no elemento:
+    qualquer `display` vindo de folha de autor vence o
+    `dialog:not([open]) { display: none }` do navegador — que é regra de UA e
+    perde por origem, não por especificidade — e o drawer ficaria pintado
+    mesmo fechado. Também não pode ser injetado por JS: o ClientRouter troca o
+    <head> a cada navegação e o <style> injetado se perderia ao voltar de um
+    perfil, que era exatamente quando o bug aparecia. */
+  }
+  <style is:global>
+    #filter-drawer[open] {
+      display: flex;
+    }
+  </style>
 </BaseLayout>
