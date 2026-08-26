@@ -69,18 +69,24 @@ const description =
         {/* ── Coluna principal (70%) ───────────────────────────── */}
         <div class="space-y-6 lg:col-span-2">
           {/* 1. Hero do perfil */}
-          <div class="rounded-lg border border-gray-200/90 bg-white p-6 sm:p-7">
+          <div class="rounded-lg border border-gray-200/90 bg-white p-4 sm:p-7">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
               <div
-                class="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-meco-purple-primary/15 to-meco-green-primary/15 font-epilogue text-xl font-bold text-meco-purple-primary"
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-meco-purple-primary/15 to-meco-green-primary/15 font-epilogue text-base font-bold text-meco-purple-primary sm:h-16 sm:w-16 sm:text-xl"
               >
                 {vm.initials}
               </div>
 
               <div class="min-w-0 flex-1 space-y-2">
                 <div class="flex flex-wrap items-center gap-2">
+                  {
+                    /* Escala mobile-first. Era text-[28px] fixo: nome comprido
+                    — e a maioria aqui tem tres ou quatro partes — ocupava tres
+                    linhas numa tela de 360px e empurrava formacao e etiquetas
+                    pra fora da primeira dobra. */
+                  }
                   <h1
-                    class="font-epilogue text-[28px] leading-tight font-black text-gray-900"
+                    class="font-epilogue text-xl leading-tight font-black text-gray-900 sm:text-2xl md:text-[28px]"
                   >
                     {vm.nomeFormatado}
                   </h1>
@@ -139,7 +145,7 @@ const description =
           {/* 2. Pergunta de pesquisa em destaque */}
           {
             vm.show("bio", r.bio) && (
-              <div class="rounded-lg border border-gray-200/90 bg-white p-6 sm:p-7">
+              <div class="rounded-lg border border-gray-200/90 bg-white p-4 sm:p-7">
                 <div class="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-500 uppercase">
                   <Icon
                     name="mdi:lightbulb-outline"
@@ -148,12 +154,14 @@ const description =
                   <span>Pergunta principal de pesquisa</span>
                 </div>
 
-                <blockquote class="relative rounded-lg border-l-4 border-meco-purple-primary bg-meco-purple-bg/30 p-5">
+                <blockquote class="relative rounded-lg border-l-4 border-meco-purple-primary bg-meco-purple-bg/30 p-4 sm:p-5">
+                  {/* Aspas decorativas menores no mobile: a size-16 cobria boa
+                    parte de uma citacao curta em tela estreita. */}
                   <Icon
                     name="mdi:format-quote-close"
-                    class="pointer-events-none absolute right-3 bottom-2 size-16 text-meco-purple-primary/10"
+                    class="pointer-events-none absolute right-3 bottom-2 size-10 text-meco-purple-primary/10 sm:size-16"
                   />
-                  <p class="relative font-epilogue text-lg leading-relaxed font-medium text-gray-800 italic">
+                  <p class="relative font-epilogue text-base leading-relaxed font-medium text-gray-800 italic sm:text-lg">
                     “{r.bio}”
                   </p>
                 </blockquote>
@@ -165,7 +173,7 @@ const description =
           {
             (areasPesquisa.length > 0 ||
               vm.gruposBiologicosList.length > 0) && (
-              <div class="space-y-6 rounded-lg border border-gray-200/90 bg-white p-6">
+              <div class="space-y-6 rounded-lg border border-gray-200/90 bg-white p-4 sm:p-6">
                 {areasPesquisa.length > 0 && (
                   <div>
                     <div class="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-500 uppercase">
@@ -223,7 +231,7 @@ const description =
           {/* 4. Grade estruturada de colaboração */}
           {
             formasColaboracao.length > 0 && (
-              <div class="rounded-lg border border-gray-200/90 bg-white p-6">
+              <div class="rounded-lg border border-gray-200/90 bg-white p-4 sm:p-6">
                 <div class="mb-4 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-500 uppercase">
                   <Icon
                     name="mdi:handshake-outline"
@@ -251,7 +259,7 @@ const description =
         <div class="space-y-6">
           {/* Card de contato & instituição */}
           <div
-            class="space-y-4 rounded-lg border border-gray-200/90 bg-white p-6 lg:sticky lg:top-6"
+            class="space-y-4 rounded-lg border border-gray-200/90 bg-white p-4 sm:p-6 lg:sticky lg:top-6"
           >
             <h2
               class="border-b border-gray-100 pb-3 font-epilogue text-base font-bold text-gray-900"
