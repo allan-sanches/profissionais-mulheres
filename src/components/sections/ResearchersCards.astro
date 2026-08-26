@@ -1,0 +1,23 @@
+---
+import ResearcherCard from "@/components/blocks/ResearcherCard.astro";
+import type { CollectionEntry } from "astro:content";
+import type { ResearcherResolvers } from "@/utils/researcher-view";
+
+interface Props {
+  researchers: CollectionEntry<"researchers">[];
+  resolvers: ResearcherResolvers;
+}
+
+const { researchers, resolvers } = Astro.props;
+---
+
+<div
+  id="cards-view-container"
+  class="hidden grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+>
+  {
+    researchers.map((researcher) => (
+      <ResearcherCard researcher={researcher} {...resolvers} />
+    ))
+  }
+</div>

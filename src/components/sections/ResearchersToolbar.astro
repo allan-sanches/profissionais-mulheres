@@ -1,0 +1,132 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  ultimaSincronizacaoLabel?: string;
+}
+
+const { ultimaSincronizacaoLabel } = Astro.props;
+---
+
+<div
+  class="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center"
+>
+  <div class="flex max-w-xl flex-1 items-center gap-3">
+    <button
+      id="toggle-filters-btn"
+      type="button"
+      class="relative flex h-12 shrink-0 items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 text-base font-medium text-gray-700 transition-all hover:border-meco-purple-soft hover:bg-gray-50"
+      title="Abrir filtros (Ctrl+B)"
+      aria-pressed="false"
+      aria-expanded="false"
+      aria-controls="filter-drawer"
+    >
+      <Icon name="mdi:filter-variant" class="size-5 text-meco-purple-primary" />
+      <span>Filtros</span>
+      <span
+        id="filter-count-badge"
+        class="hidden h-5 w-5 items-center justify-center rounded-full bg-meco-purple-primary text-xs font-bold text-white"
+        >0</span
+      >
+    </button>
+
+    <div class="relative flex-1">
+      <Icon
+        name="mdi:magnify"
+        class="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-gray-500"
+      />
+      <label for="filter-search" class="sr-only">Buscar pesquisadoras</label>
+      <input
+        id="filter-search"
+        type="search"
+        class="h-12 w-full rounded-lg border border-gray-300 bg-white pr-4 pl-11 text-base transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+        placeholder="Buscar por nome ou instituição..."
+        aria-label="Buscar pesquisadoras"
+      />
+    </div>
+  </div>
+
+  <div
+    class="flex shrink-0 items-center justify-between gap-4 text-sm text-gray-500 sm:justify-end"
+  >
+    <div
+      class="flex shrink-0 items-center gap-2 text-sm font-medium text-gray-500"
+    >
+      <span
+        class="size-2 shrink-0 animate-pulse rounded-full bg-meco-green-primary"
+      ></span>
+      {
+        ultimaSincronizacaoLabel ? (
+          <span class="whitespace-nowrap">
+            Atualizado em <time>{ultimaSincronizacaoLabel}</time>
+          </span>
+        ) : (
+          "Atualizado"
+        )
+      }
+    </div>
+
+    <button
+      id="help-btn"
+      type="button"
+      class="flex shrink-0 items-center gap-2 text-sm font-medium text-meco-purple-primary transition-colors hover:text-meco-purple-deep hover:underline"
+    >
+      <Icon name="mdi:help-circle-outline" class="size-4 shrink-0" />
+      <span>Como utilizar</span>
+    </button>
+
+    <div
+      class="inline-flex h-12 shrink-0 items-center gap-1 rounded-lg border border-gray-200/80 bg-gray-100 p-1"
+    >
+      <div
+        class="inline-flex items-center gap-1"
+        role="group"
+        aria-label="Alternar visualização"
+      >
+        <button
+          id="btn-view-table"
+          type="button"
+          class="flex h-full items-center gap-2 rounded-lg px-4 text-sm leading-none font-bold transition-all"
+          aria-pressed="true"
+        >
+          <Icon
+            name="mdi:view-list"
+            class="size-5 shrink-0 text-meco-purple-primary"
+          />
+          Tabela
+        </button>
+        <button
+          id="btn-view-cards"
+          type="button"
+          class="flex h-full items-center gap-2 rounded-lg px-4 text-sm leading-none font-bold transition-all"
+          aria-pressed="false"
+        >
+          <Icon
+            name="mdi:view-grid-outline"
+            class="size-5 shrink-0 text-meco-purple-primary"
+          />
+          Cards
+        </button>
+      </div>
+
+      <span class="h-6 w-px shrink-0 bg-gray-300" aria-hidden="true"></span>
+
+      <label
+        class="flex items-center gap-1.5 pr-2 text-sm font-medium whitespace-nowrap text-gray-600"
+      >
+        <span class="sr-only">Itens por página</span>
+        <select
+          data-page-size
+          class="h-full rounded-lg border-0 bg-transparent pr-1 pl-2 text-sm font-bold focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+        >
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20" selected>20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        por página
+      </label>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<div
+  id="pagination-bar"
+  class="flex flex-col items-center justify-between gap-4 rounded-lg border border-gray-200/90 bg-white px-6 py-4 text-sm text-gray-600 sm:flex-row"
+>
+  <div class="flex items-center gap-2">
+    <span>Itens por página:</span>
+    <select
+      data-page-size
+      class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+    >
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20" selected>20</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+  </div>
+
+  <div
+    id="pagination-info"
+    class="text-gray-500"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+  </div>
+
+  <div class="flex items-center gap-1">
+    <button
+      id="page-first"
+      type="button"
+      class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+      title="Primeira página"
+      aria-label="Primeira página"
+    >
+      <Icon name="mdi:chevron-double-left" class="size-4" />
+    </button>
+    <button
+      id="page-prev"
+      type="button"
+      class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+      title="Página anterior"
+      aria-label="Página anterior"
+    >
+      <Icon name="mdi:chevron-left" class="size-4" />
+    </button>
+
+    <div id="page-buttons" class="flex items-center gap-1"></div>
+
+    <button
+      id="page-next"
+      type="button"
+      class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+      title="Próxima página"
+      aria-label="Próxima página"
+    >
+      <Icon name="mdi:chevron-right" class="size-4" />
+    </button>
+    <button
+      id="page-last"
+      type="button"
+      class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+      title="Última página"
+      aria-label="Última página"
+    >
+      <Icon name="mdi:chevron-double-right" class="size-4" />
+    </button>
+  </div>
+</div>

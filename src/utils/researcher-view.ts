@@ -177,11 +177,19 @@ export function buildResearcherView(
     "data-nome": (r.nome || "").toLowerCase(),
     // UF (ou país, quando fora do Brasil) derivada da localização livre.
     "data-regiao": parseRegion(r.localizacao)?.value ?? "",
-    // A busca da toolbar casa por nome OU instituição; pré-computar o texto
+    // A busca da toolbar casa por nome, instituição, bio e áreas; pré-computar o texto
     // combinado evita concatenar strings a cada tecla no cliente.
-    "data-busca": [r.nome, r.instituicao, r.instituicao_atual]
+    "data-busca": [
+      r.nome,
+      r.instituicao,
+      r.instituicao_atual,
+      r.bio,
+      (r.areas_pesquisa || []).join(" "),
+      (r.grupos_biologicos || []).join(" "),
+    ]
       .filter(Boolean)
       .join(" ")
+      .replace(/\s+/g, " ")
       .toLowerCase(),
   };
 

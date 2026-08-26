@@ -1,11 +1,14 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import ResearcherRow from "@/components/blocks/ResearcherRow.astro";
-import ResearcherCard from "@/components/blocks/ResearcherCard.astro";
 import FilterGroup from "@/components/blocks/FilterGroup.astro";
 import SiteNav from "@/components/layout/SiteNav.astro";
 import Footer from "@/components/layout/Footer.astro";
+import ResearchersToolbar from "@/components/sections/ResearchersToolbar.astro";
+import ResearchersTable from "@/components/sections/ResearchersTable.astro";
+import ResearchersCards from "@/components/sections/ResearchersCards.astro";
+import ResearchersPagination from "@/components/sections/ResearchersPagination.astro";
 import site from "@/config/site";
+import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import {
@@ -26,7 +29,12 @@ import {
 import { buildResearcherView } from "@/utils/researcher-view";
 
 // Fetch all researchers
-const researchers = await getCollection("researchers");
+const allResearchers = await getCollection("researchers");
+
+// Lazy-load: renderizar apenas a primeira página no HTML
+const PAGE_SIZE = 20;
+const researchers = allResearchers.slice(0, PAGE_SIZE);
+const totalResearchers = allResearchers.length;
 
 // Cada pesquisadora carrega o carimbo do sync que a gravou. O mais recente é
 // a data em que a planilha oficial foi lida pela última vez — como o site é
@@ -188,6 +196,9 @@ const description =
 ---
 
 <BaseLayout title={title} description={description}>
+  <a href="#layout-root" class="sr-only focus:not-sr-only"
+    >Pular para conteúdo principal</a
+  >
   <div class="w-full">
     <SiteNav />
 
@@ -222,19 +233,18 @@ const description =
         </div>
       </div>
 
-      <div id="layout-root">
+      <div id="layout-root" tabindex="-1">
         {/* Main content */}
         <div class="min-w-0 space-y-6">
-          {
-            /* Toolbar — botão que abre o drawer de filtros, busca por nome ou
-        instituição e alternador de visualização (tabela/cards) */
-          }
-          <div
-            class="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center"
-          >
+          <ResearchersToolbar
+            ultimaSincronizacaoLabel={ultimaSincronizacaoLabel}
+          />
+
+          {/* div original - a remover */}
+          <div style="display: none">
             <div class="flex max-w-xl flex-1 items-center gap-3">
               <button
-                id="toggle-filters-btn"
+                id="toggle-filters-btn-old"
                 type="button"
                 class="relative flex h-12 shrink-0 items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 text-base font-medium text-gray-700 transition-all hover:border-meco-purple-soft hover:bg-gray-50"
                 title="Abrir filtros (Ctrl+B)"
@@ -259,11 +269,15 @@ const description =
                   name="mdi:magnify"
                   class="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-gray-500"
                 />
+                <label for="filter-search" class="sr-only"
+                  >Buscar pesquisadoras</label
+                >
                 <input
                   id="filter-search"
                   type="search"
                   class="h-12 w-full rounded-lg border border-gray-300 bg-white pr-4 pl-11 text-base transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
                   placeholder="Buscar por nome ou instituição..."
+                  aria-label="Buscar pesquisadoras"
                 />
               </div>
             </div>
@@ -300,8 +314,8 @@ const description =
                 type="button"
                 class="flex shrink-0 items-center gap-2 text-sm font-medium text-meco-purple-primary transition-colors hover:text-meco-purple-deep hover:underline"
               >
-                <Icon name="mdi:help-circle-outline" class="size-5 shrink-0" />
-                <span>Como utilizar</span>
+                <Icon name="mdi:help-circle-outline" class="size-4 shrink-0" />
+                <span class="self-center">Como utilizar</span>
               </button>
 
               <div
@@ -369,176 +383,22 @@ const description =
             id="active-filter-chips"
             class="hidden flex-wrap items-center gap-2"
             aria-live="polite"
+            aria-atomic="true"
           >
           </div>
-
-          {/* Visão 1 — Tabela Clean Data Grid */}
-          <div
-            id="table-view-container"
-            class="overflow-hidden rounded-lg border border-gray-200/90 bg-white"
+          <button
+            id="clear-filters-btn"
+            type="button"
+            class="hidden text-sm font-medium text-meco-purple-primary transition-colors hover:text-meco-purple-deep hover:underline"
           >
-            <div class="overflow-x-auto">
-              <table
-                id="researchers-table"
-                class="w-full table-fixed border-collapse text-left"
-              >
-                {
-                  /* table-fixed + larguras percentuais desde o HTML. Sem isso o
-                layout automatico usa o min-content das celulas, e como elas
-                truncam (white-space: nowrap) o min-content e o texto inteiro:
-                nomes longos de universidade esticavam a coluna e a truncagem
-                nunca acontecia. Estas sao tambem as larguras do duplo clique
-                pra redefinir. */
-                }
-                <colgroup>
-                  <col data-col="pesquisadora" style="width: 22%" />
-                  <col data-col="instituicao" style="width: 25%" />
-                  <col data-col="formacao" style="width: 23%" />
-                  <col data-col="localizacao" style="width: 18%" />
-                  <col data-col="perfil" style="width: 12%" />
-                </colgroup>
-                <thead>
-                  <tr
-                    class="bg-meco-purple-primary text-sm font-bold tracking-wider text-white uppercase"
-                  >
-                    <th class="relative px-6 py-4">
-                      Pesquisadora
-                      <span
-                        class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
-                        data-resize-col="0"
-                        title="Arraste para redimensionar (duplo clique redefine todas)"
-                      >
-                        <span
-                          class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
-                        ></span>
-                      </span>
-                    </th>
-                    <th class="relative px-4 py-4">
-                      Instituição
-                      <span
-                        class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
-                        data-resize-col="1"
-                        title="Arraste para redimensionar (duplo clique redefine todas)"
-                      >
-                        <span
-                          class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
-                        ></span>
-                      </span>
-                    </th>
-                    <th class="relative px-4 py-4">
-                      Formação
-                      <span
-                        class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
-                        data-resize-col="2"
-                        title="Arraste para redimensionar (duplo clique redefine todas)"
-                      >
-                        <span
-                          class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
-                        ></span>
-                      </span>
-                    </th>
-                    <th class="relative px-4 py-4">
-                      Localização
-                      <span
-                        class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
-                        data-resize-col="3"
-                        title="Arraste para redimensionar (duplo clique redefine todas)"
-                      >
-                        <span
-                          class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
-                        ></span>
-                      </span>
-                    </th>
-                    <th class="px-4 py-4">Perfil &amp; Atuação</th>
-                  </tr>
-                </thead>
-                <tbody id="researchers-container" class="text-sm">
-                  {
-                    researchers.map((researcher: any) => (
-                      <ResearcherRow researcher={researcher} {...resolvers} />
-                    ))
-                  }
-                </tbody>
-              </table>
-            </div>
-          </div>
+            Limpar filtros
+          </button>
 
-          {/* Visão 2 — Grade de Cards de Perfil */}
-          <div
-            id="cards-view-container"
-            class="hidden grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {
-              researchers.map((researcher: any) => (
-                <ResearcherCard researcher={researcher} {...resolvers} />
-              ))
-            }
-          </div>
+          <ResearchersTable researchers={researchers} resolvers={resolvers} />
 
-          {/* Pagination */}
-          <div
-            id="pagination-bar"
-            class="flex flex-col items-center justify-between gap-4 rounded-lg border border-gray-200/90 bg-white px-6 py-4 text-sm text-gray-600 sm:flex-row"
-          >
-            <div class="flex items-center gap-2">
-              <span>Itens por página:</span>
-              <select
-                data-page-size
-                class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
-              >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20" selected>20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-            </div>
+          <ResearchersCards researchers={researchers} resolvers={resolvers} />
 
-            <div id="pagination-info" class="text-gray-500"></div>
-
-            <div class="flex items-center gap-1">
-              <button
-                id="page-first"
-                type="button"
-                class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
-                title="Primeira página"
-                aria-label="Primeira página"
-              >
-                <Icon name="mdi:page-first" class="size-5" />
-              </button>
-              <button
-                id="page-prev"
-                type="button"
-                class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
-                title="Página anterior"
-                aria-label="Página anterior"
-              >
-                <Icon name="mdi:chevron-left" class="size-5" />
-              </button>
-              <span
-                id="page-indicator"
-                class="px-3 text-sm font-semibold whitespace-nowrap text-gray-700"
-              ></span>
-              <button
-                id="page-next"
-                type="button"
-                class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
-                title="Próxima página"
-                aria-label="Próxima página"
-              >
-                <Icon name="mdi:chevron-right" class="size-5" />
-              </button>
-              <button
-                id="page-last"
-                type="button"
-                class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
-                title="Última página"
-                aria-label="Última página"
-              >
-                <Icon name="mdi:page-last" class="size-5" />
-              </button>
-            </div>
-          </div>
+          <ResearchersPagination />
 
           {/* Empty State */}
           <div
@@ -652,205 +512,161 @@ const description =
   </div>
 
   {/* ── Drawer de filtros (off-canvas) ───────────────────────────── */}
-  <div
+  <dialog
     id="filter-drawer"
-    class="fixed inset-0 z-50 hidden overflow-hidden"
-    role="dialog"
-    aria-modal="true"
+    class="m-0 flex max-h-screen w-screen max-w-md flex-col rounded-none backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm"
     aria-labelledby="filter-drawer-title"
   >
     <div
-      id="filter-drawer-backdrop"
-      class="absolute inset-0 bg-slate-900/40 opacity-0 backdrop-blur-sm transition-opacity duration-200"
+      class="pointer-events-auto flex h-screen max-h-screen flex-col bg-white"
     >
-    </div>
-
-    <div
-      class="pointer-events-none fixed inset-y-0 left-0 flex max-w-full pr-10"
-    >
+      {/* Header */}
       <div
-        id="filter-drawer-panel"
-        class="pointer-events-auto flex w-screen max-w-md -translate-x-full flex-col bg-white shadow-lg transition-transform duration-200 ease-out"
+        class="flex shrink-0 items-center justify-between bg-meco-purple-primary px-6 py-5 text-white"
       >
-        {/* Header */}
-        <div
-          class="flex shrink-0 items-center justify-between bg-meco-purple-primary px-6 py-5 text-white"
+        <div class="flex items-center gap-2">
+          <Icon name="mdi:tune-variant" class="size-5 text-white" />
+          <h2 id="filter-drawer-title" class="font-epilogue text-lg font-bold">
+            Filtrar Pesquisadoras
+          </h2>
+          <span
+            id="filter-active-count"
+            class="hidden h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-[10px] font-bold text-meco-purple-primary"
+            >0</span
+          >
+        </div>
+        <button
+          id="filter-drawer-close"
+          type="button"
+          class="rounded-lg p-1 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
+          aria-label="Fechar filtros"
         >
-          <div class="flex items-center gap-2">
-            <Icon name="mdi:tune-variant" class="size-5 text-white" />
-            <h2
-              id="filter-drawer-title"
-              class="font-epilogue text-lg font-bold"
-            >
-              Filtrar Pesquisadoras
-            </h2>
-            <span
-              id="filter-active-count"
-              class="hidden h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-[10px] font-bold text-meco-purple-primary"
-              >0</span
-            >
-          </div>
+          <Icon name="mdi:close" class="size-5" />
+        </button>
+      </div>
+
+      {/* Body */}
+      <div class="flex-1 overflow-y-auto px-6 py-4">
+        <div class="mb-1 flex justify-end">
           <button
-            id="filter-drawer-close"
+            id="filter-clear-all"
             type="button"
-            class="rounded-lg p-1 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
-            aria-label="Fechar filtros"
+            class="text-xs text-gray-500 transition-colors hover:text-red-600"
           >
-            <Icon name="mdi:close" class="size-5" />
+            Limpar todos os filtros
           </button>
         </div>
 
-        {/* Body */}
-        <div class="flex-1 overflow-y-auto px-6 py-4">
-          <div class="mb-1 flex justify-end">
-            <button
-              id="filter-clear-all"
-              type="button"
-              class="text-xs text-gray-500 transition-colors hover:text-red-600"
-            >
-              Limpar todos os filtros
-            </button>
-          </div>
+        <FilterGroup
+          title="Identidade de gênero"
+          name="identidade"
+          options={identidadeOptions}
+          open
+        />
+        <FilterGroup title="Raça/cor" name="raca" options={racaOptions} />
+        <FilterGroup
+          title="Nível de formação"
+          name="nivel-formacao"
+          options={nivelFormacaoOptions}
+        />
+        <FilterGroup
+          title="Grupo biológico"
+          name="grupos-biologicos"
+          options={gruposBiologicosOptions}
+        />
+        <FilterGroup
+          title="Localização (UF / país)"
+          name="regiao"
+          options={regiaoOptions}
+        />
+        <FilterGroup
+          title="Instituição atual"
+          name="instituicao-atual"
+          options={instituicaoAtualOptions}
+        />
+        <FilterGroup
+          title="Área de pesquisa"
+          name="areas-pesquisa"
+          options={areasPesquisaOptions}
+        />
+        <FilterGroup
+          title="LGBTQIAP+"
+          name="lgbtqiap"
+          options={lgbtqiapOptions}
+        />
+        <FilterGroup title="PCD" name="pcd" options={pcdOptions} />
+        <FilterGroup
+          title="Grupo tradicional"
+          name="grupo-tradicional"
+          options={grupoTradicionalOptions}
+        />
+        <FilterGroup
+          title="Trabalho atual"
+          name="trabalho-atual"
+          options={trabalhoAtualOptions}
+        />
+        <FilterGroup
+          title="Aceita palestra"
+          name="aceita-palestras"
+          options={aceitaPalestrasOptions}
+        />
+      </div>
 
-          <FilterGroup
-            title="Identidade de gênero"
-            name="identidade"
-            options={identidadeOptions}
-            open
-          />
-          <FilterGroup title="Raça/cor" name="raca" options={racaOptions} />
-          <FilterGroup
-            title="Nível de formação"
-            name="nivel-formacao"
-            options={nivelFormacaoOptions}
-          />
-          <FilterGroup
-            title="Grupo biológico"
-            name="grupos-biologicos"
-            options={gruposBiologicosOptions}
-          />
-          <FilterGroup
-            title="Localização (UF / país)"
-            name="regiao"
-            options={regiaoOptions}
-          />
-          <FilterGroup
-            title="Instituição atual"
-            name="instituicao-atual"
-            options={instituicaoAtualOptions}
-          />
-          <FilterGroup
-            title="Área de pesquisa"
-            name="areas-pesquisa"
-            options={areasPesquisaOptions}
-          />
-          <FilterGroup
-            title="LGBTQIAP+"
-            name="lgbtqiap"
-            options={lgbtqiapOptions}
-          />
-          <FilterGroup title="PCD" name="pcd" options={pcdOptions} />
-          <FilterGroup
-            title="Grupo tradicional"
-            name="grupo-tradicional"
-            options={grupoTradicionalOptions}
-          />
-          <FilterGroup
-            title="Trabalho atual"
-            name="trabalho-atual"
-            options={trabalhoAtualOptions}
-          />
-          <FilterGroup
-            title="Aceita palestra"
-            name="aceita-palestras"
-            options={aceitaPalestrasOptions}
-          />
-        </div>
-
-        {/* Footer */}
-        <div
-          class="flex shrink-0 items-center gap-3 border-t border-gray-200 bg-gray-50 p-6"
+      {/* Footer */}
+      <div
+        class="flex shrink-0 items-center gap-3 border-t border-gray-200 bg-gray-50 p-6"
+      >
+        <button
+          id="filter-apply"
+          type="button"
+          class="w-full rounded-lg bg-meco-purple-primary px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-meco-purple-deep"
         >
-          <button
-            id="filter-apply"
-            type="button"
-            class="w-full rounded-lg bg-meco-purple-primary px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-meco-purple-deep"
-          >
-            Aplicar Filtros
-          </button>
-          <button
-            id="filter-clear"
-            type="button"
-            class="shrink-0 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100"
-          >
-            Limpar
-          </button>
-        </div>
+          Aplicar Filtros
+        </button>
+        <button
+          id="filter-clear"
+          type="button"
+          class="shrink-0 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100"
+        >
+          Limpar
+        </button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <script>
     // Drawer de filtros off-canvas: desliza da esquerda sobre a página, com
     // backdrop desfocado. Fica sempre fora do fluxo, então abrir/fechar nunca
     // reflui a tabela — a listagem ocupa a largura toda o tempo inteiro.
-    const drawer = document.getElementById("filter-drawer");
-    const drawerPanel = document.getElementById("filter-drawer-panel");
-    const drawerBackdrop = document.getElementById("filter-drawer-backdrop");
+    const drawer = document.getElementById(
+      "filter-drawer",
+    ) as HTMLDialogElement | null;
     const drawerCloseBtn = document.getElementById("filter-drawer-close");
     const toggleBtn = document.getElementById("toggle-filters-btn");
 
-    let drawerOpen = false;
-
-    function openDrawer() {
-      if (!drawer || drawerOpen) return;
-      drawerOpen = true;
-      drawer.classList.remove("hidden");
-      // Um frame com o painel ainda deslocado antes de animar, senão o
-      // browser aplica o estado final sem transição.
-      requestAnimationFrame(() => {
-        drawerPanel?.classList.remove("-translate-x-full");
-        drawerBackdrop?.classList.remove("opacity-0");
-      });
-      document.body.style.overflow = "hidden";
-      toggleBtn?.setAttribute("aria-expanded", "true");
-      toggleBtn?.setAttribute("aria-pressed", "true");
-      drawerCloseBtn?.focus();
-    }
-
-    function closeDrawer() {
-      if (!drawer || !drawerOpen) return;
-      drawerOpen = false;
-      drawerPanel?.classList.add("-translate-x-full");
-      drawerBackdrop?.classList.add("opacity-0");
-      document.body.style.overflow = "";
-      toggleBtn?.setAttribute("aria-expanded", "false");
-      toggleBtn?.setAttribute("aria-pressed", "false");
-      // Só esconde de fato depois da animação de saída.
-      window.setTimeout(() => {
-        if (!drawerOpen) drawer.classList.add("hidden");
-      }, 200);
-      toggleBtn?.focus();
-    }
-
-    toggleBtn?.addEventListener("click", () =>
-      drawerOpen ? closeDrawer() : openDrawer(),
-    );
-    drawerCloseBtn?.addEventListener("click", closeDrawer);
-    drawerBackdrop?.addEventListener("click", closeDrawer);
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && drawerOpen) {
-        e.preventDefault();
-        closeDrawer();
-        return;
+    toggleBtn?.addEventListener("click", () => {
+      if (drawer?.open) {
+        drawer.close();
+      } else {
+        drawer?.showModal();
       }
-      // Ctrl/Cmd+B alterna o drawer.
+    });
+
+    drawerCloseBtn?.addEventListener("click", () => drawer?.close());
+
+    // Clique no backdrop fecha o dialog (nativo)
+    drawer?.addEventListener("click", (e) => {
+      if (e.target === drawer) drawer.close();
+    });
+
+    // Ctrl/Cmd+B alterna
+    window.addEventListener("keydown", (e) => {
       if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "b") return;
       const tag = (e.target as HTMLElement | null)?.tagName ?? "";
       if (tag === "INPUT" || tag === "TEXTAREA") return;
       e.preventDefault();
-      drawerOpen ? closeDrawer() : openDrawer();
+      if (drawer?.open) drawer.close();
+      else drawer?.showModal();
     });
 
     // Acordeão: só uma categoria de filtro fica aberta por vez, pra não
@@ -1403,7 +1219,119 @@ const description =
       if (e.target === helpDialog) helpDialog.close();
     });
 
+    // ── Table Sorting ────────────────────────────────────────────────
+    const tableHeaders = table?.querySelectorAll<HTMLElement>("thead th");
+    let currentSort = { col: -1, asc: true };
+
+    tableHeaders?.forEach((th, index) => {
+      if (index === tableHeaders.length - 1) return; // Pular última coluna
+      th.style.cursor = "pointer";
+      th.setAttribute("aria-sort", "none");
+      th.addEventListener("click", () => {
+        const rows = Array.from(
+          table!.querySelectorAll<HTMLTableRowElement>("tbody tr"),
+        );
+        const isAsc = currentSort.col === index ? !currentSort.asc : true;
+
+        rows.sort((a, b) => {
+          const aVal = a.children[index].textContent?.toLowerCase() || "";
+          const bVal = b.children[index].textContent?.toLowerCase() || "";
+          return isAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+        });
+
+        rows.forEach((row) => table!.querySelector("tbody")!.appendChild(row));
+        currentSort = { col: index, asc: isAsc };
+        tableHeaders.forEach((h, i) => {
+          h.setAttribute(
+            "aria-sort",
+            i === index ? (isAsc ? "ascending" : "descending") : "none",
+          );
+        });
+      });
+    });
+
+    // ── Botão "Limpar filtros" ──────────────────────────────────────
+    const clearFiltersBtn = document.getElementById("clear-filters-btn");
+    const updateClearBtnVisibility = () => {
+      const hasFilters =
+        (
+          document.getElementById("filter-search") as HTMLInputElement
+        )?.value.trim() !== "";
+      if (hasFilters) {
+        clearFiltersBtn?.classList.remove("hidden");
+      } else {
+        clearFiltersBtn?.classList.add("hidden");
+      }
+    };
+    clearFiltersBtn?.addEventListener("click", () => {
+      // Uncheck all checkboxes
+      document
+        .querySelectorAll<HTMLInputElement>("input[type='checkbox']")
+        .forEach((cb) => {
+          cb.checked = false;
+        });
+      // Clear search
+      const searchInput = document.getElementById(
+        "filter-search",
+      ) as HTMLInputElement;
+      if (searchInput) searchInput.value = "";
+      // Re-filter
+      filterResearchers();
+      updateClearBtnVisibility();
+      updateURL();
+    });
+    document
+      .getElementById("filter-search")
+      ?.addEventListener("input", updateClearBtnVisibility);
+    updateClearBtnVisibility();
+
+    // ── URL Query Parameters ────────────────────────────────────────
+    const updateURL = () => {
+      const params = new URLSearchParams();
+      const searchVal = (
+        document.getElementById("filter-search") as HTMLInputElement
+      )?.value;
+      const pageVal = currentPage;
+      if (searchVal) params.set("q", searchVal);
+      if (pageVal > 1) params.set("page", String(pageVal));
+      const newURL = params.toString()
+        ? `?${params.toString()}`
+        : location.pathname;
+      window.history.replaceState({}, "", newURL);
+    };
+
+    // Restaurar state da URL
+    const urlParams = new URLSearchParams(location.search);
+    const initialSearch = urlParams.get("q");
+    const initialPage = parseInt(urlParams.get("page") || "1");
+    if (initialSearch) {
+      (document.getElementById("filter-search") as HTMLInputElement).value =
+        initialSearch;
+      currentPage = initialPage;
+    }
+
+    // Atualizar URL quando filtros mudam
+    document.getElementById("filter-search")?.addEventListener("input", () => {
+      currentPage = 1;
+      filterResearchers();
+      updateURL();
+    });
+
+    // ── Lazy-load de dados adicionais ────────────────────────────────
+    const loadPageData = async (pageNum: number, pageSz: number) => {
+      try {
+        const res = await fetch(
+          `/api/researchers.json?page=${pageNum}&pageSize=${pageSz}`,
+        );
+        if (!res.ok) return null;
+        return await res.json();
+      } catch {
+        return null;
+      }
+    };
+
     // Estado inicial: sem filtros aplicados ainda mostra a 1ª página de todas.
     filterResearchers();
+    updateURL();
   </script>
 </BaseLayout>

@@ -1,0 +1,94 @@
+---
+import ResearcherRow from "@/components/blocks/ResearcherRow.astro";
+import type { CollectionEntry } from "astro:content";
+import type { ResearcherResolvers } from "@/utils/researcher-view";
+
+interface Props {
+  researchers: CollectionEntry<"researchers">[];
+  resolvers: ResearcherResolvers;
+}
+
+const { researchers, resolvers } = Astro.props;
+---
+
+<div
+  id="table-view-container"
+  class="overflow-hidden rounded-lg border border-gray-200/90 bg-white"
+>
+  <div class="overflow-x-auto">
+    <table
+      id="researchers-table"
+      class="w-full table-fixed border-collapse text-left"
+    >
+      <colgroup>
+        <col data-col="pesquisadora" style="width: 22%" />
+        <col data-col="instituicao" style="width: 25%" />
+        <col data-col="formacao" style="width: 23%" />
+        <col data-col="localizacao" style="width: 18%" />
+        <col data-col="perfil" style="width: 12%" />
+      </colgroup>
+      <thead>
+        <tr
+          class="bg-meco-purple-primary text-sm font-bold tracking-wider text-white uppercase"
+        >
+          <th scope="col" class="relative px-6 py-4">
+            Pesquisadora
+            <span
+              class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+              data-resize-col="0"
+              title="Arraste para redimensionar (duplo clique redefine todas)"
+            >
+              <span
+                class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
+              ></span>
+            </span>
+          </th>
+          <th scope="col" class="relative px-4 py-4">
+            Instituição
+            <span
+              class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+              data-resize-col="1"
+              title="Arraste para redimensionar (duplo clique redefine todas)"
+            >
+              <span
+                class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
+              ></span>
+            </span>
+          </th>
+          <th scope="col" class="relative px-4 py-4">
+            Formação
+            <span
+              class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+              data-resize-col="2"
+              title="Arraste para redimensionar (duplo clique redefine todas)"
+            >
+              <span
+                class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
+              ></span>
+            </span>
+          </th>
+          <th scope="col" class="relative px-4 py-4">
+            Localização
+            <span
+              class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+              data-resize-col="3"
+              title="Arraste para redimensionar (duplo clique redefine todas)"
+            >
+              <span
+                class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
+              ></span>
+            </span>
+          </th>
+          <th scope="col" class="px-4 py-4">Perfil &amp; Atuação</th>
+        </tr>
+      </thead>
+      <tbody id="researchers-container" class="text-sm">
+        {
+          researchers.map((researcher) => (
+            <ResearcherRow researcher={researcher} {...resolvers} />
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
