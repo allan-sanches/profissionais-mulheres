@@ -182,7 +182,7 @@ const regiaoOptions = [...regiaoCounts.entries()]
   }))
   .sort((a, b) => compareRegions(a, b));
 
-const title = "Pesquisadoras — Mulheres na Ecologia";
+const title = "Pesquisadoras";
 const description =
   "O Mulheres na Ecologia é um projeto de comunicação e divulgação científica que promove e fortalece a atuação de mulheres na ecologia no Brasil, ampliando a visibilidade de suas trajetórias e pesquisas. Ao traduzir o conhecimento científico para diferentes públicos, o projeto fortalece o diálogo entre a ciência ecológica e a sociedade brasileira.";
 ---
@@ -194,11 +194,11 @@ const description =
     <div class="mx-auto w-full max-w-[1800px] space-y-6 px-4 pb-6 md:px-8">
       {/* Header */}
       <div
-        class="relative grid gap-8 rounded-lg bg-gray-100 p-8 sm:p-12 lg:grid-cols-2 lg:items-center lg:gap-12"
+        class="relative grid gap-12 rounded-lg bg-gray-100 p-12 sm:p-16 lg:grid-cols-2 lg:items-center lg:gap-16"
       >
-        <div>
+        <div class="space-y-10">
           <h1
-            class="font-epilogue text-4xl font-black tracking-tight text-gray-900 sm:text-5xl md:text-6xl"
+            class="font-epilogue text-5xl leading-tight font-black tracking-tight text-gray-900 sm:text-6xl md:text-7xl"
           >
             {title}
           </h1>
@@ -206,7 +206,7 @@ const description =
             /* max-w-prose mantem a linha em ~65 caracteres: texto corrido na
             largura inteira de 1800px fica ilegivel. */
           }
-          <p class="mt-4 text-base leading-relaxed text-gray-600">
+          <p class="text-base leading-relaxed text-gray-600">
             {description}
           </p>
         </div>
@@ -298,13 +298,10 @@ const description =
               <button
                 id="help-btn"
                 type="button"
-                class="flex shrink-0 items-center gap-2 text-sm leading-none font-medium text-meco-purple-primary transition-colors hover:text-meco-purple-deep hover:underline"
+                class="flex shrink-0 items-center gap-2 text-sm font-medium text-meco-purple-primary transition-colors hover:text-meco-purple-deep hover:underline"
               >
-                <Icon
-                  name="mdi:help-circle-outline"
-                  class="size-5 shrink-0 self-center"
-                />
-                <span class="leading-none">Como utilizar</span>
+                <Icon name="mdi:help-circle-outline" class="size-5 shrink-0" />
+                <span>Como utilizar</span>
               </button>
 
               <div
