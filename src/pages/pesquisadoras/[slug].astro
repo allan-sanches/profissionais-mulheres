@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import SiteNav from "@/components/layout/SiteNav.astro";
 import Footer from "@/components/layout/Footer.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
@@ -51,306 +52,301 @@ const description =
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="mx-auto w-full max-w-7xl space-y-6 px-4 py-8 md:px-8">
-    <a
-      href="/"
-      class="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-600 shadow-sm transition-colors hover:text-meco-purple-deep"
-    >
-      <Icon name="mdi:arrow-left" class="size-3.5" />
-      Voltar para a busca de pesquisadoras
-    </a>
+  <div class="w-full">
+    <SiteNav />
 
-    {/* Layout assimétrico: 70% conteúdo principal / 30% sidebar */}
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-      {/* ── Coluna principal (70%) ───────────────────────────── */}
-      <div class="space-y-6 lg:col-span-2">
-        {/* 1. Hero do perfil */}
-        <div
-          class="rounded-2xl border border-gray-200/90 bg-white p-6 shadow-sm sm:p-7"
-        >
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
-            <div
-              class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-meco-purple-primary/15 to-meco-green-primary/15 font-epilogue text-xl font-bold text-meco-purple-primary"
-            >
-              {vm.initials}
-            </div>
+    <div class="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 md:px-8">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-600 transition-colors hover:text-meco-purple-deep"
+      >
+        <Icon name="mdi:arrow-left" class="size-3.5" />
+        Voltar para a busca de pesquisadoras
+      </a>
 
-            <div class="min-w-0 flex-1 space-y-2">
-              <div class="flex flex-wrap items-center gap-2">
-                <h1
-                  class="font-epilogue text-[28px] leading-tight font-black text-gray-900"
-                >
-                  {vm.nomeFormatado}
-                </h1>
+      {/* Layout assimétrico: 70% conteúdo principal / 30% sidebar */}
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* ── Coluna principal (70%) ───────────────────────────── */}
+        <div class="space-y-6 lg:col-span-2">
+          {/* 1. Hero do perfil */}
+          <div class="rounded-lg border border-gray-200/90 bg-white p-6 sm:p-7">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+              <div
+                class="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-meco-purple-primary/15 to-meco-green-primary/15 font-epilogue text-xl font-bold text-meco-purple-primary"
+              >
+                {vm.initials}
+              </div>
+
+              <div class="min-w-0 flex-1 space-y-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h1
+                    class="font-epilogue text-[28px] leading-tight font-black text-gray-900"
+                  >
+                    {vm.nomeFormatado}
+                  </h1>
+                  {
+                    r.nivel_formacao && (
+                      <span class="rounded-full border border-meco-purple-soft/50 bg-meco-purple-bg px-2.5 py-0.5 text-xs font-bold text-meco-purple-deep">
+                        {NIVEL_LABELS[r.nivel_formacao]}
+                      </span>
+                    )
+                  }
+                </div>
+
                 {
-                  r.nivel_formacao && (
-                    <span class="rounded-full border border-meco-purple-soft/50 bg-meco-purple-bg px-2.5 py-0.5 text-xs font-bold text-meco-purple-deep">
-                      {NIVEL_LABELS[r.nivel_formacao]}
-                    </span>
+                  vm.show("formacao", r.formacao) && (
+                    <p class="text-sm font-medium text-gray-600">
+                      {r.formacao}
+                      {vm.instituicaoFormatada && (
+                        <>
+                          {" – "}
+                          <strong class="text-gray-800">
+                            {vm.instituicaoFormatada}
+                          </strong>
+                        </>
+                      )}
+                    </p>
+                  )
+                }
+
+                {/* Badges identitárias */}
+                {
+                  vm.badges.length > 0 && (
+                    <div class="flex flex-wrap gap-2 pt-1">
+                      {vm.localizacaoFormatada && (
+                        <span
+                          class={`${PILL_BASE} ${CATEGORY_BADGE.localizacao.color}`}
+                        >
+                          {vm.localizacaoFormatada}
+                        </span>
+                      )}
+                      {vm.badges
+                        .filter((b) => b.key !== "grupoBiologico")
+                        .map((badge) => (
+                          <span
+                            class={`${PILL_BASE} ${CATEGORY_BADGE[badge.key].color}`}
+                          >
+                            {badge.label}
+                          </span>
+                        ))}
+                    </div>
                   )
                 }
               </div>
+            </div>
+          </div>
 
-              {
-                vm.show("formacao", r.formacao) && (
-                  <p class="text-sm font-medium text-gray-600">
-                    {r.formacao}
-                    {vm.instituicaoFormatada && (
-                      <>
-                        {" – "}
-                        <strong class="text-gray-800">
-                          {vm.instituicaoFormatada}
-                        </strong>
-                      </>
-                    )}
+          {/* 2. Pergunta de pesquisa em destaque */}
+          {
+            vm.show("bio", r.bio) && (
+              <div class="rounded-lg border border-gray-200/90 bg-white p-6 sm:p-7">
+                <div class="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
+                  <Icon
+                    name="mdi:lightbulb-outline"
+                    class="size-4 text-meco-purple-primary"
+                  />
+                  <span>Pergunta principal de pesquisa</span>
+                </div>
+
+                <blockquote class="relative rounded-lg border-l-4 border-meco-purple-primary bg-meco-purple-bg/30 p-5">
+                  <Icon
+                    name="mdi:format-quote-close"
+                    class="pointer-events-none absolute right-3 bottom-2 size-16 text-meco-purple-primary/10"
+                  />
+                  <p class="relative font-epilogue text-lg leading-relaxed font-medium text-gray-800 italic">
+                    “{r.bio}”
                   </p>
-                )
-              }
+                </blockquote>
+              </div>
+            )
+          }
 
-              {/* Badges identitárias */}
-              {
-                vm.badges.length > 0 && (
-                  <div class="flex flex-wrap gap-2 pt-1">
-                    {vm.localizacaoFormatada && (
-                      <span
-                        class={`${PILL_BASE} ${CATEGORY_BADGE.localizacao.color}`}
-                      >
-                        <Icon
-                          name={CATEGORY_BADGE.localizacao.icon}
-                          class="size-3 text-meco-purple-primary"
-                        />
-                        {vm.localizacaoFormatada}
-                      </span>
-                    )}
-                    {vm.badges
-                      .filter((b) => b.key !== "grupoBiologico")
-                      .map((badge) => (
-                        <span
-                          class={`${PILL_BASE} ${CATEGORY_BADGE[badge.key].color}`}
-                        >
+          {/* 3. Áreas de pesquisa & grupos biológicos */}
+          {
+            (areasPesquisa.length > 0 ||
+              vm.gruposBiologicosList.length > 0) && (
+              <div class="space-y-6 rounded-lg border border-gray-200/90 bg-white p-6">
+                {areasPesquisa.length > 0 && (
+                  <div>
+                    <div class="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
+                      <Icon
+                        name="mdi:flask-outline"
+                        class="size-4 text-meco-green-primary"
+                      />
+                      <span>Áreas de atuação na pesquisa</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      {areasPesquisa.map((area) => (
+                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-meco-green-soft/60 bg-meco-green-bg/70 px-3 py-1.5 text-xs font-semibold text-meco-green-dark">
                           <Icon
-                            name={CATEGORY_BADGE[badge.key].icon}
-                            class="size-3"
+                            name="mdi:leaf"
+                            class="size-3 text-meco-green-primary"
                           />
-                          {badge.label}
+                          {area}
                         </span>
                       ))}
+                    </div>
+                  </div>
+                )}
+
+                {areasPesquisa.length > 0 &&
+                  vm.gruposBiologicosList.length > 0 && (
+                    <hr class="border-gray-100" />
+                  )}
+
+                {vm.gruposBiologicosList.length > 0 && (
+                  <div>
+                    <div class="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
+                      <Icon
+                        name="mdi:paw-outline"
+                        class="size-4 text-meco-green-dark"
+                      />
+                      <span>Grupos biológicos e táxons</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      {vm.gruposBiologicosList.map((grupo) => (
+                        <span class="inline-flex items-center gap-1.5 rounded-lg border border-meco-green-soft/60 bg-meco-green-bg px-3.5 py-1.5 text-xs font-bold text-meco-green-dark">
+                          <Icon
+                            name="mdi:paw-outline"
+                            class="size-3 text-meco-green-primary"
+                          />
+                          {grupo}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          }
+
+          {/* 4. Grade estruturada de colaboração */}
+          {
+            formasColaboracao.length > 0 && (
+              <div class="rounded-lg border border-gray-200/90 bg-white p-6">
+                <div class="mb-4 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
+                  <Icon
+                    name="mdi:handshake-outline"
+                    class="size-4 text-meco-purple-primary"
+                  />
+                  <span>Formas de colaboração oferecidas</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {formasColaboracao.map((forma) => (
+                    <div class="flex items-center gap-3 rounded-lg border border-gray-200/80 bg-gray-50 p-3 text-xs font-medium text-gray-700">
+                      <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-meco-purple-bg text-meco-purple-deep">
+                        <Icon name={colaboracaoIcon(forma)} class="size-3.5" />
+                      </span>
+                      <span>{forma}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+        </div>
+
+        {/* ── Sidebar (30%) ────────────────────────────────────── */}
+        <div class="space-y-6">
+          {/* Card de contato & instituição */}
+          <div
+            class="space-y-4 rounded-lg border border-gray-200/90 bg-white p-6 lg:sticky lg:top-6"
+          >
+            <h2
+              class="border-b border-gray-100 pb-3 font-epilogue text-base font-bold text-gray-900"
+            >
+              Contato &amp; instituição
+            </h2>
+
+            <div class="space-y-4 text-sm">
+              {
+                (trabalhoAtual || instituicaoAtualFormatada) && (
+                  <div>
+                    <p class="text-gray-400">Atuação atual:</p>
+                    {trabalhoAtual && (
+                      <p class="font-semibold text-gray-800">{trabalhoAtual}</p>
+                    )}
+                    {instituicaoAtualFormatada && (
+                      <p class="font-semibold text-gray-800">
+                        {instituicaoAtualFormatada}
+                      </p>
+                    )}
+                  </div>
+                )
+              }
+
+              {
+                vm.instituicaoFormatada && (
+                  <div>
+                    <p class="text-gray-400">Instituição vinculada:</p>
+                    <p class="font-semibold text-gray-800">
+                      {vm.instituicaoFormatada}
+                    </p>
+                  </div>
+                )
+              }
+
+              {
+                vm.localizacaoFormatada && (
+                  <div>
+                    <p class="text-gray-400">Local de atuação:</p>
+                    <p class="flex items-center gap-1.5 font-semibold text-gray-800">
+                      <Icon
+                        name="mdi:map-marker-outline"
+                        class="size-4 shrink-0 text-meco-purple-primary"
+                      />
+                      {vm.localizacaoFormatada}
+                    </p>
                   </div>
                 )
               }
             </div>
-          </div>
-        </div>
 
-        {/* 2. Pergunta de pesquisa em destaque */}
-        {
-          vm.show("bio", r.bio) && (
-            <div class="rounded-2xl border border-gray-200/90 bg-white p-6 shadow-sm sm:p-7">
-              <div class="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
-                <Icon
-                  name="mdi:lightbulb-outline"
-                  class="size-4 text-meco-purple-primary"
-                />
-                <span>Pergunta principal de pesquisa</span>
-              </div>
-
-              <blockquote class="relative rounded-xl border-l-4 border-meco-purple-primary bg-meco-purple-bg/30 p-5">
-                <Icon
-                  name="mdi:format-quote-close"
-                  class="pointer-events-none absolute right-3 bottom-2 size-16 text-meco-purple-primary/10"
-                />
-                <p class="relative font-epilogue text-lg leading-relaxed font-medium text-gray-800 italic">
-                  “{r.bio}”
-                </p>
-              </blockquote>
-            </div>
-          )
-        }
-
-        {/* 3. Áreas de pesquisa & grupos biológicos */}
-        {
-          (areasPesquisa.length > 0 || vm.gruposBiologicosList.length > 0) && (
-            <div class="space-y-6 rounded-2xl border border-gray-200/90 bg-white p-6 shadow-sm">
-              {areasPesquisa.length > 0 && (
-                <div>
-                  <div class="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
-                    <Icon
-                      name="mdi:flask-outline"
-                      class="size-4 text-meco-green-primary"
-                    />
-                    <span>Áreas de atuação na pesquisa</span>
-                  </div>
-                  <div class="flex flex-wrap gap-2">
-                    {areasPesquisa.map((area) => (
-                      <span class="inline-flex items-center gap-1.5 rounded-xl border border-meco-green-soft/60 bg-meco-green-bg/70 px-3 py-1.5 text-xs font-semibold text-meco-green-dark">
-                        <Icon
-                          name="mdi:leaf"
-                          class="size-3 text-meco-green-primary"
-                        />
-                        {area}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {areasPesquisa.length > 0 &&
-                vm.gruposBiologicosList.length > 0 && (
-                  <hr class="border-gray-100" />
-                )}
-
-              {vm.gruposBiologicosList.length > 0 && (
-                <div>
-                  <div class="mb-3 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
-                    <Icon
-                      name="mdi:paw-outline"
-                      class="size-4 text-meco-green-dark"
-                    />
-                    <span>Grupos biológicos e táxons</span>
-                  </div>
-                  <div class="flex flex-wrap gap-2">
-                    {vm.gruposBiologicosList.map((grupo) => (
-                      <span class="inline-flex items-center gap-1.5 rounded-xl border border-meco-green-soft/60 bg-meco-green-bg px-3.5 py-1.5 text-xs font-bold text-meco-green-dark">
-                        <Icon
-                          name="mdi:paw-outline"
-                          class="size-3 text-meco-green-primary"
-                        />
-                        {grupo}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )
-        }
-
-        {/* 4. Grade estruturada de colaboração */}
-        {
-          formasColaboracao.length > 0 && (
-            <div class="rounded-2xl border border-gray-200/90 bg-white p-6 shadow-sm">
-              <div class="mb-4 flex items-center gap-2 text-xs font-bold tracking-wider text-gray-400 uppercase">
-                <Icon
-                  name="mdi:handshake-outline"
-                  class="size-4 text-meco-purple-primary"
-                />
-                <span>Formas de colaboração oferecidas</span>
-              </div>
-
-              <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {formasColaboracao.map((forma) => (
-                  <div class="flex items-center gap-3 rounded-xl border border-gray-200/80 bg-gray-50 p-3 text-xs font-medium text-gray-700">
-                    <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-meco-purple-bg text-meco-purple-deep">
-                      <Icon name={colaboracaoIcon(forma)} class="size-3.5" />
-                    </span>
-                    <span>{forma}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )
-        }
-      </div>
-
-      {/* ── Sidebar (30%) ────────────────────────────────────── */}
-      <div class="space-y-6">
-        {/* Card de contato & instituição */}
-        <div
-          class="space-y-4 rounded-2xl border border-gray-200/90 bg-white p-6 shadow-sm lg:sticky lg:top-6"
-        >
-          <h2
-            class="border-b border-gray-100 pb-3 font-epilogue text-base font-bold text-gray-900"
-          >
-            Contato &amp; instituição
-          </h2>
-
-          <div class="space-y-3 text-xs">
+            {/* Ação primária */}
             {
-              (trabalhoAtual || instituicaoAtualFormatada) && (
-                <div>
-                  <p class="text-gray-400">Atuação atual:</p>
-                  {trabalhoAtual && (
-                    <p class="font-semibold text-gray-800">{trabalhoAtual}</p>
-                  )}
-                  {instituicaoAtualFormatada && (
-                    <p class="font-semibold text-gray-800">
-                      {instituicaoAtualFormatada}
-                    </p>
-                  )}
-                </div>
+              vm.show("email", r.email) && (
+                <a
+                  href={`mailto:${r.email}`}
+                  class="flex w-full items-center justify-center gap-2 rounded-lg bg-meco-purple-primary px-5 py-3 text-base font-bold text-white transition-colors hover:bg-meco-purple-deep"
+                >
+                  <Icon name="mdi:email-outline" class="size-5" />
+                  Enviar e-mail
+                </a>
               )
             }
 
+            {/* Links acadêmicos oficiais */}
             {
-              vm.instituicaoFormatada && (
-                <div>
-                  <p class="text-gray-400">Instituição vinculada:</p>
-                  <p class="font-semibold text-gray-800">
-                    {vm.instituicaoFormatada}
+              vm.links.length > 0 && (
+                <div class="space-y-2 border-t border-gray-100 pt-4">
+                  <p class="text-sm font-bold tracking-wider text-gray-400 uppercase">
+                    Links &amp; redes acadêmicas
                   </p>
-                </div>
-              )
-            }
-
-            {
-              vm.localizacaoFormatada && (
-                <div>
-                  <p class="text-gray-400">Local de atuação:</p>
-                  <p class="flex items-center gap-1.5 font-semibold text-gray-800">
-                    <Icon
-                      name="mdi:map-marker-outline"
-                      class="size-3.5 shrink-0 text-meco-purple-primary"
-                    />
-                    {vm.localizacaoFormatada}
-                  </p>
-                </div>
-              )
-            }
-          </div>
-
-          {/* Ação primária */}
-          {
-            vm.show("email", r.email) && (
-              <a
-                href={`mailto:${r.email}`}
-                class="flex w-full items-center justify-center gap-2 rounded-xl bg-meco-purple-primary px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-meco-purple-deep"
-              >
-                <Icon name="mdi:email-outline" class="size-4" />
-                Enviar e-mail
-              </a>
-            )
-          }
-
-          {/* Links acadêmicos oficiais */}
-          {
-            vm.links.length > 0 && (
-              <div class="space-y-2 border-t border-gray-100 pt-4">
-                <p class="text-xs font-bold tracking-wider text-gray-400 uppercase">
-                  Links &amp; redes acadêmicas
-                </p>
-                {vm.links.map((link) => (
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="group flex items-center justify-between rounded-xl border border-gray-200 p-3 text-xs font-semibold text-gray-700 transition-all hover:border-meco-purple-soft hover:bg-meco-purple-bg/40"
-                  >
-                    <span class="flex items-center gap-2.5">
+                  {vm.links.map((link) => (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="group flex items-center justify-between rounded-lg border border-gray-200 p-3.5 text-sm font-semibold text-gray-700 transition-all hover:border-meco-purple-soft hover:bg-meco-purple-bg/40"
+                    >
+                      <span class="flex items-center gap-2.5">
+                        <Icon
+                          name={link.icon}
+                          class="size-5 text-gray-500 group-hover:text-meco-purple-primary"
+                        />
+                        <span>{link.title}</span>
+                      </span>
                       <Icon
-                        name={link.icon}
-                        class="size-4 text-gray-500 group-hover:text-meco-purple-primary"
+                        name="mdi:open-in-new"
+                        class="size-4 text-gray-400 group-hover:text-meco-purple-primary"
                       />
-                      <span>{link.title}</span>
-                    </span>
-                    <Icon
-                      name="mdi:open-in-new"
-                      class="size-3 text-gray-400 group-hover:text-meco-purple-primary"
-                    />
-                  </a>
-                ))}
-              </div>
-            )
-          }
+                    </a>
+                  ))}
+                </div>
+              )
+            }
+          </div>
         </div>
       </div>
     </div>

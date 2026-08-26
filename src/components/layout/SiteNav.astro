@@ -1,0 +1,57 @@
+---
+import site from "@/config/site";
+
+// O menu espelha o do site principal. O item que aponta pra cá é marcado como
+// página atual — é o equivalente ao destaque verde que o Wix dá à seção aberta.
+const aqui = new URL(Astro.site ?? "https://profissionais-mulheres.vercel.app/")
+  .hostname;
+
+const links = site.siteLinks.map((link) => ({
+  ...link,
+  atual: new URL(link.href).hostname === aqui,
+}));
+---
+
+<nav
+  aria-label="Navegação do site"
+  {/* A barra fica fora do container centralizado, entao ja ocupa a janela
+    inteira: o padding aqui e o recuo do proprio conteudo dela. */}
+  class="border-b border-gray-100 bg-white px-6 py-4 md:px-10"
+>
+  <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+    <a
+      href={site.mainSite.href}
+      class="shrink-0 transition-opacity hover:opacity-80"
+      aria-label={`Ir para ${site.mainSite.label}`}
+    >
+      <img
+        src={site.meta.logo}
+        alt=""
+        width="2460"
+        height="1706"
+        class="h-16 w-auto sm:h-20"
+      />
+    </a>
+
+    <ul class="flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={link.atual ? "page" : undefined}
+              class:list={[
+                "text-base transition-colors hover:text-meco-green-primary",
+                link.atual
+                  ? "font-semibold text-meco-green-primary"
+                  : "text-gray-700",
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>

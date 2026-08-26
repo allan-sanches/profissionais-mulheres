@@ -4,96 +4,80 @@ import { Icon } from "astro-icon/components";
 
 const year = new Date().getFullYear();
 const { footer } = site;
+
+// Links do rodapé em duas colunas. O número de linhas sai da quantidade de
+// links pra que a segunda coluna comece na metade da lista — e vá junto se
+// algum link for adicionado depois.
+const linkRows = Math.ceil(footer.links.length / 2);
 ---
 
 {
-  /* Faixa clara: volta ao site principal + redes sociais.
-  Full-bleed: as páginas ficam num container com padding, então o rodapé
-  estica pra borda com margin negativa compensando esse padding. */
+  /* Fora do container centralizado: a faixa ocupa a janela inteira em
+  qualquer pagina, independente da largura do conteudo dela. */
 }
-<footer class="-mx-4 mt-16 md:-mx-8">
-  <div class="bg-gray-50 px-4 py-12 md:px-8">
-    <div class="mx-auto flex max-w-3xl flex-col items-center gap-8 text-center">
-      <a
-        href={site.mainSite.href}
-        class="inline-flex items-center gap-2 rounded-xl border border-meco-purple-soft/50 bg-meco-purple-bg px-5 py-2.5 text-sm font-bold text-meco-purple-deep transition-colors hover:bg-meco-purple-primary hover:text-white"
-      >
-        <Icon name="mdi:arrow-left" class="size-4" />
-        Voltar para {site.mainSite.label}
-        <Icon name="mdi:open-in-new" class="size-3.5 opacity-60" />
-      </a>
-
-      <div class="space-y-5">
-        <h2 class="font-epilogue text-2xl font-bold text-gray-700">
-          {footer.socialHeading}
-        </h2>
-        <ul class="flex items-center justify-center gap-4">
-          {
-            footer.social.map((item) => (
-              <li>
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={item.name}
-                  aria-label={item.name}
-                  class="flex size-14 items-center justify-center rounded-full bg-meco-green-bg text-meco-green-primary transition-colors hover:bg-meco-green-primary hover:text-white"
-                >
-                  <Icon name={item.icon} class="size-6" />
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  {/* Faixa escura: logo + copyright, links do site e newsletter */}
-  <div class="bg-meco-green-dark px-4 py-12 text-white md:px-8">
+<footer>
+  {/* Faixa escura: logo + copyright, links do site e redes sociais */}
+  {
+    /* Padding inferior menor que o superior: a ultima linha ja vem com o
+    respiro do mt-12 e do filete, entao 56px embaixo viravam vazio. */
+  }
+  <div class="bg-gray-100 px-8 pt-14 pb-8 text-gray-700 md:px-16">
+    {
+      /* Sem largura máxima própria: herda a do container da página. Um max-w
+      fixo aqui desalinharia, e mudaria a cada página que usasse um container
+      diferente — a home vai a 1800px e o perfil a 1280px. */
+    }
+    {
+      /* Cada bloco ocupa a largura do proprio conteudo e o justify-between
+      reparte a folga restante igualmente entre os dois vaos. Dar a folga a
+      uma coluna so (1fr) inflava aquele bloco e apertava os outros dois. */
+    }
     <div
-      class="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-3 md:gap-8"
+      class="flex flex-col gap-10 md:flex-row md:items-start md:justify-between md:gap-12"
     >
-      {/* Logo + copyright */}
-      <div class="space-y-6">
+      {/* Logo */}
+      <div>
+        {
+          /* O proprio logo escreve o nome da organizacao, entao nao ha rotulo
+          ao lado - o nome aparece de novo so no copyright, no fim. */
+        }
         <a
           href={site.mainSite.href}
-          class="flex items-center gap-3 transition-opacity hover:opacity-80"
+          class="inline-flex transition-opacity hover:opacity-80"
         >
           <img
             src={site.meta.logo}
-            alt=""
-            width="40"
-            height="40"
-            class="size-10 shrink-0"
+            alt={footer.copyright}
+            width="2460"
+            height="1706"
+            class="h-20 w-auto"
           />
-          <span class="font-epilogue text-lg font-medium">
-            {footer.copyright}
-          </span>
         </a>
-        <p class="text-sm leading-relaxed text-white/80">
-          Copyright © {year}
-          {footer.copyright}
-          <br />
-          {footer.tagline}
-        </p>
       </div>
 
       {/* Links do site */}
-      <nav aria-labelledby="footer-links-heading">
-        <h2
-          id="footer-links-heading"
-          class="mb-4 font-epilogue text-xl font-bold"
+      {
+        /* Sem titulo visivel, o nav precisa de um rotulo proprio: e por ele
+        que leitores de tela anunciam a regiao e a distinguem da lista de
+        redes sociais ao lado. */
+      }
+      <nav aria-label="Links do site">
+        {
+          /* grid-flow-col preenche coluna a coluna: os primeiros links descem
+          na esquerda e o restante na direita, mantendo a ordem do menu. Um
+          grid comum preencheria em ziguezague. O justify-start impede que as
+          colunas implicitas estiquem pra ocupar a largura disponivel. */
+        }
+        <ul
+          class="grid grid-flow-col justify-start gap-x-16 gap-y-3"
+          style={`grid-template-rows: repeat(${linkRows}, min-content)`}
         >
-          {footer.linksHeading}
-        </h2>
-        <ul class="space-y-3">
           {
             footer.links.map((link) => (
               <li>
                 <a
                   href={link.href}
-                  class="text-sm text-white/90 transition-colors hover:text-white hover:underline"
+                  class="text-base text-gray-700 transition-colors hover:text-meco-purple-primary hover:underline"
                 >
                   {link.label}
                 </a>
@@ -103,61 +87,50 @@ const { footer } = site;
         </ul>
       </nav>
 
-      {/* Newsletter */}
+      {/* Redes sociais */}
       <div>
-        <h2 class="mb-4 text-base leading-relaxed">
-          {footer.newsletter.heading}
-        </h2>
-        <form
-          id="newsletter-form"
-          class="flex flex-wrap items-start gap-3"
-          action={footer.newsletter.action || undefined}
-          method="post"
-          data-configured={footer.newsletter.action ? "true" : "false"}
+        <h2
+          id="footer-social-heading"
+          class="mb-4 font-epilogue text-xl font-bold text-gray-900"
         >
-          <label for="newsletter-email" class="sr-only">
-            {footer.newsletter.placeholder}
-          </label>
-          <input
-            id="newsletter-email"
-            name="email"
-            type="email"
-            required
-            placeholder={footer.newsletter.placeholder}
-            class="min-w-0 flex-1 rounded-xl border border-transparent bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-meco-green-soft focus:outline-none"
-          />
-          <button
-            type="submit"
-            class="shrink-0 rounded-xl bg-meco-green-primary px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-meco-green-dark hover:ring-2 hover:ring-white/40"
-          >
-            {footer.newsletter.submitLabel}
-          </button>
-          <p
-            id="newsletter-message"
-            class="hidden w-full text-xs text-white/80"
-            role="status"
-          >
-          </p>
-        </form>
+          {footer.socialHeading}
+        </h2>
+        <ul
+          aria-labelledby="footer-social-heading"
+          class="flex flex-wrap gap-3"
+        >
+          {
+            footer.social.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={item.name}
+                  aria-label={item.name}
+                  class="flex size-12 items-center justify-center rounded-full bg-white text-meco-green-dark transition-colors hover:bg-meco-green-dark hover:text-white"
+                >
+                  <Icon name={item.icon} class="size-6" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
+    </div>
+
+    {
+      /* Ultima linha, atravessando a largura toda: separada das colunas por
+      um filete discreto pra ler como rodape do rodape. */
+    }
+    <div
+      class="mt-12 border-t border-gray-200 pt-6 text-center text-sm text-gray-600"
+    >
+      <p>
+        Copyright © {year}
+        {footer.copyright} · CNPJ {footer.cnpj} · {footer.tagline}
+      </p>
+      <p class="mt-1 text-gray-500">Desenvolvido por {footer.developer}</p>
     </div>
   </div>
 </footer>
-
-<script>
-  // Enquanto não houver endpoint configurado (site.footer.newsletter.action),
-  // o formulário avisa em vez de recarregar a página sem enviar nada.
-  const form = document.getElementById(
-    "newsletter-form",
-  ) as HTMLFormElement | null;
-  const message = document.getElementById("newsletter-message");
-
-  form?.addEventListener("submit", (e) => {
-    if (form.dataset.configured === "true") return; // deixa enviar de verdade
-    e.preventDefault();
-    if (!message) return;
-    message.textContent =
-      "A inscrição na newsletter ainda não está conectada. Em breve!";
-    message.classList.remove("hidden");
-  });
-</script>

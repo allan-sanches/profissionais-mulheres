@@ -1,11 +1,47 @@
+// Links do site principal (Wix). Mesma lista alimenta o menu do topo e o
+// rodapé — que é espelhado lá —, pra que os dois nunca divirjam.
+const siteLinks = [
+  { label: "Início", href: "https://www.mulheresnaecologia.com/" },
+  {
+    label: "Quem somos?",
+    href: "https://www.mulheresnaecologia.com/quemsomos",
+  },
+  {
+    label: "Linhas editoriais",
+    href: "https://www.mulheresnaecologia.com/linhaseditoriais",
+  },
+  {
+    label: "Contribua",
+    href: "https://www.mulheresnaecologia.com/contribua",
+  },
+  {
+    label: "Ações",
+    // TODO(acoes): a rota vai ser renomeada no Wix pra sair sem acento.
+    // Ate la fica percent-encoded, que e o que responde hoje; trocar assim
+    // que o endereco novo existir, porque o antigo para de responder.
+    href: "https://www.mulheresnaecologia.com/a%C3%A7%C3%B5es",
+  },
+  { label: "FAQ", href: "https://www.mulheresnaecologia.com/faq" },
+  { label: "Contato", href: "https://www.mulheresnaecologia.com/contato" },
+  {
+    label: "Lista de mulheres na ecologia",
+    // Endereco absoluto de proposito: esta lista tambem descreve o site
+    // principal, entao o link precisa funcionar fora daqui.
+    href: "https://profissionais-mulheres.vercel.app/",
+  },
+];
+
 const site = {
+  siteLinks,
   // --- Site Metadata ---
   meta: {
     title: "Pesquisadoras — Mulheres na Ecologia",
     description:
       "Portfólio de pesquisadoras cadastradas no programa Mulheres na Ecologia.",
     author: "Mulheres na Ecologia",
-    logo: "/logo.svg",
+    // Espacos no nome do arquivo ficam pre-codificados aqui pra nao
+    // sobrar %20 solto em cada uso.
+    logo: "/logo%201%20colorida.png",
     ogImage: "/og-image.png",
     // HTML lang attribute, affects page language and date formatting
     // Options: "zh-CN", "en", "ja", etc.
@@ -45,17 +81,17 @@ const site = {
   },
 
   // --- Footer ---
-  // TODO(links): trocar pelos endereços definitivos quando forem passados.
-  // TODO(logo): substituir /logo.svg pelo novo logo da marca.
   footer: {
     copyright: "Mulheres na Ecologia",
+    cnpj: "33.805.510/0001-95",
     tagline: "Todos os direitos reservados",
+    developer: "Allan Sanches",
 
     socialHeading: "Siga-nos nas redes sociais:",
     social: [
       {
         name: "Instagram",
-        href: "https://www.instagram.com/mulheresnaecologia/",
+        href: "https://www.instagram.com/mulheres_na_ecologia/",
         icon: "mdi:instagram",
       },
       {
@@ -65,45 +101,18 @@ const site = {
       },
       {
         name: "YouTube",
-        href: "https://www.youtube.com/@mulheresnaecologia",
+        href: "https://www.youtube.com/@Mulheresnaecologia",
         icon: "mdi:youtube",
       },
       {
         name: "TikTok",
-        href: "https://www.tiktok.com/@mulheresnaecologia",
+        href: "https://www.tiktok.com/@mulheres.na.ecologia",
         // Ícone local (src/icons/tiktok.svg) — o set mdi não traz esse.
         icon: "tiktok",
       },
     ],
 
-    linksHeading: "Acesse nosso site:",
-    links: [
-      { label: "Início", href: "https://www.mulheresnaecologia.com/" },
-      {
-        label: "Quem somos?",
-        href: "https://www.mulheresnaecologia.com/quem-somos",
-      },
-      {
-        label: "Linhas editoriais",
-        href: "https://www.mulheresnaecologia.com/linhas-editoriais",
-      },
-      {
-        label: "Contribua",
-        href: "https://www.mulheresnaecologia.com/contribua",
-      },
-      { label: "Ações", href: "https://www.mulheresnaecologia.com/acoes" },
-    ],
-
-    newsletter: {
-      heading:
-        "Acompanhe as novidades do nosso projeto por meio da nossa newsletter:",
-      placeholder: "Digite seu e-mail",
-      submitLabel: "Enviar",
-      // TODO(newsletter): endpoint do serviço de inscrição. Enquanto estiver
-      // vazio o formulário avisa que ainda não está conectado, em vez de
-      // fingir que enviou.
-      action: "",
-    },
+    links: siteLinks,
   },
 
   // --- Comments ---

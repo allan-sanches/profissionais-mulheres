@@ -7,50 +7,40 @@
 // biológicos, colaboração) usam a verde, e metadados neutros (titulação,
 // localização) ficam em cinza. O ícone é o que distingue categorias da
 // mesma família.
-export const CATEGORY_BADGE: Record<string, { color: string; icon: string }> = {
+export const CATEGORY_BADGE: Record<string, { color: string }> = {
   localizacao: {
     color: "bg-gray-100 text-gray-600 border-gray-200",
-    icon: "mdi:map-marker-outline",
   },
   nivelFormacao: {
     color: "bg-gray-100 text-gray-700 border-gray-200",
-    icon: "mdi:school-outline",
   },
   identidade: {
     color: "bg-meco-purple-bg text-meco-purple-deep border-meco-purple-soft/50",
-    icon: "mdi:gender-transgender",
   },
   raca: {
     color:
       "bg-meco-purple-bg/60 text-meco-purple-deep border-meco-purple-soft/40",
-    icon: "mdi:account-multiple-outline",
   },
   lgbtqiap: {
     color:
       "bg-meco-purple-bg text-meco-purple-primary border-meco-purple-soft/50",
-    icon: "mdi:flag-variant-outline",
   },
   pcd: {
     color:
       "bg-meco-purple-bg/60 text-meco-purple-primary border-meco-purple-soft/40",
-    icon: "mdi:wheelchair-accessibility",
   },
   grupoTradicional: {
     color:
       "bg-meco-purple-bg text-meco-purple-deep border-meco-purple-muted/50",
-    icon: "mdi:account-group-outline",
   },
   grupoBiologico: {
     color: "bg-meco-green-bg text-meco-green-dark border-meco-green-soft/60",
-    icon: "mdi:paw-outline",
   },
   areaPesquisa: {
     color: "bg-meco-green-bg/70 text-meco-green-dark border-meco-green-soft/50",
-    icon: "mdi:flask-outline",
   },
   formaColaboracao: {
     color: "bg-meco-green-bg text-meco-green-dark border-meco-green-soft/60",
-    icon: "mdi:handshake-outline",
   },
 };
 

@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import ResearcherRow from "@/components/blocks/ResearcherRow.astro";
 import ResearcherCard from "@/components/blocks/ResearcherCard.astro";
 import FilterGroup from "@/components/blocks/FilterGroup.astro";
+import SiteNav from "@/components/layout/SiteNav.astro";
 import Footer from "@/components/layout/Footer.astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
@@ -186,115 +187,285 @@ const description =
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="mx-auto w-full max-w-[1800px] space-y-8 px-4 py-10 md:px-8">
-    {/* Header */}
-    <div
-      class="relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
-    >
-      <div
-        class="pointer-events-none absolute -top-10 -right-10 size-48 rounded-full bg-meco-purple-bg blur-2xl"
-        aria-hidden="true"
-      >
+  <div class="w-full">
+    <SiteNav />
+
+    <div class="mx-auto w-full max-w-[1800px] space-y-6 px-4 py-6 md:px-8">
+      {/* Header */}
+      <div class="relative rounded-lg bg-white p-6 sm:p-8">
+        <h1
+          class="text-center font-epilogue text-3xl font-black tracking-tight text-gray-900 sm:text-4xl"
+        >
+          {title}
+        </h1>
       </div>
 
-      <div
-        class="relative mb-3 flex flex-wrap items-center justify-between gap-3"
-      >
-        <span
-          class="inline-flex items-center gap-1.5 rounded-full border border-meco-purple-soft/50 bg-meco-purple-bg px-3 py-1 text-xs font-semibold text-meco-purple-deep"
-        >
-          <Icon
-            name="mdi:account-group-outline"
-            class="size-3.5 text-meco-purple-primary"
-          />
-          {researchers.length} pesquisadoras cadastradas
-        </span>
-        <div class="flex items-center gap-2 text-xs font-medium text-gray-500">
-          <span class="size-2 animate-pulse rounded-full bg-meco-green-primary"
-          ></span>
+      <div id="layout-root">
+        {/* Main content */}
+        <div class="min-w-0 space-y-6">
           {
-            ultimaSincronizacaoLabel ? (
-              <span>
-                Diretório atualizado em{" "}
-                <time datetime={ultimaSincronizacao!.toISOString()}>
-                  {ultimaSincronizacaoLabel}
-                </time>
-              </span>
-            ) : (
-              "Diretório atualizado"
-            )
-          }
-        </div>
-      </div>
-
-      <h1
-        class="relative font-epilogue text-3xl font-black tracking-tight text-gray-900 sm:text-4xl"
-      >
-        {title}
-      </h1>
-      <p
-        class="relative mt-2 max-w-3xl text-base leading-relaxed text-gray-600"
-      >
-        {description}
-      </p>
-    </div>
-
-    <div id="layout-root">
-      {/* Main content */}
-      <div class="min-w-0 space-y-6">
-        {
-          /* Toolbar — botão que abre o drawer de filtros, busca por nome ou
+            /* Toolbar — botão que abre o drawer de filtros, busca por nome ou
         instituição e alternador de visualização (tabela/cards) */
-        }
-        <div
-          class="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center"
-        >
-          <div class="flex max-w-xl flex-1 items-center gap-3">
-            <button
-              id="toggle-filters-btn"
-              type="button"
-              class="relative flex shrink-0 items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all hover:border-meco-purple-soft hover:bg-gray-50"
-              title="Abrir filtros (Ctrl+B)"
-              aria-pressed="false"
-              aria-expanded="false"
-              aria-controls="filter-drawer"
-            >
-              <Icon
-                name="mdi:filter-variant"
-                class="size-4 text-meco-purple-primary"
-              />
-              <span>Filtros</span>
-              <span
-                id="filter-count-badge"
-                class="hidden h-5 w-5 items-center justify-center rounded-full bg-meco-purple-primary text-xs font-bold text-white"
-                >0</span
+          }
+          <div
+            class="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center"
+          >
+            <div class="flex max-w-xl flex-1 items-center gap-3">
+              <button
+                id="toggle-filters-btn"
+                type="button"
+                class="relative flex shrink-0 items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-base font-medium text-gray-700 transition-all hover:border-meco-purple-soft hover:bg-gray-50"
+                title="Abrir filtros (Ctrl+B)"
+                aria-pressed="false"
+                aria-expanded="false"
+                aria-controls="filter-drawer"
               >
-            </button>
+                <Icon
+                  name="mdi:filter-variant"
+                  class="size-5 text-meco-purple-primary"
+                />
+                <span>Filtros</span>
+                <span
+                  id="filter-count-badge"
+                  class="hidden h-5 w-5 items-center justify-center rounded-full bg-meco-purple-primary text-xs font-bold text-white"
+                  >0</span
+                >
+              </button>
 
-            <div class="relative flex-1">
-              <Icon
-                name="mdi:magnify"
-                class="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-gray-400"
-              />
-              <input
-                id="filter-search"
-                type="search"
-                class="w-full rounded-xl border border-gray-300 bg-white py-2.5 pr-4 pl-10 text-sm shadow-sm transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
-                placeholder="Buscar por nome ou instituição..."
-              />
+              <div class="relative flex-1">
+                <Icon
+                  name="mdi:magnify"
+                  class="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-gray-400"
+                />
+                <input
+                  id="filter-search"
+                  type="search"
+                  class="w-full rounded-lg border border-gray-300 bg-white py-3 pr-4 pl-11 text-base transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+                  placeholder="Buscar por nome ou instituição..."
+                />
+              </div>
+            </div>
+
+            <div
+              class="flex shrink-0 items-center justify-between gap-4 text-sm text-gray-500 sm:justify-end"
+            >
+              {
+                /* Data do último sync junto dos controles: é aqui que se olha
+                a lista, então é aqui que a atualidade dela importa. */
+              }
+              <div
+                class="flex shrink-0 items-center gap-2 text-sm font-medium text-gray-500"
+              >
+                <span
+                  class="size-2 shrink-0 animate-pulse rounded-full bg-meco-green-primary"
+                ></span>
+                {
+                  ultimaSincronizacaoLabel ? (
+                    <span class="whitespace-nowrap">
+                      Atualizado em{" "}
+                      <time datetime={ultimaSincronizacao!.toISOString()}>
+                        {ultimaSincronizacaoLabel}
+                      </time>
+                    </span>
+                  ) : (
+                    "Atualizado"
+                  )
+                }
+              </div>
+
+              <button
+                id="help-btn"
+                type="button"
+                class="flex shrink-0 items-center gap-2 text-sm leading-none font-medium text-meco-purple-primary transition-colors hover:text-meco-purple-deep hover:underline"
+              >
+                <Icon
+                  name="mdi:help-circle-outline"
+                  class="size-5 shrink-0 self-center"
+                />
+                <span class="leading-none">Como utilizar</span>
+              </button>
+
+              <div
+                class="inline-flex shrink-0 items-center gap-1 rounded-lg border border-gray-200/80 bg-gray-100 p-1"
+              >
+                <div
+                  class="inline-flex items-center gap-1"
+                  role="group"
+                  aria-label="Alternar visualização"
+                >
+                  <button
+                    id="btn-view-table"
+                    type="button"
+                    class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm leading-none font-bold transition-all"
+                    aria-pressed="true"
+                  >
+                    <Icon
+                      name="mdi:view-list"
+                      class="size-5 shrink-0 text-meco-purple-primary"
+                    />
+                    Tabela
+                  </button>
+                  <button
+                    id="btn-view-cards"
+                    type="button"
+                    class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm leading-none font-bold transition-all"
+                    aria-pressed="false"
+                  >
+                    <Icon
+                      name="mdi:view-grid-outline"
+                      class="size-5 shrink-0 text-meco-purple-primary"
+                    />
+                    Cards
+                  </button>
+                </div>
+
+                <span class="h-6 w-px shrink-0 bg-gray-300" aria-hidden="true"
+                ></span>
+
+                <label
+                  class="flex items-center gap-1.5 pr-2 text-sm font-medium whitespace-nowrap text-gray-600"
+                >
+                  <span class="sr-only">Itens por página</span>
+                  <select
+                    data-page-size
+                    class="rounded-lg border-0 bg-transparent py-1.5 pr-1 pl-2 text-sm font-bold focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+                  >
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20" selected>20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  por página
+                </label>
+              </div>
             </div>
           </div>
 
+          {
+            /* Chips dos filtros aplicados. Preenchidos pelo script a partir dos
+          checkboxes marcados; cada um remove só o seu filtro. */
+          }
           <div
-            class="flex shrink-0 items-center justify-between gap-4 text-sm text-gray-500 sm:justify-end"
+            id="active-filter-chips"
+            class="hidden flex-wrap items-center gap-2"
+            aria-live="polite"
           >
-            <span id="results-counter"></span>
+          </div>
 
-            <label class="flex items-center gap-1.5 whitespace-nowrap">
-              <span class="sr-only">Itens por página</span>
+          {/* Visão 1 — Tabela Clean Data Grid */}
+          <div
+            id="table-view-container"
+            class="overflow-hidden rounded-lg border border-gray-200/90 bg-white"
+          >
+            <div class="overflow-x-auto">
+              <table
+                id="researchers-table"
+                class="w-full table-fixed border-collapse text-left"
+              >
+                {
+                  /* table-fixed + larguras percentuais desde o HTML. Sem isso o
+                layout automatico usa o min-content das celulas, e como elas
+                truncam (white-space: nowrap) o min-content e o texto inteiro:
+                nomes longos de universidade esticavam a coluna e a truncagem
+                nunca acontecia. Estas sao tambem as larguras do duplo clique
+                pra redefinir. */
+                }
+                <colgroup>
+                  <col data-col="pesquisadora" style="width: 22%" />
+                  <col data-col="instituicao" style="width: 25%" />
+                  <col data-col="formacao" style="width: 23%" />
+                  <col data-col="localizacao" style="width: 18%" />
+                  <col data-col="perfil" style="width: 12%" />
+                </colgroup>
+                <thead>
+                  <tr
+                    class="bg-meco-purple-primary text-sm font-bold tracking-wider text-white uppercase"
+                  >
+                    <th class="relative px-6 py-4">
+                      Pesquisadora
+                      <span
+                        class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+                        data-resize-col="0"
+                        title="Arraste para redimensionar (duplo clique redefine todas)"
+                      >
+                        <span
+                          class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
+                        ></span>
+                      </span>
+                    </th>
+                    <th class="relative px-4 py-4">
+                      Instituição
+                      <span
+                        class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+                        data-resize-col="1"
+                        title="Arraste para redimensionar (duplo clique redefine todas)"
+                      >
+                        <span
+                          class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
+                        ></span>
+                      </span>
+                    </th>
+                    <th class="relative px-4 py-4">
+                      Formação
+                      <span
+                        class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+                        data-resize-col="2"
+                        title="Arraste para redimensionar (duplo clique redefine todas)"
+                      >
+                        <span
+                          class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
+                        ></span>
+                      </span>
+                    </th>
+                    <th class="relative px-4 py-4">
+                      Localização
+                      <span
+                        class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
+                        data-resize-col="3"
+                        title="Arraste para redimensionar (duplo clique redefine todas)"
+                      >
+                        <span
+                          class="h-1/2 w-px bg-white/40 transition-colors group-hover/rz:bg-white"
+                        ></span>
+                      </span>
+                    </th>
+                    <th class="px-4 py-4">Perfil &amp; Atuação</th>
+                  </tr>
+                </thead>
+                <tbody id="researchers-container" class="text-sm">
+                  {
+                    researchers.map((researcher: any) => (
+                      <ResearcherRow researcher={researcher} {...resolvers} />
+                    ))
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Visão 2 — Grade de Cards de Perfil */}
+          <div
+            id="cards-view-container"
+            class="hidden grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+          >
+            {
+              researchers.map((researcher: any) => (
+                <ResearcherCard researcher={researcher} {...resolvers} />
+              ))
+            }
+          </div>
+
+          {/* Pagination */}
+          <div
+            id="pagination-bar"
+            class="flex flex-col items-center justify-between gap-4 rounded-lg border border-gray-200/90 bg-white px-6 py-4 text-sm text-gray-600 sm:flex-row"
+          >
+            <div class="flex items-center gap-2">
+              <span>Itens por página:</span>
               <select
                 data-page-size
-                class="rounded-lg border border-gray-300 bg-white px-2 py-1 text-xs font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+                class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
               >
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -302,226 +473,160 @@ const description =
                 <option value="50">50</option>
                 <option value="100">100</option>
               </select>
-              <span class="text-xs">por página</span>
-            </label>
+            </div>
 
-            <div
-              class="inline-flex shrink-0 items-center gap-2 rounded-xl border border-gray-200/80 bg-gray-100 p-1"
-              role="group"
-              aria-label="Alternar visualização"
-            >
+            <div id="pagination-info" class="text-gray-500"></div>
+
+            <div class="flex items-center gap-1">
               <button
-                id="btn-view-table"
+                id="page-first"
                 type="button"
-                class="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
-                aria-pressed="true"
+                class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+                title="Primeira página"
+                aria-label="Primeira página"
               >
-                <Icon name="mdi:view-list" class="size-4" />
-                Tabela
+                <Icon name="mdi:page-first" class="size-5" />
               </button>
               <button
-                id="btn-view-cards"
+                id="page-prev"
                 type="button"
-                class="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-bold transition-all"
-                aria-pressed="false"
+                class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+                title="Página anterior"
+                aria-label="Página anterior"
               >
-                <Icon name="mdi:view-grid-outline" class="size-4" />
-                Cards
+                <Icon name="mdi:chevron-left" class="size-5" />
+              </button>
+              <span
+                id="page-indicator"
+                class="px-3 text-sm font-semibold whitespace-nowrap text-gray-700"
+              ></span>
+              <button
+                id="page-next"
+                type="button"
+                class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+                title="Próxima página"
+                aria-label="Próxima página"
+              >
+                <Icon name="mdi:chevron-right" class="size-5" />
+              </button>
+              <button
+                id="page-last"
+                type="button"
+                class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+                title="Última página"
+                aria-label="Última página"
+              >
+                <Icon name="mdi:page-last" class="size-5" />
               </button>
             </div>
           </div>
-        </div>
 
-        {
-          /* Chips dos filtros aplicados. Preenchidos pelo script a partir dos
-          checkboxes marcados; cada um remove só o seu filtro. */
-        }
-        <div
-          id="active-filter-chips"
-          class="hidden flex-wrap items-center gap-2"
-          aria-live="polite"
-        >
-        </div>
-
-        {/* Visão 1 — Tabela Clean Data Grid */}
-        <div
-          id="table-view-container"
-          class="overflow-hidden rounded-2xl border border-gray-200/90 bg-white shadow-sm"
-        >
-          <div class="overflow-x-auto">
-            {
-              /* As larguras ficam nos <col>: o script mede as naturais no
-              primeiro load, escreve aqui e só então liga table-fixed, pra
-              arrastar a alça mexer numa coluna sem reflowar as outras. */
-            }
-            <table
-              id="researchers-table"
-              class="w-full border-collapse text-left"
-            >
-              <colgroup>
-                <col data-col="pesquisadora" />
-                <col data-col="instituicao" />
-                <col data-col="formacao" />
-                <col data-col="localizacao" />
-                <col data-col="perfil" />
-              </colgroup>
-              <thead>
-                <tr
-                  class="border-b border-gray-200 bg-gray-50/80 text-xs font-bold tracking-wider text-gray-500 uppercase"
-                >
-                  <th class="relative px-6 py-4">
-                    Pesquisadora
-                    <span
-                      class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
-                      data-resize-col="0"
-                      title="Arraste para redimensionar (duplo clique para redefinir)"
-                    >
-                      <span
-                        class="h-1/2 w-px bg-gray-300 transition-colors group-hover/rz:bg-meco-purple-primary"
-                      ></span>
-                    </span>
-                  </th>
-                  <th class="relative px-4 py-4">
-                    Instituição
-                    <span
-                      class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
-                      data-resize-col="1"
-                      title="Arraste para redimensionar (duplo clique para redefinir)"
-                    >
-                      <span
-                        class="h-1/2 w-px bg-gray-300 transition-colors group-hover/rz:bg-meco-purple-primary"
-                      ></span>
-                    </span>
-                  </th>
-                  <th class="relative px-4 py-4">
-                    Formação
-                    <span
-                      class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
-                      data-resize-col="2"
-                      title="Arraste para redimensionar (duplo clique para redefinir)"
-                    >
-                      <span
-                        class="h-1/2 w-px bg-gray-300 transition-colors group-hover/rz:bg-meco-purple-primary"
-                      ></span>
-                    </span>
-                  </th>
-                  <th class="relative px-4 py-4">
-                    Localização
-                    <span
-                      class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
-                      data-resize-col="3"
-                      title="Arraste para redimensionar (duplo clique para redefinir)"
-                    >
-                      <span
-                        class="h-1/2 w-px bg-gray-300 transition-colors group-hover/rz:bg-meco-purple-primary"
-                      ></span>
-                    </span>
-                  </th>
-                  <th class="px-4 py-4">Perfil &amp; Atuação</th>
-                </tr>
-              </thead>
-              <tbody id="researchers-container" class="text-sm">
-                {
-                  researchers.map((researcher: any) => (
-                    <ResearcherRow researcher={researcher} {...resolvers} />
-                  ))
-                }
-              </tbody>
-            </table>
+          {/* Empty State */}
+          <div
+            id="empty-state"
+            class="hidden flex-col items-center gap-3 rounded-lg border border-gray-200/90 bg-white py-16 text-center"
+          >
+            <Icon
+              name="mdi:account-search-outline"
+              class="size-16 text-gray-300"
+            />
+            <p class="text-lg text-gray-500">
+              Nenhuma pesquisadora encontrada com esses filtros.
+            </p>
           </div>
         </div>
+      </div>
 
-        {/* Visão 2 — Grade de Cards de Perfil */}
+      {
+        /* <dialog> nativo: o navegador ja cuida de prender o foco, fechar no
+      Esc e escurecer o fundo — nada disso precisa de JS. */
+      }
+      <dialog
+        id="help-dialog"
+        class="m-auto w-[min(46rem,calc(100vw-2rem))] rounded-lg p-0 text-gray-700 backdrop:bg-gray-900/50"
+        aria-labelledby="help-title"
+      >
         <div
-          id="cards-view-container"
-          class="hidden grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+          class="flex items-center justify-between gap-4 bg-meco-purple-primary px-6 py-4"
+        >
+          <h2
+            id="help-title"
+            class="font-epilogue text-lg font-bold text-white"
+          >
+            Como utilizar esta tela
+          </h2>
+          <button
+            id="help-close"
+            type="button"
+            class="flex size-8 shrink-0 items-center justify-center rounded-lg text-white transition-colors hover:bg-white/20"
+            aria-label="Fechar"
+          >
+            <Icon name="mdi:close" class="size-5" />
+          </button>
+        </div>
+
+        <div
+          class="max-h-[70vh] space-y-5 overflow-y-auto px-6 py-5 text-sm leading-relaxed"
         >
           {
-            researchers.map((researcher: any) => (
-              <ResearcherCard researcher={researcher} {...resolvers} />
+            [
+              {
+                icone: "mdi:magnify",
+                titulo: "Buscar",
+                texto:
+                  "O campo de busca filtra por nome da pesquisadora e por instituição, conforme você digita.",
+              },
+              {
+                icone: "mdi:filter-variant",
+                titulo: "Filtros",
+                texto:
+                  "O botão Filtros abre um painel lateral com formação, identidade, raça/etnia, área de pesquisa e outros recortes. Os filtros se combinam entre si, e os que estiverem ativos aparecem como etiquetas acima da lista, com um X para remover. Atalho: Ctrl+B (ou ⌘+B) abre e fecha o painel; Esc também fecha.",
+              },
+              {
+                icone: "mdi:view-list",
+                titulo: "Tabela ou Cards",
+                texto:
+                  "Alterne entre a tabela e a visão em cards pelos botões à direita. A escolha fica salva no seu navegador e vale nas próximas visitas.",
+              },
+              {
+                icone: "mdi:arrow-split-vertical",
+                titulo: "Largura das colunas",
+                texto:
+                  "Na tabela, arraste a alça entre os títulos das colunas para redimensionar. Ao arrastar, a tabela passa a rolar horizontalmente em vez de espremer as colunas vizinhas. Um duplo clique em qualquer alça devolve todas ao padrão, e recarregar a página também.",
+              },
+              {
+                icone: "mdi:tag-multiple-outline",
+                titulo: "Etiquetas de perfil",
+                texto:
+                  "A coluna Perfil & Atuação mostra as primeiras etiquetas de cada pesquisadora. Quando houver mais, aparece um +N — passe o mouse sobre ele para ver o restante.",
+              },
+              {
+                icone: "mdi:page-next-outline",
+                titulo: "Paginação",
+                texto:
+                  "Escolha quantas pesquisadoras aparecem por página nos seletores do topo ou do rodapé da lista — os dois são o mesmo controle. Os contadores mostram o intervalo exibido e o total de resultados.",
+              },
+              {
+                icone: "mdi:account-details-outline",
+                titulo: "Abrir um perfil",
+                texto:
+                  "Clique em qualquer linha da tabela ou em um card para ver o perfil completo, com todos os dados que a pesquisadora escolheu divulgar.",
+              },
+            ].map((item) => (
+              <div class="flex gap-3">
+                <Icon
+                  name={item.icone}
+                  class="mt-0.5 size-5 shrink-0 text-meco-purple-primary"
+                />
+                <div>
+                  <h3 class="font-semibold text-gray-900">{item.titulo}</h3>
+                  <p class="mt-1 text-gray-600">{item.texto}</p>
+                </div>
+              </div>
             ))
           }
         </div>
-
-        {/* Pagination */}
-        <div
-          id="pagination-bar"
-          class="flex flex-col items-center justify-between gap-4 rounded-2xl border border-gray-200/90 bg-white px-6 py-4 text-sm text-gray-600 shadow-sm sm:flex-row"
-        >
-          <div class="flex items-center gap-2">
-            <span>Itens por página:</span>
-            <select
-              data-page-size
-              class="rounded-lg border border-gray-300 bg-white px-2.5 py-1 text-xs font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20" selected>20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </div>
-
-          <div id="pagination-info" class="text-gray-500"></div>
-
-          <div class="flex items-center gap-1">
-            <button
-              id="page-first"
-              type="button"
-              class="rounded-lg border border-gray-200 bg-white p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
-              title="Primeira página"
-              aria-label="Primeira página"
-            >
-              <Icon name="mdi:page-first" class="size-3.5" />
-            </button>
-            <button
-              id="page-prev"
-              type="button"
-              class="rounded-lg border border-gray-200 bg-white p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
-              title="Página anterior"
-              aria-label="Página anterior"
-            >
-              <Icon name="mdi:chevron-left" class="size-3.5" />
-            </button>
-            <span
-              id="page-indicator"
-              class="px-3 text-xs font-semibold whitespace-nowrap text-gray-700"
-            ></span>
-            <button
-              id="page-next"
-              type="button"
-              class="rounded-lg border border-gray-200 bg-white p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
-              title="Próxima página"
-              aria-label="Próxima página"
-            >
-              <Icon name="mdi:chevron-right" class="size-3.5" />
-            </button>
-            <button
-              id="page-last"
-              type="button"
-              class="rounded-lg border border-gray-200 bg-white p-2 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
-              title="Última página"
-              aria-label="Última página"
-            >
-              <Icon name="mdi:page-last" class="size-3.5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Empty State */}
-        <div
-          id="empty-state"
-          class="hidden flex-col items-center gap-3 rounded-2xl border border-gray-200/90 bg-white py-16 text-center shadow-sm"
-        >
-          <Icon
-            name="mdi:account-search-outline"
-            class="size-16 text-gray-300"
-          />
-          <p class="text-lg text-gray-500">
-            Nenhuma pesquisadora encontrada com esses filtros.
-          </p>
-        </div>
-      </div>
+      </dialog>
     </div>
 
     <Footer />
@@ -546,17 +651,14 @@ const description =
     >
       <div
         id="filter-drawer-panel"
-        class="pointer-events-auto flex w-screen max-w-md -translate-x-full flex-col bg-white shadow-2xl transition-transform duration-200 ease-out"
+        class="pointer-events-auto flex w-screen max-w-md -translate-x-full flex-col bg-white shadow-lg transition-transform duration-200 ease-out"
       >
         {/* Header */}
         <div
-          class="flex shrink-0 items-center justify-between bg-slate-900 px-6 py-5 text-white"
+          class="flex shrink-0 items-center justify-between bg-meco-purple-primary px-6 py-5 text-white"
         >
           <div class="flex items-center gap-2">
-            <Icon
-              name="mdi:tune-variant"
-              class="size-5 text-meco-purple-soft"
-            />
+            <Icon name="mdi:tune-variant" class="size-5 text-white" />
             <h2
               id="filter-drawer-title"
               class="font-epilogue text-lg font-bold"
@@ -565,14 +667,14 @@ const description =
             </h2>
             <span
               id="filter-active-count"
-              class="hidden h-5 min-w-5 items-center justify-center rounded-full bg-meco-purple-primary px-1.5 text-[10px] font-bold text-white"
+              class="hidden h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-[10px] font-bold text-meco-purple-primary"
               >0</span
             >
           </div>
           <button
             id="filter-drawer-close"
             type="button"
-            class="p-1 text-slate-400 transition-colors hover:text-white"
+            class="rounded-lg p-1 text-white/70 transition-colors hover:bg-white/20 hover:text-white"
             aria-label="Fechar filtros"
           >
             <Icon name="mdi:close" class="size-5" />
@@ -653,14 +755,14 @@ const description =
           <button
             id="filter-apply"
             type="button"
-            class="w-full rounded-xl bg-meco-purple-primary px-4 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-meco-purple-deep"
+            class="w-full rounded-lg bg-meco-purple-primary px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-meco-purple-deep"
           >
             Aplicar Filtros
           </button>
           <button
             id="filter-clear"
             type="button"
-            class="shrink-0 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100"
+            class="shrink-0 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100"
           >
             Limpar
           </button>
@@ -851,7 +953,6 @@ const description =
         if (!btn) continue;
         btn.classList.toggle("bg-white", isActive);
         btn.classList.toggle("text-gray-900", isActive);
-        btn.classList.toggle("shadow-sm", isActive);
         btn.classList.toggle("text-gray-500", !isActive);
         btn.classList.toggle("hover:text-gray-900", !isActive);
         btn.setAttribute("aria-pressed", String(isActive));
@@ -927,11 +1028,23 @@ const description =
         if (card) card.style.display = "";
       });
 
+      // Os dois contadores saem dos mesmos start/end/total: enquanto o de
+      // cima era calculado fora do renderPage, ele mostrava o total filtrado
+      // e o de baixo a janela da página, divergindo a cada paginação.
+      const inicio = start + 1;
+      const fim = Math.min(end, total);
+
       if (paginationInfo) {
         paginationInfo.textContent =
           total === 0
             ? "Nenhuma pesquisadora encontrada"
-            : `Mostrando ${start + 1}–${Math.min(end, total)} de ${total} pesquisadoras`;
+            : `Mostrando ${inicio}–${fim} de ${total} pesquisadoras`;
+      }
+      if (resultsCounter) {
+        resultsCounter.innerHTML =
+          total === 0
+            ? "Nenhuma pesquisadora encontrada"
+            : `Exibindo <strong class="text-gray-900">${inicio}–${fim}</strong> de <strong class="text-gray-900">${total}</strong>`;
       }
       if (pageIndicator) {
         pageIndicator.textContent = `Página ${currentPage} de ${totalPages}`;
@@ -977,7 +1090,6 @@ const description =
     const filterActiveCount = document.getElementById("filter-active-count");
     const clearAllBtn = document.getElementById("filter-clear-all");
     const resultsCounter = document.getElementById("results-counter");
-    const totalResearchers = rowBySlug.size;
 
     // Mantém os dois contadores de "filtros ativos" (o do botão da toolbar e o
     // do header do painel) em sincronia.
@@ -1020,10 +1132,6 @@ const description =
           return matchSearch && matchFilters;
         })
         .map(([slug]) => slug);
-
-      if (resultsCounter) {
-        resultsCounter.innerHTML = `Exibindo <strong class="text-gray-900">${filteredSlugs.length}</strong> de <strong class="text-gray-900">${totalResearchers}</strong>`;
-      }
 
       currentPage = 1;
       renderPage();
@@ -1140,7 +1248,14 @@ const description =
     });
 
     // ── Colunas redimensionáveis ─────────────────────────────────────
-    const LS_COL_WIDTHS = "meco_col_widths";
+    // A tabela sempre carrega responsiva, sem rolagem horizontal: o arrasto
+    // vale para a sessão e não é persistido. Guardar as larguras significaria
+    // restaurar o estado congelado no load — que tem largura em pixels e por
+    // isso rola. Limpa o que versões anteriores salvaram.
+    try {
+      localStorage.removeItem("meco_col_widths");
+      localStorage.removeItem("meco_col_widths_v2");
+    } catch {}
     const table = document.getElementById(
       "researchers-table",
     ) as HTMLTableElement | null;
@@ -1149,24 +1264,47 @@ const description =
     );
 
     const MIN_COL_WIDTH = 90;
-    let naturalWidths: number[] = [];
     let resizeReady = false;
+
+    // Larguras padrão (as porcentagens do HTML), lidas antes de qualquer
+    // congelamento sobrescrever o style inline.
+    const defaultWidths = cols.map((col) => col.style.width);
 
     const applyColWidth = (i: number, px: number) => {
       cols[i].style.width = `${px}px`;
     };
 
-    const persistColWidths = () => {
-      const out: Record<string, number> = {};
-      cols.forEach((col, i) => {
-        out[col.dataset.col || String(i)] = parseInt(col.style.width, 10);
-      });
-      try {
-        localStorage.setItem(LS_COL_WIDTHS, JSON.stringify(out));
-      } catch {}
+    const totalColWidth = () =>
+      cols.reduce(
+        (soma, col) => soma + (parseInt(col.style.width, 10) || 0),
+        0,
+      );
+
+    // Em table-fixed com largura 100%, o navegador normaliza a soma das
+    // colunas pra caber na tabela: alargar uma encolhe as outras na mesma
+    // proporção. Pra uma coluna se mover sozinha, o total precisa deixar de
+    // ser fixo — daí congelar todas em px e fixar a largura da tabela na soma
+    // delas. A partir daí a tabela cresce e o container rola, em vez de
+    // roubar espaço das vizinhas.
+    const isFrozen = () => table!.style.width.endsWith("px");
+
+    const freezeColWidths = () => {
+      if (isFrozen()) return;
+      Array.from(table!.querySelectorAll<HTMLElement>("thead th")).forEach(
+        (th, i) => applyColWidth(i, th.offsetWidth),
+      );
+      table!.style.width = `${totalColWidth()}px`;
     };
 
-    // Só dá pra medir a largura natural com a tabela visível — se a visão
+    // Volta ao estado responsivo: porcentagens do HTML e tabela em 100%.
+    const resetColWidths = () => {
+      cols.forEach((col, i) => {
+        col.style.width = defaultWidths[i];
+      });
+      table!.style.width = "";
+    };
+
+    // Só dá pra medir a largura das colunas com a tabela visível — se a visão
     // salva for "cards" ela começa oculta (offsetWidth 0), então adiamos a
     // inicialização até a tabela aparecer.
     function initColumnWidths() {
@@ -1174,19 +1312,8 @@ const description =
       const headers = Array.from(
         table.querySelectorAll<HTMLElement>("thead th"),
       );
-      const widths = headers.map((th) => th.offsetWidth);
-      if (widths.some((w) => w === 0)) return; // ainda oculta
+      if (headers.some((th) => th.offsetWidth === 0)) return; // ainda oculta
 
-      naturalWidths = widths;
-      let saved: Record<string, number> = {};
-      try {
-        saved = JSON.parse(localStorage.getItem(LS_COL_WIDTHS) || "{}");
-      } catch {}
-
-      cols.forEach((col, i) => {
-        applyColWidth(i, saved[col.dataset.col || String(i)] ?? widths[i]);
-      });
-      table.classList.add("table-fixed");
       resizeReady = true;
     }
 
@@ -1197,6 +1324,7 @@ const description =
         if (!resizeReady) return;
         e.preventDefault();
         e.stopPropagation();
+        freezeColWidths();
         const startX = e.clientX;
         const startWidth = parseInt(cols[index].style.width, 10);
         handle.setPointerCapture(e.pointerId);
@@ -1208,25 +1336,27 @@ const description =
             index,
             Math.max(MIN_COL_WIDTH, startWidth + (ev.clientX - startX)),
           );
+          // A tabela acompanha o novo total, senão a normalização volta a
+          // redistribuir a diferença entre as outras colunas.
+          table!.style.width = `${totalColWidth()}px`;
         };
         const onUp = () => {
           handle.removeEventListener("pointermove", onMove);
           handle.removeEventListener("pointerup", onUp);
           document.body.style.userSelect = "";
           document.body.style.cursor = "";
-          persistColWidths();
         };
         handle.addEventListener("pointermove", onMove);
         handle.addEventListener("pointerup", onUp);
       });
 
-      // Duplo clique devolve a coluna à largura natural medida no load.
+      // Duplo clique redefine todas as colunas: devolver uma só ao padrão
+      // misturaria px com porcentagem e traria o empurrão de volta.
       handle.addEventListener("dblclick", (e) => {
         if (!resizeReady) return;
         e.preventDefault();
         e.stopPropagation();
-        applyColWidth(index, naturalWidths[index]);
-        persistColWidths();
+        resetColWidths();
       });
     });
 
@@ -1234,6 +1364,22 @@ const description =
     // Registrado depois do handler que troca a visão, então a tabela já está
     // visível quando este roda.
     viewTableBtn?.addEventListener("click", initColumnWidths);
+
+    // ── Modal "Como utilizar" ────────────────────────────────────────
+    const helpDialog = document.getElementById(
+      "help-dialog",
+    ) as HTMLDialogElement | null;
+    document
+      .getElementById("help-btn")
+      ?.addEventListener("click", () => helpDialog?.showModal());
+    document
+      .getElementById("help-close")
+      ?.addEventListener("click", () => helpDialog?.close());
+    // Clique fora do conteúdo: o alvo do clique é o próprio <dialog> só quando
+    // ele cai no backdrop, então isso não fecha ao clicar no texto.
+    helpDialog?.addEventListener("click", (e) => {
+      if (e.target === helpDialog) helpDialog.close();
+    });
 
     // Estado inicial: sem filtros aplicados ainda mostra a 1ª página de todas.
     filterResearchers();
