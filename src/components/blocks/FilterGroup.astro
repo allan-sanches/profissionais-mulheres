@@ -43,7 +43,7 @@ const showSearch = searchable ?? options.length > SEARCH_THRESHOLD;
     </span>
     <Icon
       name="mdi:chevron-down"
-      class="size-4 shrink-0 text-gray-400 transition-transform duration-200 group-open:rotate-180"
+      class="size-4 shrink-0 text-gray-500 transition-transform duration-200 group-open:rotate-180"
     />
   </summary>
 
@@ -52,7 +52,7 @@ const showSearch = searchable ?? options.length > SEARCH_THRESHOLD;
       <div class="relative mt-2">
         <Icon
           name="mdi:magnify"
-          class="absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-gray-400"
+          class="absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-gray-500"
         />
         <input
           type="search"
@@ -73,7 +73,7 @@ const showSearch = searchable ?? options.length > SEARCH_THRESHOLD;
   >
     {
       options.length === 0 && (
-        <p class="py-1 text-xs text-gray-400">Nenhuma opção</p>
+        <p class="py-1 text-xs text-gray-500">Nenhuma opção</p>
       )
     }
     {
@@ -91,7 +91,7 @@ const showSearch = searchable ?? options.length > SEARCH_THRESHOLD;
           <span class="flex-1 leading-tight">
             {opt.label}
             {opt.count !== undefined && (
-              <span class="ml-1 text-xs text-gray-400">({opt.count})</span>
+              <span class="ml-1 text-xs text-gray-500">({opt.count})</span>
             )}
           </span>
         </label>

@@ -85,7 +85,7 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
         <div class="truncate" title={vm.localizacaoFormatada}>
           <Icon
             name="mdi:map-marker-outline"
-            class="mr-1.5 inline size-3.5 text-gray-400"
+            class="mr-1.5 inline size-3.5 text-gray-500"
           />
           {vm.localizacaoFormatada}
         </div>
@@ -109,23 +109,33 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
       }
 
       {
+        /* <details> em vez de abrir no hover: hover nao existe em toque nem em
+        teclado, e as etiquetas que sobram aqui costumam ser justamente
+        LGBTQIAP+, PCD e grupo tradicional. O summary ja e focavel, alterna com
+        Enter/Espaco e anuncia expandido/recolhido sem nenhum JavaScript.
+        data-no-nav impede que o clique suba pra linha e navegue pro perfil. */
+      }
+      {
         remainingBadges.length > 0 && (
-          <div class="group/popover relative inline-block">
-            <span class="cursor-pointer rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-bold text-gray-600 transition-colors hover:bg-gray-200">
+          <details class="relative inline-block" data-no-nav>
+            <summary
+              class="flex cursor-pointer list-none items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-600 transition-colors hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-meco-purple-primary focus-visible:outline-none [&::-webkit-details-marker]:hidden"
+              aria-label={`Mostrar mais ${remainingBadges.length} etiqueta${remainingBadges.length > 1 ? "s" : ""} de ${vm.primeiroNome}`}
+            >
               +{remainingBadges.length}
-            </span>
-            <div class="absolute bottom-full left-1/2 z-50 mb-2 hidden w-max max-w-xs -translate-x-1/2 flex-wrap gap-1.5 rounded-lg border border-gray-100 bg-white p-2.5 shadow-md group-hover/popover:flex">
+            </summary>
+            <div class="absolute bottom-full left-1/2 z-50 mb-2 flex w-max max-w-xs -translate-x-1/2 flex-wrap gap-1.5 rounded-lg border border-gray-200 bg-white p-2.5 shadow-md">
               {remainingBadges.map((badge) => (
-                <span class="rounded-full bg-meco-purple-bg px-2 py-0.5 text-[10px] font-semibold text-meco-purple-deep">
+                <span class="rounded-full bg-meco-purple-bg px-2 py-0.5 text-xs font-semibold text-meco-purple-deep">
                   {badge.label}
                 </span>
               ))}
             </div>
-          </div>
+          </details>
         )
       }
 
-      {vm.badges.length === 0 && <span class="text-gray-400">—</span>}
+      {vm.badges.length === 0 && <span class="text-gray-500">—</span>}
     </div>
   </td>
 </tr>

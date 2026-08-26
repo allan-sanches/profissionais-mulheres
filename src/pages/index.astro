@@ -183,7 +183,7 @@ const regiaoOptions = [...regiaoCounts.entries()]
 
 const title = "Pesquisadoras — Mulheres na Ecologia";
 const description =
-  "Nós existimos para dar mais visibilidade a mulheres pesquisadoras. Veja quem faz parte desse projeto:";
+  "O Mulheres na Ecologia é um projeto de comunicação e divulgação científica que promove e fortalece a atuação de mulheres na ecologia no Brasil, ampliando a visibilidade de suas trajetórias e pesquisas. Ao traduzir o conhecimento científico para diferentes públicos, o projeto fortalece o diálogo entre a ciência ecológica e a sociedade brasileira.";
 ---
 
 <BaseLayout title={title} description={description}>
@@ -198,7 +198,20 @@ const description =
         >
           {title}
         </h1>
+        {
+          /* max-w-prose mantem a linha em ~65 caracteres: texto corrido na
+          largura inteira de 1800px fica ilegivel. */
+        }
+        <p
+          class="mx-auto mt-4 max-w-prose text-center text-base leading-relaxed text-gray-600"
+        >
+          {description}
+        </p>
       </div>
+
+      <div class="h-3 bg-[#9cd4b8]"></div>
+
+      <div class="relative rounded-lg bg-white p-6 sm:p-8"></div>
 
       <div id="layout-root">
         {/* Main content */}
@@ -214,7 +227,7 @@ const description =
               <button
                 id="toggle-filters-btn"
                 type="button"
-                class="relative flex shrink-0 items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 py-3 text-base font-medium text-gray-700 transition-all hover:border-meco-purple-soft hover:bg-gray-50"
+                class="relative flex h-12 shrink-0 items-center gap-2 rounded-lg border border-gray-300 bg-white px-5 text-base font-medium text-gray-700 transition-all hover:border-meco-purple-soft hover:bg-gray-50"
                 title="Abrir filtros (Ctrl+B)"
                 aria-pressed="false"
                 aria-expanded="false"
@@ -235,12 +248,12 @@ const description =
               <div class="relative flex-1">
                 <Icon
                   name="mdi:magnify"
-                  class="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-gray-400"
+                  class="absolute top-1/2 left-4 size-5 -translate-y-1/2 text-gray-500"
                 />
                 <input
                   id="filter-search"
                   type="search"
-                  class="w-full rounded-lg border border-gray-300 bg-white py-3 pr-4 pl-11 text-base transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+                  class="h-12 w-full rounded-lg border border-gray-300 bg-white pr-4 pl-11 text-base transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
                   placeholder="Buscar por nome ou instituição..."
                 />
               </div>
@@ -286,7 +299,7 @@ const description =
               </button>
 
               <div
-                class="inline-flex shrink-0 items-center gap-1 rounded-lg border border-gray-200/80 bg-gray-100 p-1"
+                class="inline-flex h-12 shrink-0 items-center gap-1 rounded-lg border border-gray-200/80 bg-gray-100 p-1"
               >
                 <div
                   class="inline-flex items-center gap-1"
@@ -296,7 +309,7 @@ const description =
                   <button
                     id="btn-view-table"
                     type="button"
-                    class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm leading-none font-bold transition-all"
+                    class="flex h-full items-center gap-2 rounded-lg px-4 text-sm leading-none font-bold transition-all"
                     aria-pressed="true"
                   >
                     <Icon
@@ -308,7 +321,7 @@ const description =
                   <button
                     id="btn-view-cards"
                     type="button"
-                    class="flex items-center gap-2 rounded-lg px-4 py-2 text-sm leading-none font-bold transition-all"
+                    class="flex h-full items-center gap-2 rounded-lg px-4 text-sm leading-none font-bold transition-all"
                     aria-pressed="false"
                   >
                     <Icon
@@ -328,7 +341,7 @@ const description =
                   <span class="sr-only">Itens por página</span>
                   <select
                     data-page-size
-                    class="rounded-lg border-0 bg-transparent py-1.5 pr-1 pl-2 text-sm font-bold focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+                    class="h-full rounded-lg border-0 bg-transparent pr-1 pl-2 text-sm font-bold focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
                   >
                     <option value="5">5</option>
                     <option value="10">10</option>
@@ -1242,6 +1255,9 @@ const description =
       const target = e.target as HTMLElement;
       if (target.closest("a")) return; // deixa o link nativo agir
       if (window.getSelection()?.toString()) return; // seleção de texto
+      // Elementos marcados com data-no-nav (o <details> das etiquetas) têm
+      // interação própria: sem isso, abrir a lista navegaria pro perfil.
+      if (target.closest("[data-no-nav]")) return;
       const row = target.closest<HTMLElement>("tr[data-href]");
       const href = row?.dataset.href;
       if (href) window.location.href = href;
