@@ -79,16 +79,20 @@ const { ultimaSincronizacaoLabel } = Astro.props;
       <span>Como utilizar</span>
     </button>
 
+    {
+      /* A pilula inteira sai no mobile, e nao so o grupo de botoes: ela nao
+      guarda mais nada alem do alternador, entao esconder so o conteudo
+      deixaria uma caixa cinza vazia de 48px na tela.
+
+      E some porque ali a listagem e sempre em cards — a tabela tem cinco
+      colunas e nao cabe numa tela estreita —, entao o alternador so ofereceria
+      uma opcao que nao existe. */
+    }
     <div
-      class="inline-flex h-12 shrink-0 items-center gap-1 rounded-lg border border-gray-200/80 bg-gray-100 p-1"
+      class="hidden h-12 shrink-0 items-center gap-1 rounded-lg border border-gray-200/80 bg-gray-100 p-1 sm:inline-flex"
     >
-      {
-        /* Escondido no mobile: ali a listagem e sempre em cards — a tabela tem
-        cinco colunas e nao cabe numa tela estreita — entao um alternador de
-        visao so ofereceria uma opcao que nao existe. */
-      }
       <div
-        class="hidden items-center gap-1 sm:inline-flex"
+        class="inline-flex items-center gap-1"
         role="group"
         aria-label="Alternar visualização"
       >
