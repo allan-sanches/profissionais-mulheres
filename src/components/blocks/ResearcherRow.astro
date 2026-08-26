@@ -101,7 +101,8 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
       {
         visibleBadges.map((badge) => (
           <span
-            class={`${PILL_BASE} ${CATEGORY_BADGE[badge.key].color} max-w-full whitespace-normal`}
+            class={`${PILL_BASE} ${CATEGORY_BADGE[badge.key].color}`}
+            title={badge.full !== badge.label ? badge.full : undefined}
           >
             {badge.label}
           </span>
@@ -126,7 +127,10 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
             </summary>
             <div class="absolute bottom-full left-1/2 z-50 mb-2 flex w-max max-w-xs -translate-x-1/2 flex-wrap gap-1.5 rounded-lg border border-gray-200 bg-white p-2.5 shadow-md">
               {remainingBadges.map((badge) => (
-                <span class="rounded-full bg-meco-purple-bg px-2 py-0.5 text-xs font-semibold text-meco-purple-deep">
+                <span
+                  class="max-w-full rounded-full bg-meco-purple-bg px-2 py-0.5 text-xs font-semibold break-words text-meco-purple-deep"
+                  title={badge.full !== badge.label ? badge.full : undefined}
+                >
                   {badge.label}
                 </span>
               ))}

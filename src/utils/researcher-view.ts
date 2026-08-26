@@ -21,6 +21,44 @@ export interface ResearcherResolvers {
 
 const identity = (raw?: string) => raw || "";
 
+/**
+ * Teto de exibição de uma etiqueta.
+ *
+ * Os campos de lista (áreas de pesquisa, grupos biológicos) são texto livre de
+ * planilha, e de vez em quando alguém responde com uma frase em vez de uma
+ * categoria. Na base atual: mediana 19 caracteres, p99 41, e um degrau nítido
+ * depois — o grupo legítimo para em 42 ("Manejo e conservação de recursos
+ * naturais") e os seguintes são 64, 92 e 172, todos frases.
+ *
+ * 60 fica acima de tudo que é categoria de verdade e corta só o que não é.
+ */
+const LABEL_MAX = 60;
+
+/**
+ * Corta a etiqueta pra exibição sem perder o dado: o valor cheio continua no
+ * data-* que os filtros comparam, e os componentes põem o texto original no
+ * `title`. Corta na última palavra inteira pra não terminar no meio de uma
+ * sílaba.
+ */
+export function truncateLabel(texto: string, max = LABEL_MAX) {
+  if (texto.length <= max) return texto;
+  const corte = texto.slice(0, max);
+  const espaco = corte.lastIndexOf(" ");
+  const base = espaco > max * 0.6 ? corte.slice(0, espaco) : corte;
+  return base.replace(/[\s.,;:!?-]+$/, "") + "…";
+}
+
+/**
+ * Os data-* de lista são um único atributo com os valores unidos por "|", e o
+ * filtro no cliente separa por esse mesmo caractere. Quando o texto livre
+ * contém "|" — já aconteceu — um valor vira dois, e ambos entram na lista de
+ * opções do drawer como categorias fantasma. Trocar por "/" preserva a
+ * intenção de quem escreveu sem quebrar a separação.
+ */
+const LIST_SEPARATOR = "|";
+const sanitizeListValue = (raw: string) =>
+  raw.split(LIST_SEPARATOR).join("/").replace(/\s+/g, " ").trim();
+
 // Único lugar que calcula os campos exibidos e os data-* usados pelos
 // filtros client-side. Tabela (ResearcherRow) e cards (ResearcherCard)
 // consomem o mesmo view-model pra nunca divergir nos atributos de filtro.
@@ -134,14 +172,14 @@ export function buildResearcherView(
     r.lgbtqiap === undefined ? "" : r.lgbtqiap ? "sim" : "nao";
   const dataPcd = r.pcd === undefined ? "" : r.pcd ? "sim" : "nao";
   const dataTrabalhoAtual = splitList(r.trabalho_atual)
-    .map((v) => resolveTrabalhoAtual(v))
-    .join("|");
+    .map((v) => sanitizeListValue(resolveTrabalhoAtual(v)))
+    .join(LIST_SEPARATOR);
   const dataAreasPesquisa = (r.areas_pesquisa || [])
-    .map((v) => resolveAreaPesquisa(v))
-    .join("|");
+    .map((v) => sanitizeListValue(resolveAreaPesquisa(v)))
+    .join(LIST_SEPARATOR);
   const dataGruposBiologicos = (r.grupos_biologicos || [])
-    .map((v) => resolveGrupoBiologico(v))
-    .join("|");
+    .map((v) => sanitizeListValue(resolveGrupoBiologico(v)))
+    .join(LIST_SEPARATOR);
   const dataAceitaPalestras = show("aceita_palestras", r.aceita_palestras)
     ? normalizeAceitaPalestras(r.aceita_palestras)
     : "";
@@ -197,19 +235,27 @@ export function buildResearcherView(
   // inline e quais caem no popover "+{N}": a especificação manda priorizar
   // identidade e grupos biológicos, então esses vêm primeiro e os marcadores
   // adicionais (LGBTQIAP+, PCD, grupo tradicional) ficam no overflow.
-  const badges: { key: string; label: string }[] = [
+  //
+  // `label` e o texto exibido, ja com teto; `full` e o original, que os
+  // componentes poem no title. Os rotulos de enum (identidade, raca, LGBTQIAP+,
+  // PCD) sao controlados por nos e nunca estouram — quem passa por
+  // truncateLabel e so o texto livre de planilha.
+  const badge = (key: string, label: string) => ({
+    key,
+    label: truncateLabel(label),
+    full: label,
+  });
+
+  const badges: { key: string; label: string; full: string }[] = [
     ...(showIdentidade
-      ? [{ key: "identidade", label: IDENTIDADE_LABELS[r.identidade_genero!] }]
+      ? [badge("identidade", IDENTIDADE_LABELS[r.identidade_genero!])]
       : []),
-    ...(showRaca ? [{ key: "raca", label: RACA_LABELS[r.raca_etnia!] }] : []),
-    ...gruposBiologicosList.map((grupo) => ({
-      key: "grupoBiologico",
-      label: grupo,
-    })),
-    ...(showLgbtqiap ? [{ key: "lgbtqiap", label: "LGBTQIAP+" }] : []),
-    ...(showPcd ? [{ key: "pcd", label: "PCD" }] : []),
+    ...(showRaca ? [badge("raca", RACA_LABELS[r.raca_etnia!])] : []),
+    ...gruposBiologicosList.map((grupo) => badge("grupoBiologico", grupo)),
+    ...(showLgbtqiap ? [badge("lgbtqiap", "LGBTQIAP+")] : []),
+    ...(showPcd ? [badge("pcd", "PCD")] : []),
     ...(showGrupoTradicional
-      ? [{ key: "grupoTradicional", label: r.grupo_tradicional! }]
+      ? [badge("grupoTradicional", r.grupo_tradicional!)]
       : []),
   ];
 

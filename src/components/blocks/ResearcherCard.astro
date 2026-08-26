@@ -106,6 +106,7 @@ const remainingCount = vm.badges.length - visibleBadges.length;
         visibleBadges.map((badge) => (
           <span
             class={`${PILL_BASE} ${CATEGORY_BADGE[badge.key].color} text-sm`}
+            title={badge.full !== badge.label ? badge.full : undefined}
           >
             {badge.label}
           </span>

@@ -12,7 +12,10 @@
  */
 
 export interface CardBadge {
+  /** Texto exibido, ja com o teto de comprimento aplicado. */
   label: string;
+  /** Texto original; so vem preenchido quando difere de `label`. */
+  full?: string;
   /** Classes de cor vindas de CATEGORY_BADGE[key].color. */
   color: string;
 }
@@ -65,8 +68,11 @@ function icon(name: string, cls: string): string {
   return `<svg width="1em" height="1em" class="${cls}" aria-hidden="true"><use href="#ai:${name}"></use></svg>`;
 }
 
+// Copia do PILL_BASE de utils/labels.ts — este modulo roda no cliente e nao
+// importa de la pra nao arrastar o resto do arquivo pro bundle. Ao mexer em um,
+// mexa no outro.
 const PILL_BASE =
-  "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap";
+  "inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium break-words";
 
 export function renderCard(c: CardData): string {
   const perfil = `/pesquisadoras/${esc(c.slug)}`;
@@ -93,10 +99,12 @@ export function renderCard(c: CardData): string {
     : "";
 
   const badges = c.badges
-    .map(
-      (b) =>
-        `<span class="${PILL_BASE} ${b.color} text-sm">${esc(b.label)}</span>`,
-    )
+    .map((b) => {
+      const title = b.full ? ` title="${esc(b.full)}"` : "";
+      return `<span class="${PILL_BASE} ${b.color} text-sm"${title}>${esc(
+        b.label,
+      )}</span>`;
+    })
     .join("");
 
   const extras =

@@ -46,8 +46,17 @@ export const CATEGORY_BADGE: Record<string, { color: string }> = {
 
 // Classe base compartilhada do formato "pill" — usar junto com
 // CATEGORY_BADGE[x].color.
+//
+// Sem `whitespace-nowrap`: o texto vem da planilha e nem sempre é curto — há
+// registro com 92 caracteres num campo de grupo biológico. Com nowrap a
+// pílula não cabia na coluna e empurrava a largura da tabela inteira. Sem ele,
+// rótulo curto continua numa linha só (não há o que quebrar) e o longo quebra
+// em quantas precisar.
+//
+// `max-w-full` prende a pílula à largura do container, e `break-words` cobre o
+// caso de uma única palavra maior que a coluna, que nem espaço tem pra quebrar.
 export const PILL_BASE =
-  "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap";
+  "inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium break-words";
 
 // Ícone descritivo por forma de colaboração, pros mini-cards do perfil.
 // As chaves são fragmentos em minúsculo casados por `includes` — o texto vem

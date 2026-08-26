@@ -130,6 +130,9 @@ const cardsData: CardData[] = views.map((vm) => ({
   bioCompleta: vm.show("bio", vm.r.bio) ? vm.r.bio! : "",
   badges: vm.badges.slice(0, VISIBLE_BADGES).map((badge) => ({
     label: badge.label,
+    // So viaja quando difere do exibido — nao vale inflar o JSON repetindo
+    // o mesmo texto em 259 registros.
+    ...(badge.full !== badge.label ? { full: badge.full } : {}),
     color: CATEGORY_BADGE[badge.key].color,
   })),
   extras: Math.max(0, vm.badges.length - VISIBLE_BADGES),
