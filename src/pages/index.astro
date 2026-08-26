@@ -506,6 +506,9 @@ const description =
     const drawerCloseBtn = document.getElementById("filter-drawer-close");
     const toggleBtn = document.getElementById("toggle-filters-btn");
 
+    // Garante que o drawer começa fechado
+    drawer?.close();
+
     toggleBtn?.addEventListener("click", () => {
       if (drawer?.open) {
         drawer.close();
