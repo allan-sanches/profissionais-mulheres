@@ -21,7 +21,7 @@ const linkRows = Math.ceil(footer.links.length / 2);
     /* Padding inferior menor que o superior: a ultima linha ja vem com o
     respiro do mt-12 e do filete, entao 56px embaixo viravam vazio. */
   }
-  <div class="bg-gray-100 px-8 pt-14 pb-8 text-gray-900 md:px-16">
+  <div class="bg-[#9c00ff] px-8 pt-14 pb-8 text-white md:px-16">
     {
       /* Sem largura máxima própria: herda a do container da página. Um max-w
       fixo aqui desalinharia, e mudaria a cada página que usasse um container
@@ -32,52 +32,34 @@ const linkRows = Math.ceil(footer.links.length / 2);
       reparte a folga restante igualmente entre os dois vaos. Dar a folga a
       uma coluna so (1fr) inflava aquele bloco e apertava os outros dois. */
     }
-    <div
-      class="flex flex-col gap-10 md:flex-row md:items-start md:justify-between md:gap-12"
-    >
+    <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
       {/* Logo */}
-      <div>
-        {
-          /* O proprio logo escreve o nome da organizacao, entao nao ha rotulo
-          ao lado - o nome aparece de novo so no copyright, no fim. */
-        }
+      <div class="flex flex-col items-center justify-center">
         <a
           href={site.mainSite.href}
           class="inline-flex transition-opacity hover:opacity-80"
         >
           <img
-            src="/logo abreviada colorida.png"
+            src="/logo 2 branca.png"
             alt={footer.copyright}
             width="100"
             height="100"
             class="h-12 w-auto"
+            loading="lazy"
+            decoding="async"
           />
         </a>
       </div>
 
       {/* Links do site */}
-      {
-        /* Sem titulo visivel, o nav precisa de um rotulo proprio: e por ele
-        que leitores de tela anunciam a regiao e a distinguem da lista de
-        redes sociais ao lado. */
-      }
       <nav aria-label="Links do site">
-        {
-          /* grid-flow-col preenche coluna a coluna: os primeiros links descem
-          na esquerda e o restante na direita, mantendo a ordem do menu. Um
-          grid comum preencheria em ziguezague. O justify-start impede que as
-          colunas implicitas estiquem pra ocupar a largura disponivel. */
-        }
-        <ul
-          class="grid grid-flow-col justify-start gap-x-16 gap-y-3"
-          style={`grid-template-rows: repeat(${linkRows}, min-content)`}
-        >
+        <ul class="grid grid-cols-2 gap-x-6 gap-y-4">
           {
             footer.links.map((link) => (
               <li>
                 <a
                   href={link.href}
-                  class="text-base text-gray-700 transition-colors hover:text-meco-purple-primary hover:underline"
+                  class="text-lg text-white transition-colors hover:text-gray-200 hover:underline"
                 >
                   {link.label}
                 </a>
@@ -88,16 +70,16 @@ const linkRows = Math.ceil(footer.links.length / 2);
       </nav>
 
       {/* Redes sociais */}
-      <div>
+      <div class="flex flex-col items-center">
         <h2
           id="footer-social-heading"
-          class="mb-4 font-epilogue text-xl font-bold text-gray-700"
+          class="mb-6 text-center font-epilogue text-3xl font-bold text-white"
         >
           {footer.socialHeading}
         </h2>
         <ul
           aria-labelledby="footer-social-heading"
-          class="flex flex-wrap gap-3"
+          class="flex flex-wrap justify-center gap-4"
         >
           {
             footer.social.map((item) => (
@@ -108,9 +90,9 @@ const linkRows = Math.ceil(footer.links.length / 2);
                   rel="noopener noreferrer"
                   title={item.name}
                   aria-label={item.name}
-                  class="flex size-12 items-center justify-center rounded-full bg-white text-meco-green-dark transition-colors hover:bg-meco-green-dark hover:text-white"
+                  class="flex size-16 items-center justify-center text-white transition-colors hover:text-gray-200"
                 >
-                  <Icon name={item.icon} class="size-6" />
+                  <Icon name={item.icon} class="size-8" />
                 </a>
               </li>
             ))
@@ -124,13 +106,13 @@ const linkRows = Math.ceil(footer.links.length / 2);
       um filete discreto pra ler como rodape do rodape. */
     }
     <div
-      class="mt-12 border-t border-gray-200 pt-6 text-center text-sm text-gray-700"
+      class="mt-12 border-t border-white/20 pt-6 text-center text-sm text-white"
     >
       <p>
         Copyright © {year}
         {footer.copyright} · CNPJ {footer.cnpj} · {footer.tagline}
       </p>
-      <p class="mt-1 text-gray-600">Desenvolvido por {footer.developer}</p>
+      <p class="mt-1 text-white">Desenvolvido por {footer.developer}</p>
     </div>
   </div>
 </footer>

@@ -4,13 +4,13 @@ import { Icon } from "astro-icon/components";
 
 <div
   id="pagination-bar"
-  class="flex flex-col items-center justify-between gap-4 rounded-lg border border-gray-200/90 bg-white px-6 py-4 text-sm text-gray-600 sm:flex-row"
+  class="flex flex-col items-center justify-between gap-4 rounded-lg bg-white px-6 py-4 text-sm text-gray-600 sm:flex-row"
 >
   <div class="flex items-center gap-2">
     <span>Itens por página:</span>
     <select
       data-page-size
-      class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+      class="rounded-lg bg-white px-3 py-2 text-sm font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
     >
       <option value="5">5</option>
       <option value="10">10</option>
@@ -32,7 +32,7 @@ import { Icon } from "astro-icon/components";
     <button
       id="page-first"
       type="button"
-      class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+      class="rounded-lg border border-gray-400 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
       title="Primeira página"
       aria-label="Primeira página"
     >
@@ -41,7 +41,7 @@ import { Icon } from "astro-icon/components";
     <button
       id="page-prev"
       type="button"
-      class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+      class="rounded-lg border border-gray-400 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
       title="Página anterior"
       aria-label="Página anterior"
     >
@@ -53,7 +53,7 @@ import { Icon } from "astro-icon/components";
     <button
       id="page-next"
       type="button"
-      class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+      class="rounded-lg border border-gray-400 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
       title="Próxima página"
       aria-label="Próxima página"
     >
@@ -62,7 +62,7 @@ import { Icon } from "astro-icon/components";
     <button
       id="page-last"
       type="button"
-      class="rounded-lg border border-gray-200 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
+      class="rounded-lg border border-gray-400 bg-white p-2.5 text-gray-500 transition-colors hover:text-gray-900 disabled:opacity-40"
       title="Última página"
       aria-label="Última página"
     >
