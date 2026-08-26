@@ -1,23 +1,34 @@
 ---
-import ResearcherCard from "@/components/blocks/ResearcherCard.astro";
-import type { CollectionEntry } from "astro:content";
-import type { ResearcherResolvers } from "@/utils/researcher-view";
+import { Icon } from "astro-icon/components";
 
-interface Props {
-  researchers: CollectionEntry<"researchers">[];
-  resolvers: ResearcherResolvers;
-}
+// Container da visão de cards. Nasce vazio de propósito: o HTML das 259
+// pesquisadoras dobrava o peso da página por um bloco que começa escondido.
+// O script da página monta só os cards da página corrente, a partir do JSON
+// injetado no HTML (ver index.astro e utils/card-template.ts).
 
-const { researchers, resolvers } = Astro.props;
+// O astro-icon emite o <symbol> de cada ícone na primeira vez que ele é
+// renderizado no servidor. Como os cards deixaram de ser renderizados lá, os
+// ícones que só eles usam sumiriam do documento e os <use> dos cards dinâmicos
+// apontariam pra nada. Este banco escondido garante que os símbolos existam.
+// `hidden` não atrapalha: <symbol> nunca é pintado, só referenciado.
+const ICONES_DOS_CARDS = [
+  "mdi:map-marker-outline",
+  "mdi:arrow-right",
+  "academicons:lattes",
+  "academicons:researchgate",
+  "academicons:orcid",
+  "mdi:linkedin",
+  "mdi:instagram",
+  "mdi:web",
+];
 ---
+
+<div hidden aria-hidden="true">
+  {ICONES_DOS_CARDS.map((name) => <Icon name={name} />)}
+</div>
 
 <div
   id="cards-view-container"
   class="hidden grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
 >
-  {
-    researchers.map((researcher) => (
-      <ResearcherCard researcher={researcher} {...resolvers} />
-    ))
-  }
 </div>

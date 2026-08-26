@@ -10,7 +10,6 @@ import ResearchersPagination from "@/components/sections/ResearchersPagination.a
 import site from "@/config/site";
 import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
-import { Icon } from "astro-icon/components";
 import {
   NIVEL_LABELS,
   NIVEL_ORDER,
@@ -19,6 +18,7 @@ import {
   RACA_LABELS,
   RACA_ORDER,
   ACEITA_ORDER,
+  CATEGORY_BADGE,
   splitList,
   isGrupoTradicionalVazio,
   buildDedupIndex,
@@ -27,14 +27,14 @@ import {
   compareRegions,
 } from "@/utils/labels";
 import { buildResearcherView } from "@/utils/researcher-view";
+import type { CardData } from "@/utils/card-template";
 
-// Fetch all researchers
-const allResearchers = await getCollection("researchers");
-
-// Lazy-load: renderizar apenas a primeira página no HTML
-const PAGE_SIZE = 20;
-const researchers = allResearchers.slice(0, PAGE_SIZE);
-const totalResearchers = allResearchers.length;
+// A pagina inteira roda no cliente: busca, filtros e paginacao percorrem a
+// lista toda sem ida ao servidor. Por isso todas as pesquisadoras precisam
+// estar no HTML — renderizar so a primeira pagina deixava as outras 239
+// inalcancaveis, e ainda calculava as contagens dos filtros e a data de
+// sincronizacao em cima de uma amostra de 20.
+const researchers = await getCollection("researchers");
 
 // Cada pesquisadora carrega o carimbo do sync que a gravou. O mais recente é
 // a data em que a planilha oficial foi lida pela última vez — como o site é
@@ -98,6 +98,47 @@ const resolvers = {
 // filtragem no cliente compara. Derivar as duas coisas do view-model
 // garante que o número exibido bate com o resultado do filtro.
 const views = researchers.map((r) => buildResearcherView(r, resolvers));
+
+// ── Dados dos cards, montados no cliente ──────────────────────────────────
+// O card cabe mais etiqueta que a célula da tabela antes de precisar do +N.
+const VISIBLE_BADGES = 5;
+
+// A citação é cortada por número de caracteres, e não só por linhas: o
+// line-clamp esconde via CSS mas mantém o texto inteiro no HTML, o que faria
+// a busca da página e leitores de tela lerem um trecho que ninguém vê. Corta
+// na última palavra inteira pra não terminar no meio de uma sílaba.
+const BIO_MAX = 150;
+function encurtarBio(texto: string, max: number) {
+  if (texto.length <= max) return texto;
+  const corte = texto.slice(0, max);
+  const espaco = corte.lastIndexOf(" ");
+  const base = espaco > max * 0.6 ? corte.slice(0, espaco) : corte;
+  return base.replace(/[\s.,;:!?-]+$/, "") + "…";
+}
+
+// Só os campos que o card desenha — nada de markup. Sai como JSON no HTML
+// (ver <script is:inline define:vars> no fim do arquivo) e é consumido por
+// utils/card-template.ts.
+const cardsData: CardData[] = views.map((vm) => ({
+  slug: vm.dataAttrs["data-slug"],
+  nome: vm.nomeFormatado,
+  iniciais: vm.initials,
+  nivel: vm.r.nivel_formacao ? NIVEL_LABELS[vm.r.nivel_formacao] : "",
+  instituicao: vm.instituicaoFormatada,
+  localizacao: vm.localizacaoFormatada,
+  bio: vm.show("bio", vm.r.bio) ? encurtarBio(vm.r.bio!.trim(), BIO_MAX) : "",
+  bioCompleta: vm.show("bio", vm.r.bio) ? vm.r.bio! : "",
+  badges: vm.badges.slice(0, VISIBLE_BADGES).map((badge) => ({
+    label: badge.label,
+    color: CATEGORY_BADGE[badge.key].color,
+  })),
+  extras: Math.max(0, vm.badges.length - VISIBLE_BADGES),
+  links: vm.links.slice(0, 3).map((link) => ({
+    href: link.href!,
+    icon: link.icon,
+    title: link.title,
+  })),
+}));
 
 const countAttr = (attr: string, mode: "single" | "list" = "single") => {
   const counts = new Map<string, number>();
@@ -259,7 +300,11 @@ const description =
 
           <ResearchersTable researchers={researchers} resolvers={resolvers} />
 
-          <ResearchersCards researchers={researchers} resolvers={resolvers} />
+          {
+            /* Container vazio: os cards da pagina corrente sao montados no
+            cliente a partir de window.__CARDS_DATA__ (injetado no fim). */
+          }
+          <ResearchersCards />
 
           <ResearchersPagination />
 
@@ -378,8 +423,9 @@ const description =
   {
     /* Sem a classe `flex` aqui: ela viria de folha de autor e venceria o
     `dialog:not([open]) { display: none }` do navegador, deixando o drawer
-    pintado mesmo fechado. O display fica no <style> do fim do arquivo,
-    condicionado ao [open]. */
+    pintado mesmo fechado. O display mora em global.css, condicionado ao
+    [open] — precisa ser uma folha compartilhada por todas as paginas pra
+    sobreviver a troca de <head> do ClientRouter. */
   }
   <dialog
     id="filter-drawer"
@@ -399,7 +445,7 @@ const description =
           </h2>
           <span
             id="filter-active-count"
-            class="hidden h-5 min-w-5 items-center justify-center rounded-full bg-white px-1.5 text-[10px] font-bold text-meco-purple-primary"
+            class="badge-numero hidden bg-white text-[10px] font-bold text-meco-purple-primary"
             >0</span
           >
         </div>
@@ -502,724 +548,777 @@ const description =
     </div>
   </dialog>
 
+  {
+    /* Dados dos cards. Vao como JSON puro, sem markup: e o que permite a visao
+    de cards nascer vazia. `is:inline` porque define:vars serializa os valores
+    direto no HTML — o <script> abaixo e um modulo bundlado e nao receberia. */
+  }
+  <script is:inline define:vars={{ cardsData }}>
+    window.__CARDS_DATA__ = cardsData;
+  </script>
+
   <script>
-    // Drawer de filtros off-canvas: desliza da esquerda sobre a página, com
-    // backdrop desfocado. Fica sempre fora do fluxo, então abrir/fechar nunca
-    // reflui a tabela — a listagem ocupa a largura toda o tempo inteiro.
-    const drawer = document.getElementById(
-      "filter-drawer",
-    ) as HTMLDialogElement | null;
-    const drawerCloseBtn = document.getElementById("filter-drawer-close");
-    const toggleBtn = document.getElementById("toggle-filters-btn");
+    import { renderCard, type CardData } from "@/utils/card-template";
 
-    // Rede de segurança: se o navegador restaurar a página do bfcache com o
-    // dialog aberto, a volta do perfil cairia numa tela travada.
-    if (drawer?.open) drawer.close();
+    /*
+     * Todo o comportamento da tela vive dentro de initDiretorio(), chamada a
+     * cada `astro:page-load`.
+     *
+     * Este <script> vira um modulo ES com src proprio, e um modulo so executa
+     * UMA VEZ por URL: o ClientRouter reinsere a tag ao voltar do perfil, mas
+     * o navegador nao reexecuta o modulo. O DOM da volta e novo e os listeners
+     * ficaram no DOM descartado — a tela inteira (drawer, filtros, busca,
+     * paginacao, troca de visao) ficava inerte na volta.
+     *
+     * `astro:page-load` dispara na primeira carga E depois de cada navegacao,
+     * entao religa tudo no DOM corrente. Listeners de elemento morrem junto
+     * com o DOM antigo; os de window/document ficariam acumulando, por isso o
+     * unico que existe (Ctrl+B) e registrado fora daqui, uma vez so.
+     */
+    function initDiretorio() {
+      // Drawer de filtros off-canvas: desliza da esquerda sobre a página, com
+      // backdrop desfocado. Fica sempre fora do fluxo, então abrir/fechar nunca
+      // reflui a tabela — a listagem ocupa a largura toda o tempo inteiro.
+      const drawer = document.getElementById(
+        "filter-drawer",
+      ) as HTMLDialogElement | null;
+      const drawerCloseBtn = document.getElementById("filter-drawer-close");
+      const toggleBtn = document.getElementById("toggle-filters-btn");
 
-    toggleBtn?.addEventListener("click", () => {
-      if (drawer?.open) {
-        drawer.close();
-      } else {
-        drawer?.showModal();
-      }
-    });
-
-    drawerCloseBtn?.addEventListener("click", () => drawer?.close());
-
-    // Clique no backdrop fecha o dialog (nativo)
-    drawer?.addEventListener("click", (e) => {
-      if (e.target === drawer) drawer.close();
-    });
-
-    // Ctrl/Cmd+B alterna
-    window.addEventListener("keydown", (e) => {
-      if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "b") return;
-      const tag = (e.target as HTMLElement | null)?.tagName ?? "";
-      if (tag === "INPUT" || tag === "TEXTAREA") return;
-      e.preventDefault();
+      // Rede de segurança: se o navegador restaurar a página do bfcache com o
+      // dialog aberto, a volta do perfil cairia numa tela travada.
       if (drawer?.open) drawer.close();
-      else drawer?.showModal();
-    });
 
-    // Acordeão: só uma categoria de filtro fica aberta por vez, pra não
-    // precisar de scroll interno em cada uma.
-    const accordionItems = document.querySelectorAll<HTMLDetailsElement>(
-      ".filter-accordion-item",
-    );
-    accordionItems.forEach((item) => {
-      item.addEventListener("toggle", () => {
-        if (!item.open) return;
-        accordionItems.forEach((other) => {
-          if (other !== item) other.open = false;
-        });
-      });
-    });
-
-    // Busca dentro de uma categoria (Localização, Instituição atual): filtra
-    // só as opções visíveis daquele grupo, sem mexer nos resultados da tabela.
-    document
-      .querySelectorAll<HTMLInputElement>("input[data-option-search]")
-      .forEach((input) => {
-        const name = input.dataset.optionSearch;
-        const list = document.querySelector<HTMLElement>(
-          `[data-option-list="${name}"]`,
-        );
-        if (!list) return;
-        input.addEventListener("input", () => {
-          const query = input.value.trim().toLowerCase();
-          list
-            .querySelectorAll<HTMLElement>("[data-option-label]")
-            .forEach((label) => {
-              const text = label.dataset.optionLabel || "";
-              label.style.display =
-                !query || text.includes(query) ? "" : "none";
-            });
-        });
-      });
-
-    // Client-side filtering. Cada grupo de filtro (checkboxes) faz OR entre
-    // si e AND com os demais grupos e a busca por nome.
-    const FILTER_GROUPS: { name: string; mode: "single" | "list" }[] = [
-      { name: "identidade", mode: "single" },
-      { name: "raca", mode: "single" },
-      { name: "lgbtqiap", mode: "single" },
-      { name: "pcd", mode: "single" },
-      { name: "grupo-tradicional", mode: "single" },
-      { name: "regiao", mode: "single" },
-      { name: "nivel-formacao", mode: "single" },
-      { name: "trabalho-atual", mode: "list" },
-      { name: "instituicao-atual", mode: "single" },
-      { name: "areas-pesquisa", mode: "list" },
-      { name: "grupos-biologicos", mode: "list" },
-      { name: "aceita-palestras", mode: "single" },
-    ];
-
-    const searchInput = document.getElementById(
-      "filter-search",
-    ) as HTMLInputElement | null;
-    const applyBtn = document.getElementById("filter-apply");
-    const clearBtn = document.getElementById("filter-clear");
-    const tableContainer = document.getElementById("researchers-container");
-    const cardsContainer = document.getElementById("cards-view-container");
-    const emptyState = document.getElementById("empty-state");
-
-    const getChecked = (name: string): string[] =>
-      Array.from(
-        document.querySelectorAll<HTMLInputElement>(
-          `input[data-filter-group="${name}"]:checked`,
-        ),
-      ).map((el) => el.value);
-
-    // Tabela e cards renderizam os mesmos dados em dois containers
-    // diferentes. Indexamos os dois por data-slug pra filtrar/paginar uma
-    // única vez e refletir o resultado nas duas visões simultaneamente —
-    // trocar de visão fica instantâneo, sem recalcular nada.
-    const rowBySlug = new Map<string, HTMLElement>();
-    tableContainer
-      ?.querySelectorAll<HTMLElement>("[data-slug]")
-      .forEach((el) => {
-        const slug = el.dataset.slug;
-        if (slug) rowBySlug.set(slug, el);
-      });
-
-    const cardBySlug = new Map<string, HTMLElement>();
-    cardsContainer
-      ?.querySelectorAll<HTMLElement>("[data-slug]")
-      .forEach((el) => {
-        const slug = el.dataset.slug;
-        if (slug) cardBySlug.set(slug, el);
-      });
-
-    // Visualização (tabela/cards) — persistida em localStorage.
-    const LS_VIEW = "meco_view_mode";
-    const tableWrapper = document.getElementById("table-view-container");
-    const cardsWrapper = document.getElementById("cards-view-container");
-    const viewTableBtn = document.getElementById("btn-view-table");
-    const viewCardsBtn = document.getElementById("btn-view-cards");
-
-    let currentView: "table" | "cards" = "table";
-    try {
-      const storedView = localStorage.getItem(LS_VIEW);
-      if (storedView === "table" || storedView === "cards")
-        currentView = storedView;
-    } catch {}
-
-    function applyView() {
-      const showTable = currentView === "table";
-
-      tableWrapper?.classList.toggle("hidden", !showTable);
-      // O container de cards é um grid: alterna hidden/grid pra não perder o
-      // layout de colunas ao reexibir.
-      cardsWrapper?.classList.toggle("hidden", showTable);
-      cardsWrapper?.classList.toggle("grid", !showTable);
-
-      for (const [btn, isActive] of [
-        [viewTableBtn, showTable],
-        [viewCardsBtn, !showTable],
-      ] as const) {
-        if (!btn) continue;
-        const icon = btn.querySelector("svg");
-        if (icon) {
-          icon.classList.toggle("text-meco-purple-primary", isActive);
-          icon.classList.toggle("text-gray-400", !isActive);
+      toggleBtn?.addEventListener("click", () => {
+        if (drawer?.open) {
+          drawer.close();
+        } else {
+          drawer?.showModal();
         }
-        btn.setAttribute("aria-pressed", String(isActive));
-      }
-    }
-
-    function setView(view: "table" | "cards") {
-      currentView = view;
-      try {
-        localStorage.setItem(LS_VIEW, view);
-      } catch {}
-      applyView();
-    }
-
-    viewTableBtn?.addEventListener("click", () => setView("table"));
-    viewCardsBtn?.addEventListener("click", () => setView("cards"));
-    applyView();
-
-    // Paginação — aplicada em cima do resultado já filtrado/buscado.
-    const PAGE_SIZES = [5, 10, 20, 50, 100];
-    const LS_PAGE_SIZE = "pesquisadoras:page-size";
-
-    let pageSize = 20;
-    try {
-      const stored = Number(localStorage.getItem(LS_PAGE_SIZE));
-      if (PAGE_SIZES.includes(stored)) pageSize = stored;
-    } catch {}
-
-    let currentPage = 1;
-    let filteredSlugs: string[] = [];
-
-    // Há dois seletores de itens por página (toolbar e barra de paginação):
-    // mudar um espelha no outro pra não mostrarem valores diferentes.
-    const pageSizeSelects = Array.from(
-      document.querySelectorAll<HTMLSelectElement>("select[data-page-size]"),
-    );
-    const paginationBar = document.getElementById("pagination-bar");
-    const paginationInfo = document.getElementById("pagination-info");
-    const pageIndicator = document.getElementById("page-indicator");
-    const firstBtn = document.getElementById(
-      "page-first",
-    ) as HTMLButtonElement | null;
-    const prevBtn = document.getElementById(
-      "page-prev",
-    ) as HTMLButtonElement | null;
-    const nextBtn = document.getElementById(
-      "page-next",
-    ) as HTMLButtonElement | null;
-    const lastBtn = document.getElementById(
-      "page-last",
-    ) as HTMLButtonElement | null;
-
-    const syncPageSizeSelects = () => {
-      for (const select of pageSizeSelects) select.value = String(pageSize);
-    };
-    syncPageSizeSelects();
-
-    function renderPage() {
-      rowBySlug.forEach((row) => (row.style.display = "none"));
-      cardBySlug.forEach((card) => (card.style.display = "none"));
-
-      const total = filteredSlugs.length;
-      const totalPages = Math.max(1, Math.ceil(total / pageSize));
-      if (currentPage > totalPages) currentPage = totalPages;
-      if (currentPage < 1) currentPage = 1;
-
-      const start = (currentPage - 1) * pageSize;
-      const end = start + pageSize;
-      filteredSlugs.slice(start, end).forEach((slug) => {
-        const row = rowBySlug.get(slug);
-        if (row) row.style.display = "";
-        const card = cardBySlug.get(slug);
-        if (card) card.style.display = "";
       });
 
-      // Os dois contadores saem dos mesmos start/end/total: enquanto o de
-      // cima era calculado fora do renderPage, ele mostrava o total filtrado
-      // e o de baixo a janela da página, divergindo a cada paginação.
-      const inicio = start + 1;
-      const fim = Math.min(end, total);
+      drawerCloseBtn?.addEventListener("click", () => drawer?.close());
 
-      if (paginationInfo) {
-        paginationInfo.textContent =
-          total === 0
-            ? "Nenhuma pesquisadora encontrada"
-            : `Mostrando ${inicio}–${fim} de ${total} pesquisadoras`;
-      }
-      if (resultsCounter) {
-        resultsCounter.innerHTML =
-          total === 0
-            ? "Nenhuma pesquisadora encontrada"
-            : `Exibindo <strong class="text-gray-900">${inicio}–${fim}</strong> de <strong class="text-gray-900">${total}</strong>`;
-      }
-      if (pageIndicator) {
-        pageIndicator.textContent = `Página ${currentPage} de ${totalPages}`;
-      }
-
-      if (firstBtn) firstBtn.disabled = currentPage <= 1;
-      if (prevBtn) prevBtn.disabled = currentPage <= 1;
-      if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
-      if (lastBtn) lastBtn.disabled = currentPage >= totalPages;
-
-      paginationBar?.classList.toggle("hidden", total === 0);
-      emptyState?.classList.toggle("hidden", total > 0);
-      emptyState?.classList.toggle("flex", total === 0);
-    }
-
-    function goToPage(page: number) {
-      currentPage = page;
-      renderPage();
-    }
-
-    firstBtn?.addEventListener("click", () => goToPage(1));
-    prevBtn?.addEventListener("click", () => goToPage(currentPage - 1));
-    nextBtn?.addEventListener("click", () => goToPage(currentPage + 1));
-    lastBtn?.addEventListener("click", () =>
-      goToPage(Math.max(1, Math.ceil(filteredSlugs.length / pageSize))),
-    );
-
-    for (const select of pageSizeSelects) {
-      select.addEventListener("change", () => {
-        const value = Number(select.value);
-        if (!PAGE_SIZES.includes(value)) return;
-        pageSize = value;
-        try {
-          localStorage.setItem(LS_PAGE_SIZE, String(value));
-        } catch {}
-        syncPageSizeSelects();
-        currentPage = 1;
-        renderPage();
+      // Clique no backdrop fecha o dialog (nativo)
+      drawer?.addEventListener("click", (e) => {
+        if (e.target === drawer) drawer.close();
       });
-    }
 
-    const filterCountBadge = document.getElementById("filter-count-badge");
-    const filterActiveCount = document.getElementById("filter-active-count");
-    const clearAllBtn = document.getElementById("filter-clear-all");
-    const resultsCounter = document.getElementById("results-counter");
-
-    // Mantém os dois contadores de "filtros ativos" (o do botão da toolbar e o
-    // do header do painel) em sincronia.
-    function renderActiveCount(count: number) {
-      for (const el of [filterCountBadge, filterActiveCount]) {
-        if (!el) continue;
-        el.textContent = String(count);
-        // São círculos flex: alterna hidden/flex pra centralizar o número.
-        el.classList.toggle("hidden", count === 0);
-        el.classList.toggle("flex", count > 0);
-      }
-    }
-
-    function filterResearchers() {
-      const searchValue = (searchInput?.value || "").trim().toLowerCase();
-      const active = FILTER_GROUPS.map((g) => ({
-        ...g,
-        checked: getChecked(g.name),
-      }));
-
-      renderActiveCount(active.reduce((sum, f) => sum + f.checked.length, 0));
-      renderChips();
-
-      filteredSlugs = Array.from(rowBySlug.entries())
-        .filter(([, row]) => {
-          // data-busca já vem com nome + instituição em minúsculas.
-          const haystack = row.getAttribute("data-busca") || "";
-          const matchSearch = !searchValue || haystack.includes(searchValue);
-
-          const matchFilters = active.every((f) => {
-            if (f.checked.length === 0) return true;
-            const raw = row.getAttribute(`data-${f.name}`) || "";
-            if (f.mode === "list") {
-              const values = raw.split("|").filter(Boolean);
-              return f.checked.some((c) => values.includes(c));
-            }
-            return f.checked.includes(raw);
+      // Acordeão: só uma categoria de filtro fica aberta por vez, pra não
+      // precisar de scroll interno em cada uma.
+      const accordionItems = document.querySelectorAll<HTMLDetailsElement>(
+        ".filter-accordion-item",
+      );
+      accordionItems.forEach((item) => {
+        item.addEventListener("toggle", () => {
+          if (!item.open) return;
+          accordionItems.forEach((other) => {
+            if (other !== item) other.open = false;
           });
+        });
+      });
 
-          return matchSearch && matchFilters;
-        })
-        .map(([slug]) => slug);
-
-      currentPage = 1;
-      renderPage();
-    }
-
-    // Filtragem reativa: busca e checkboxes aplicam na hora. "Aplicar filtros"
-    // continua existindo pra fechar o painel no mobile (onde ele cobre a lista)
-    // e como confirmação explícita.
-    searchInput?.addEventListener("input", filterResearchers);
-    document
-      .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
-      .forEach((el) => el.addEventListener("change", filterResearchers));
-
-    // A filtragem já roda no change de cada checkbox; "Aplicar Filtros" serve
-    // como confirmação explícita e fecha o drawer pra revelar o resultado.
-    applyBtn?.addEventListener("click", () => {
-      filterResearchers();
-      closeDrawer();
-    });
-
-    function clearAllFilters() {
-      if (searchInput) searchInput.value = "";
-      document
-        .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
-        .forEach((el) => (el.checked = false));
-      // Limpa também as buscas internas das categorias e reexibe as opções
-      // que estavam escondidas por elas.
+      // Busca dentro de uma categoria (Localização, Instituição atual): filtra
+      // só as opções visíveis daquele grupo, sem mexer nos resultados da tabela.
       document
         .querySelectorAll<HTMLInputElement>("input[data-option-search]")
         .forEach((input) => {
-          input.value = "";
+          const name = input.dataset.optionSearch;
           const list = document.querySelector<HTMLElement>(
-            `[data-option-list="${input.dataset.optionSearch}"]`,
+            `[data-option-list="${name}"]`,
           );
-          list
-            ?.querySelectorAll<HTMLElement>("[data-option-label]")
-            .forEach((label) => (label.style.display = ""));
-        });
-      filterResearchers();
-    }
-
-    clearBtn?.addEventListener("click", clearAllFilters);
-    clearAllBtn?.addEventListener("click", clearAllFilters);
-
-    // ── Chips dos filtros aplicados ──────────────────────────────────
-    // Espelham os checkboxes marcados: desmarcar pelo X do chip é a mesma
-    // ação que desmarcar no drawer, então os dois nunca saem de sincronia.
-    const chipsContainer = document.getElementById("active-filter-chips");
-
-    function renderChips() {
-      if (!chipsContainer) return;
-      const checked = Array.from(
-        document.querySelectorAll<HTMLInputElement>(
-          "input[data-filter-group]:checked",
-        ),
-      );
-
-      chipsContainer.replaceChildren();
-      chipsContainer.classList.toggle("hidden", checked.length === 0);
-      chipsContainer.classList.toggle("flex", checked.length > 0);
-      if (checked.length === 0) return;
-
-      for (const input of checked) {
-        // O texto visível da opção mora no <span> irmão dentro do <label>.
-        const label =
-          input.parentElement?.querySelector("span")?.textContent?.trim() ??
-          input.value;
-        // Remove o "(N)" da contagem — no chip ele só polui.
-        const text = label.replace(/\s*\(\d+\)\s*$/, "");
-
-        const chip = document.createElement("span");
-        chip.className =
-          "inline-flex items-center gap-1 rounded-full border border-meco-purple-soft/50 bg-meco-purple-bg px-2.5 py-1 text-xs font-medium text-meco-purple-deep";
-
-        const textNode = document.createElement("span");
-        textNode.textContent = text;
-        chip.appendChild(textNode);
-
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.className =
-          "rounded-full p-0.5 text-meco-purple-deep/60 transition-colors hover:bg-meco-purple-soft/40 hover:text-meco-purple-deep";
-        remove.setAttribute("aria-label", `Remover filtro ${text}`);
-        remove.innerHTML =
-          '<svg viewBox="0 0 24 24" class="size-3" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
-        remove.addEventListener("click", () => {
-          input.checked = false;
-          filterResearchers();
-        });
-        chip.appendChild(remove);
-
-        chipsContainer.appendChild(chip);
-      }
-
-      const clearAll = document.createElement("button");
-      clearAll.type = "button";
-      clearAll.className =
-        "text-xs font-semibold text-gray-500 underline-offset-2 transition-colors hover:text-red-600 hover:underline";
-      clearAll.textContent = "Limpar todos os filtros";
-      clearAll.addEventListener("click", clearAllFilters);
-      chipsContainer.appendChild(clearAll);
-    }
-
-    // ── Linha da tabela clicável ─────────────────────────────────────
-    // A coluna "Ações" saiu; a linha inteira leva ao perfil. O link no nome
-    // continua existindo pra teclado, nova aba e clique do meio.
-    tableContainer?.addEventListener("click", (e) => {
-      const target = e.target as HTMLElement;
-      if (target.closest("a")) return; // deixa o link nativo agir
-      if (window.getSelection()?.toString()) return; // seleção de texto
-      // Elementos marcados com data-no-nav (o <details> das etiquetas) têm
-      // interação própria: sem isso, abrir a lista navegaria pro perfil.
-      if (target.closest("[data-no-nav]")) return;
-      const row = target.closest<HTMLElement>("tr[data-href]");
-      const href = row?.dataset.href;
-      if (href) window.location.href = href;
-    });
-
-    // ── Colunas redimensionáveis ─────────────────────────────────────
-    // A tabela sempre carrega responsiva, sem rolagem horizontal: o arrasto
-    // vale para a sessão e não é persistido. Guardar as larguras significaria
-    // restaurar o estado congelado no load — que tem largura em pixels e por
-    // isso rola. Limpa o que versões anteriores salvaram.
-    try {
-      localStorage.removeItem("meco_col_widths");
-      localStorage.removeItem("meco_col_widths_v2");
-    } catch {}
-    const table = document.getElementById(
-      "researchers-table",
-    ) as HTMLTableElement | null;
-    const cols = Array.from(
-      table?.querySelectorAll<HTMLTableColElement>("colgroup col") ?? [],
-    );
-
-    const MIN_COL_WIDTH = 90;
-    let resizeReady = false;
-
-    // Larguras padrão (as porcentagens do HTML), lidas antes de qualquer
-    // congelamento sobrescrever o style inline.
-    const defaultWidths = cols.map((col) => col.style.width);
-
-    const applyColWidth = (i: number, px: number) => {
-      cols[i].style.width = `${px}px`;
-    };
-
-    const totalColWidth = () =>
-      cols.reduce(
-        (soma, col) => soma + (parseInt(col.style.width, 10) || 0),
-        0,
-      );
-
-    // Em table-fixed com largura 100%, o navegador normaliza a soma das
-    // colunas pra caber na tabela: alargar uma encolhe as outras na mesma
-    // proporção. Pra uma coluna se mover sozinha, o total precisa deixar de
-    // ser fixo — daí congelar todas em px e fixar a largura da tabela na soma
-    // delas. A partir daí a tabela cresce e o container rola, em vez de
-    // roubar espaço das vizinhas.
-    const isFrozen = () => table!.style.width.endsWith("px");
-
-    const freezeColWidths = () => {
-      if (isFrozen()) return;
-      Array.from(table!.querySelectorAll<HTMLElement>("thead th")).forEach(
-        (th, i) => applyColWidth(i, th.offsetWidth),
-      );
-      table!.style.width = `${totalColWidth()}px`;
-    };
-
-    // Volta ao estado responsivo: porcentagens do HTML e tabela em 100%.
-    const resetColWidths = () => {
-      cols.forEach((col, i) => {
-        col.style.width = defaultWidths[i];
-      });
-      table!.style.width = "";
-    };
-
-    // Só dá pra medir a largura das colunas com a tabela visível — se a visão
-    // salva for "cards" ela começa oculta (offsetWidth 0), então adiamos a
-    // inicialização até a tabela aparecer.
-    function initColumnWidths() {
-      if (resizeReady || !table || !cols.length) return;
-      const headers = Array.from(
-        table.querySelectorAll<HTMLElement>("thead th"),
-      );
-      if (headers.some((th) => th.offsetWidth === 0)) return; // ainda oculta
-
-      resizeReady = true;
-    }
-
-    table?.querySelectorAll<HTMLElement>(".col-resizer").forEach((handle) => {
-      const index = Number(handle.dataset.resizeCol);
-
-      handle.addEventListener("pointerdown", (e) => {
-        if (!resizeReady) return;
-        e.preventDefault();
-        e.stopPropagation();
-        freezeColWidths();
-        const startX = e.clientX;
-        const startWidth = parseInt(cols[index].style.width, 10);
-        handle.setPointerCapture(e.pointerId);
-        document.body.style.userSelect = "none";
-        document.body.style.cursor = "col-resize";
-
-        const onMove = (ev: PointerEvent) => {
-          applyColWidth(
-            index,
-            Math.max(MIN_COL_WIDTH, startWidth + (ev.clientX - startX)),
-          );
-          // A tabela acompanha o novo total, senão a normalização volta a
-          // redistribuir a diferença entre as outras colunas.
-          table!.style.width = `${totalColWidth()}px`;
-        };
-        const onUp = () => {
-          handle.removeEventListener("pointermove", onMove);
-          handle.removeEventListener("pointerup", onUp);
-          document.body.style.userSelect = "";
-          document.body.style.cursor = "";
-        };
-        handle.addEventListener("pointermove", onMove);
-        handle.addEventListener("pointerup", onUp);
-      });
-
-      // Duplo clique redefine todas as colunas: devolver uma só ao padrão
-      // misturaria px com porcentagem e traria o empurrão de volta.
-      handle.addEventListener("dblclick", (e) => {
-        if (!resizeReady) return;
-        e.preventDefault();
-        e.stopPropagation();
-        resetColWidths();
-      });
-    });
-
-    initColumnWidths();
-    // Registrado depois do handler que troca a visão, então a tabela já está
-    // visível quando este roda.
-    viewTableBtn?.addEventListener("click", initColumnWidths);
-
-    // ── Modal "Como utilizar" ────────────────────────────────────────
-    const helpDialog = document.getElementById(
-      "help-dialog",
-    ) as HTMLDialogElement | null;
-    document
-      .getElementById("help-btn")
-      ?.addEventListener("click", () => helpDialog?.showModal());
-    document
-      .getElementById("help-close")
-      ?.addEventListener("click", () => helpDialog?.close());
-    // Clique fora do conteúdo: o alvo do clique é o próprio <dialog> só quando
-    // ele cai no backdrop, então isso não fecha ao clicar no texto.
-    helpDialog?.addEventListener("click", (e) => {
-      if (e.target === helpDialog) helpDialog.close();
-    });
-
-    // ── Table Sorting ────────────────────────────────────────────────
-    const tableHeaders = table?.querySelectorAll<HTMLElement>("thead th");
-    let currentSort = { col: -1, asc: true };
-
-    tableHeaders?.forEach((th, index) => {
-      if (index === tableHeaders.length - 1) return; // Pular última coluna
-      th.style.cursor = "pointer";
-      th.setAttribute("aria-sort", "none");
-      th.addEventListener("click", () => {
-        const rows = Array.from(
-          table!.querySelectorAll<HTMLTableRowElement>("tbody tr"),
-        );
-        const isAsc = currentSort.col === index ? !currentSort.asc : true;
-
-        rows.sort((a, b) => {
-          const aVal = a.children[index].textContent?.toLowerCase() || "";
-          const bVal = b.children[index].textContent?.toLowerCase() || "";
-          return isAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+          if (!list) return;
+          input.addEventListener("input", () => {
+            const query = input.value.trim().toLowerCase();
+            list
+              .querySelectorAll<HTMLElement>("[data-option-label]")
+              .forEach((label) => {
+                const text = label.dataset.optionLabel || "";
+                label.style.display =
+                  !query || text.includes(query) ? "" : "none";
+              });
+          });
         });
 
-        rows.forEach((row) => table!.querySelector("tbody")!.appendChild(row));
-        currentSort = { col: index, asc: isAsc };
-        tableHeaders.forEach((h, i) => {
-          h.setAttribute(
-            "aria-sort",
-            i === index ? (isAsc ? "ascending" : "descending") : "none",
-          );
-        });
-      });
-    });
+      // Client-side filtering. Cada grupo de filtro (checkboxes) faz OR entre
+      // si e AND com os demais grupos e a busca por nome.
+      const FILTER_GROUPS: { name: string; mode: "single" | "list" }[] = [
+        { name: "identidade", mode: "single" },
+        { name: "raca", mode: "single" },
+        { name: "lgbtqiap", mode: "single" },
+        { name: "pcd", mode: "single" },
+        { name: "grupo-tradicional", mode: "single" },
+        { name: "regiao", mode: "single" },
+        { name: "nivel-formacao", mode: "single" },
+        { name: "trabalho-atual", mode: "list" },
+        { name: "instituicao-atual", mode: "single" },
+        { name: "areas-pesquisa", mode: "list" },
+        { name: "grupos-biologicos", mode: "list" },
+        { name: "aceita-palestras", mode: "single" },
+      ];
 
-    // ── Botão "Limpar filtros" ──────────────────────────────────────
-    const clearFiltersBtn = document.getElementById("clear-filters-btn");
-    const updateClearBtnVisibility = () => {
-      const hasFilters =
-        (
-          document.getElementById("filter-search") as HTMLInputElement
-        )?.value.trim() !== "";
-      if (hasFilters) {
-        clearFiltersBtn?.classList.remove("hidden");
-      } else {
-        clearFiltersBtn?.classList.add("hidden");
-      }
-    };
-    clearFiltersBtn?.addEventListener("click", () => {
-      // Uncheck all checkboxes
-      document
-        .querySelectorAll<HTMLInputElement>("input[type='checkbox']")
-        .forEach((cb) => {
-          cb.checked = false;
-        });
-      // Clear search
       const searchInput = document.getElementById(
         "filter-search",
-      ) as HTMLInputElement;
-      if (searchInput) searchInput.value = "";
-      // Re-filter
-      filterResearchers();
-      updateClearBtnVisibility();
-      updateURL();
-    });
-    document
-      .getElementById("filter-search")
-      ?.addEventListener("input", updateClearBtnVisibility);
-    updateClearBtnVisibility();
+      ) as HTMLInputElement | null;
+      const applyBtn = document.getElementById("filter-apply");
+      const clearBtn = document.getElementById("filter-clear");
+      const tableContainer = document.getElementById("researchers-container");
+      const cardsContainer = document.getElementById("cards-view-container");
+      const emptyState = document.getElementById("empty-state");
 
-    // ── URL Query Parameters ────────────────────────────────────────
-    const updateURL = () => {
-      const params = new URLSearchParams();
-      const searchVal = (
-        document.getElementById("filter-search") as HTMLInputElement
-      )?.value;
-      const pageVal = currentPage;
-      if (searchVal) params.set("q", searchVal);
-      if (pageVal > 1) params.set("page", String(pageVal));
-      const newURL = params.toString()
-        ? `?${params.toString()}`
-        : location.pathname;
-      window.history.replaceState({}, "", newURL);
-    };
+      const getChecked = (name: string): string[] =>
+        Array.from(
+          document.querySelectorAll<HTMLInputElement>(
+            `input[data-filter-group="${name}"]:checked`,
+          ),
+        ).map((el) => el.value);
 
-    // Restaurar state da URL
-    const urlParams = new URLSearchParams(location.search);
-    const initialSearch = urlParams.get("q");
-    const initialPage = parseInt(urlParams.get("page") || "1");
-    if (initialSearch) {
-      (document.getElementById("filter-search") as HTMLInputElement).value =
-        initialSearch;
-      currentPage = initialPage;
-    }
+      // A tabela é a única visão renderizada no servidor, e é sobre os data-*
+      // dela que busca e filtros trabalham — continua sendo a fonte de verdade
+      // da filtragem, independente da visão que estiver na tela.
+      const rowBySlug = new Map<string, HTMLElement>();
+      tableContainer
+        ?.querySelectorAll<HTMLElement>("[data-slug]")
+        .forEach((el) => {
+          const slug = el.dataset.slug;
+          if (slug) rowBySlug.set(slug, el);
+        });
 
-    // Atualizar URL quando filtros mudam
-    document.getElementById("filter-search")?.addEventListener("input", () => {
-      currentPage = 1;
-      filterResearchers();
-      updateURL();
-    });
-
-    // ── Lazy-load de dados adicionais ────────────────────────────────
-    const loadPageData = async (pageNum: number, pageSz: number) => {
-      try {
-        const res = await fetch(
-          `/api/researchers.json?page=${pageNum}&pageSize=${pageSz}`,
-        );
-        if (!res.ok) return null;
-        return await res.json();
-      } catch {
-        return null;
+      // Dados dos cards, injetados como JSON pelo servidor. Indexados por slug
+      // pra montar o card na hora em que ele entra na página corrente.
+      const cardDataBySlug = new Map<string, CardData>();
+      for (const card of (window as any).__CARDS_DATA__ ?? []) {
+        cardDataBySlug.set(card.slug, card);
       }
-    };
 
-    // Estado inicial: sem filtros aplicados ainda mostra a 1ª página de todas.
-    filterResearchers();
-    updateURL();
-  </script>
+      // Visualização (tabela/cards) — persistida em localStorage.
+      const LS_VIEW = "meco_view_mode";
+      const tableWrapper = document.getElementById("table-view-container");
+      const cardsWrapper = document.getElementById("cards-view-container");
+      const viewTableBtn = document.getElementById("btn-view-table");
+      const viewCardsBtn = document.getElementById("btn-view-cards");
 
-  {
-    /* O display do drawer mora aqui, e não numa classe utilitária no elemento:
-    qualquer `display` vindo de folha de autor vence o
-    `dialog:not([open]) { display: none }` do navegador — que é regra de UA e
-    perde por origem, não por especificidade — e o drawer ficaria pintado
-    mesmo fechado. Também não pode ser injetado por JS: o ClientRouter troca o
-    <head> a cada navegação e o <style> injetado se perderia ao voltar de um
-    perfil, que era exatamente quando o bug aparecia. */
-  }
-  <style is:global>
-    #filter-drawer[open] {
-      display: flex;
+      let currentView: "table" | "cards" = "table";
+      try {
+        const storedView = localStorage.getItem(LS_VIEW);
+        if (storedView === "table" || storedView === "cards")
+          currentView = storedView;
+      } catch {}
+
+      function applyView() {
+        const showTable = currentView === "table";
+
+        tableWrapper?.classList.toggle("hidden", !showTable);
+        // O container de cards é um grid: alterna hidden/grid pra não perder o
+        // layout de colunas ao reexibir.
+        cardsWrapper?.classList.toggle("hidden", showTable);
+        cardsWrapper?.classList.toggle("grid", !showTable);
+
+        for (const [btn, isActive] of [
+          [viewTableBtn, showTable],
+          [viewCardsBtn, !showTable],
+        ] as const) {
+          if (!btn) continue;
+          const icon = btn.querySelector("svg");
+          if (icon) {
+            icon.classList.toggle("text-meco-purple-primary", isActive);
+            icon.classList.toggle("text-gray-400", !isActive);
+          }
+          btn.setAttribute("aria-pressed", String(isActive));
+        }
+      }
+
+      function setView(view: "table" | "cards") {
+        currentView = view;
+        try {
+          localStorage.setItem(LS_VIEW, view);
+        } catch {}
+        applyView();
+        // Alternar pra cards é o gatilho de montagem: até aqui o container está
+        // vazio (primeira troca) ou com a página anterior (trocas seguintes).
+        renderCardsDaPagina(slugsPaginaAtual);
+      }
+
+      viewTableBtn?.addEventListener("click", () => setView("table"));
+      viewCardsBtn?.addEventListener("click", () => setView("cards"));
+      applyView();
+
+      // Paginação — aplicada em cima do resultado já filtrado/buscado.
+      const PAGE_SIZES = [5, 10, 20, 50, 100];
+      const LS_PAGE_SIZE = "pesquisadoras:page-size";
+
+      let pageSize = 20;
+      try {
+        const stored = Number(localStorage.getItem(LS_PAGE_SIZE));
+        if (PAGE_SIZES.includes(stored)) pageSize = stored;
+      } catch {}
+
+      let currentPage = 1;
+      let filteredSlugs: string[] = [];
+
+      // Há dois seletores de itens por página (toolbar e barra de paginação):
+      // mudar um espelha no outro pra não mostrarem valores diferentes.
+      const pageSizeSelects = Array.from(
+        document.querySelectorAll<HTMLSelectElement>("select[data-page-size]"),
+      );
+      const paginationBar = document.getElementById("pagination-bar");
+      const paginationInfo = document.getElementById("pagination-info");
+      const pageIndicator = document.getElementById("page-indicator");
+      const firstBtn = document.getElementById(
+        "page-first",
+      ) as HTMLButtonElement | null;
+      const prevBtn = document.getElementById(
+        "page-prev",
+      ) as HTMLButtonElement | null;
+      const nextBtn = document.getElementById(
+        "page-next",
+      ) as HTMLButtonElement | null;
+      const lastBtn = document.getElementById(
+        "page-last",
+      ) as HTMLButtonElement | null;
+
+      const syncPageSizeSelects = () => {
+        for (const select of pageSizeSelects) select.value = String(pageSize);
+      };
+      syncPageSizeSelects();
+
+      // Slugs da página corrente, guardados pra que trocar pra visão de cards
+      // possa montá-los sem refazer filtro e paginação.
+      let slugsPaginaAtual: string[] = [];
+      // Assinatura do último HTML montado: evita reconstruir o mesmo conteúdo
+      // quando renderPage roda de novo sem mudança de página (ex.: troca de
+      // visão de ida e volta).
+      let assinaturaCards = "";
+
+      /**
+       * Monta no cliente só os cards da página corrente — no máximo `pageSize`
+       * (100 no maior seletor), nunca as 259. Enquanto a tabela está na tela o
+       * trabalho é adiado: a assinatura é zerada pra forçar a montagem quando a
+       * pessoa alternar pra cards.
+       */
+      function renderCardsDaPagina(slugs: string[]) {
+        slugsPaginaAtual = slugs;
+        if (!cardsContainer) return;
+
+        if (currentView !== "cards") {
+          assinaturaCards = "";
+          return;
+        }
+
+        const assinatura = slugs.join("|");
+        if (assinatura === assinaturaCards) return;
+        assinaturaCards = assinatura;
+
+        cardsContainer.innerHTML = slugs
+          .map((slug) => {
+            const dados = cardDataBySlug.get(slug);
+            return dados ? renderCard(dados) : "";
+          })
+          .join("");
+      }
+
+      function renderPage() {
+        rowBySlug.forEach((row) => (row.style.display = "none"));
+
+        const total = filteredSlugs.length;
+        const totalPages = Math.max(1, Math.ceil(total / pageSize));
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+        const slugsDaPagina = filteredSlugs.slice(start, end);
+
+        slugsDaPagina.forEach((slug) => {
+          const row = rowBySlug.get(slug);
+          if (row) row.style.display = "";
+        });
+
+        renderCardsDaPagina(slugsDaPagina);
+
+        // Os dois contadores saem dos mesmos start/end/total: enquanto o de
+        // cima era calculado fora do renderPage, ele mostrava o total filtrado
+        // e o de baixo a janela da página, divergindo a cada paginação.
+        const inicio = start + 1;
+        const fim = Math.min(end, total);
+
+        if (paginationInfo) {
+          paginationInfo.textContent =
+            total === 0
+              ? "Nenhuma pesquisadora encontrada"
+              : `Mostrando ${inicio}–${fim} de ${total} pesquisadoras`;
+        }
+        if (resultsCounter) {
+          resultsCounter.innerHTML =
+            total === 0
+              ? "Nenhuma pesquisadora encontrada"
+              : `Exibindo <strong class="text-gray-900">${inicio}–${fim}</strong> de <strong class="text-gray-900">${total}</strong>`;
+        }
+        if (pageIndicator) {
+          pageIndicator.textContent = `Página ${currentPage} de ${totalPages}`;
+        }
+
+        if (firstBtn) firstBtn.disabled = currentPage <= 1;
+        if (prevBtn) prevBtn.disabled = currentPage <= 1;
+        if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+        if (lastBtn) lastBtn.disabled = currentPage >= totalPages;
+
+        paginationBar?.classList.toggle("hidden", total === 0);
+        emptyState?.classList.toggle("hidden", total > 0);
+        emptyState?.classList.toggle("flex", total === 0);
+      }
+
+      function goToPage(page: number) {
+        currentPage = page;
+        renderPage();
+      }
+
+      firstBtn?.addEventListener("click", () => goToPage(1));
+      prevBtn?.addEventListener("click", () => goToPage(currentPage - 1));
+      nextBtn?.addEventListener("click", () => goToPage(currentPage + 1));
+      lastBtn?.addEventListener("click", () =>
+        goToPage(Math.max(1, Math.ceil(filteredSlugs.length / pageSize))),
+      );
+
+      for (const select of pageSizeSelects) {
+        select.addEventListener("change", () => {
+          const value = Number(select.value);
+          if (!PAGE_SIZES.includes(value)) return;
+          pageSize = value;
+          try {
+            localStorage.setItem(LS_PAGE_SIZE, String(value));
+          } catch {}
+          syncPageSizeSelects();
+          currentPage = 1;
+          renderPage();
+        });
+      }
+
+      const filterCountBadge = document.getElementById("filter-count-badge");
+      const filterActiveCount = document.getElementById("filter-active-count");
+      const clearAllBtn = document.getElementById("filter-clear-all");
+      const resultsCounter = document.getElementById("results-counter");
+
+      // Mantém os dois contadores de "filtros ativos" (o do botão da toolbar e o
+      // do header do painel) em sincronia.
+      function renderActiveCount(count: number) {
+        for (const el of [filterCountBadge, filterActiveCount]) {
+          if (!el) continue;
+          el.textContent = String(count);
+          // São círculos flex: alterna hidden/flex pra centralizar o número.
+          el.classList.toggle("hidden", count === 0);
+          el.classList.toggle("flex", count > 0);
+        }
+      }
+
+      function filterResearchers() {
+        const searchValue = (searchInput?.value || "").trim().toLowerCase();
+        const active = FILTER_GROUPS.map((g) => ({
+          ...g,
+          checked: getChecked(g.name),
+        }));
+
+        renderActiveCount(active.reduce((sum, f) => sum + f.checked.length, 0));
+        renderChips();
+
+        filteredSlugs = Array.from(rowBySlug.entries())
+          .filter(([, row]) => {
+            // data-busca já vem com nome + instituição em minúsculas.
+            const haystack = row.getAttribute("data-busca") || "";
+            const matchSearch = !searchValue || haystack.includes(searchValue);
+
+            const matchFilters = active.every((f) => {
+              if (f.checked.length === 0) return true;
+              const raw = row.getAttribute(`data-${f.name}`) || "";
+              if (f.mode === "list") {
+                const values = raw.split("|").filter(Boolean);
+                return f.checked.some((c) => values.includes(c));
+              }
+              return f.checked.includes(raw);
+            });
+
+            return matchSearch && matchFilters;
+          })
+          .map(([slug]) => slug);
+
+        currentPage = 1;
+        renderPage();
+      }
+
+      // Filtragem reativa: busca e checkboxes aplicam na hora. "Aplicar filtros"
+      // continua existindo pra fechar o painel no mobile (onde ele cobre a lista)
+      // e como confirmação explícita.
+      searchInput?.addEventListener("input", filterResearchers);
+      document
+        .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
+        .forEach((el) => el.addEventListener("change", filterResearchers));
+
+      // A filtragem já roda no change de cada checkbox; "Aplicar Filtros" serve
+      // como confirmação explícita e fecha o drawer pra revelar o resultado.
+      applyBtn?.addEventListener("click", () => {
+        filterResearchers();
+        drawer?.close();
+      });
+
+      function clearAllFilters() {
+        if (searchInput) searchInput.value = "";
+        document
+          .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
+          .forEach((el) => (el.checked = false));
+        // Limpa também as buscas internas das categorias e reexibe as opções
+        // que estavam escondidas por elas.
+        document
+          .querySelectorAll<HTMLInputElement>("input[data-option-search]")
+          .forEach((input) => {
+            input.value = "";
+            const list = document.querySelector<HTMLElement>(
+              `[data-option-list="${input.dataset.optionSearch}"]`,
+            );
+            list
+              ?.querySelectorAll<HTMLElement>("[data-option-label]")
+              .forEach((label) => (label.style.display = ""));
+          });
+        filterResearchers();
+      }
+
+      clearBtn?.addEventListener("click", clearAllFilters);
+      clearAllBtn?.addEventListener("click", clearAllFilters);
+
+      // ── Chips dos filtros aplicados ──────────────────────────────────
+      // Espelham os checkboxes marcados: desmarcar pelo X do chip é a mesma
+      // ação que desmarcar no drawer, então os dois nunca saem de sincronia.
+      const chipsContainer = document.getElementById("active-filter-chips");
+
+      function renderChips() {
+        if (!chipsContainer) return;
+        const checked = Array.from(
+          document.querySelectorAll<HTMLInputElement>(
+            "input[data-filter-group]:checked",
+          ),
+        );
+
+        chipsContainer.replaceChildren();
+        chipsContainer.classList.toggle("hidden", checked.length === 0);
+        chipsContainer.classList.toggle("flex", checked.length > 0);
+        if (checked.length === 0) return;
+
+        for (const input of checked) {
+          // O texto visível da opção mora no <span> irmão dentro do <label>.
+          const label =
+            input.parentElement?.querySelector("span")?.textContent?.trim() ??
+            input.value;
+          // Remove o "(N)" da contagem — no chip ele só polui.
+          const text = label.replace(/\s*\(\d+\)\s*$/, "");
+
+          const chip = document.createElement("span");
+          chip.className =
+            "inline-flex items-center gap-1 rounded-full border border-meco-purple-soft/50 bg-meco-purple-bg px-2.5 py-1 text-xs font-medium text-meco-purple-deep";
+
+          const textNode = document.createElement("span");
+          textNode.textContent = text;
+          chip.appendChild(textNode);
+
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className =
+            "rounded-full p-0.5 text-meco-purple-deep/60 transition-colors hover:bg-meco-purple-soft/40 hover:text-meco-purple-deep";
+          remove.setAttribute("aria-label", `Remover filtro ${text}`);
+          remove.innerHTML =
+            '<svg viewBox="0 0 24 24" class="size-3" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+          remove.addEventListener("click", () => {
+            input.checked = false;
+            filterResearchers();
+          });
+          chip.appendChild(remove);
+
+          chipsContainer.appendChild(chip);
+        }
+
+        const clearAll = document.createElement("button");
+        clearAll.type = "button";
+        clearAll.className =
+          "text-xs font-semibold text-gray-500 underline-offset-2 transition-colors hover:text-red-600 hover:underline";
+        clearAll.textContent = "Limpar todos os filtros";
+        clearAll.addEventListener("click", clearAllFilters);
+        chipsContainer.appendChild(clearAll);
+      }
+
+      // ── Linha da tabela clicável ─────────────────────────────────────
+      // A coluna "Ações" saiu; a linha inteira leva ao perfil. O link no nome
+      // continua existindo pra teclado, nova aba e clique do meio.
+      tableContainer?.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest("a")) return; // deixa o link nativo agir
+        if (window.getSelection()?.toString()) return; // seleção de texto
+        // Elementos marcados com data-no-nav (o <details> das etiquetas) têm
+        // interação própria: sem isso, abrir a lista navegaria pro perfil.
+        if (target.closest("[data-no-nav]")) return;
+        const row = target.closest<HTMLElement>("tr[data-href]");
+        const href = row?.dataset.href;
+        if (href) window.location.href = href;
+      });
+
+      // ── Colunas redimensionáveis ─────────────────────────────────────
+      // A tabela sempre carrega responsiva, sem rolagem horizontal: o arrasto
+      // vale para a sessão e não é persistido. Guardar as larguras significaria
+      // restaurar o estado congelado no load — que tem largura em pixels e por
+      // isso rola. Limpa o que versões anteriores salvaram.
+      try {
+        localStorage.removeItem("meco_col_widths");
+        localStorage.removeItem("meco_col_widths_v2");
+      } catch {}
+      const table = document.getElementById(
+        "researchers-table",
+      ) as HTMLTableElement | null;
+      const cols = Array.from(
+        table?.querySelectorAll<HTMLTableColElement>("colgroup col") ?? [],
+      );
+
+      const MIN_COL_WIDTH = 90;
+      let resizeReady = false;
+
+      // Larguras padrão (as porcentagens do HTML), lidas antes de qualquer
+      // congelamento sobrescrever o style inline.
+      const defaultWidths = cols.map((col) => col.style.width);
+
+      const applyColWidth = (i: number, px: number) => {
+        cols[i].style.width = `${px}px`;
+      };
+
+      const totalColWidth = () =>
+        cols.reduce(
+          (soma, col) => soma + (parseInt(col.style.width, 10) || 0),
+          0,
+        );
+
+      // Em table-fixed com largura 100%, o navegador normaliza a soma das
+      // colunas pra caber na tabela: alargar uma encolhe as outras na mesma
+      // proporção. Pra uma coluna se mover sozinha, o total precisa deixar de
+      // ser fixo — daí congelar todas em px e fixar a largura da tabela na soma
+      // delas. A partir daí a tabela cresce e o container rola, em vez de
+      // roubar espaço das vizinhas.
+      const isFrozen = () => table!.style.width.endsWith("px");
+
+      const freezeColWidths = () => {
+        if (isFrozen()) return;
+        Array.from(table!.querySelectorAll<HTMLElement>("thead th")).forEach(
+          (th, i) => applyColWidth(i, th.offsetWidth),
+        );
+        table!.style.width = `${totalColWidth()}px`;
+      };
+
+      // Volta ao estado responsivo: porcentagens do HTML e tabela em 100%.
+      const resetColWidths = () => {
+        cols.forEach((col, i) => {
+          col.style.width = defaultWidths[i];
+        });
+        table!.style.width = "";
+      };
+
+      // Só dá pra medir a largura das colunas com a tabela visível — se a visão
+      // salva for "cards" ela começa oculta (offsetWidth 0), então adiamos a
+      // inicialização até a tabela aparecer.
+      function initColumnWidths() {
+        if (resizeReady || !table || !cols.length) return;
+        const headers = Array.from(
+          table.querySelectorAll<HTMLElement>("thead th"),
+        );
+        if (headers.some((th) => th.offsetWidth === 0)) return; // ainda oculta
+
+        resizeReady = true;
+      }
+
+      table?.querySelectorAll<HTMLElement>(".col-resizer").forEach((handle) => {
+        const index = Number(handle.dataset.resizeCol);
+
+        handle.addEventListener("pointerdown", (e) => {
+          if (!resizeReady) return;
+          e.preventDefault();
+          e.stopPropagation();
+          freezeColWidths();
+          const startX = e.clientX;
+          const startWidth = parseInt(cols[index].style.width, 10);
+          handle.setPointerCapture(e.pointerId);
+          document.body.style.userSelect = "none";
+          document.body.style.cursor = "col-resize";
+
+          const onMove = (ev: PointerEvent) => {
+            applyColWidth(
+              index,
+              Math.max(MIN_COL_WIDTH, startWidth + (ev.clientX - startX)),
+            );
+            // A tabela acompanha o novo total, senão a normalização volta a
+            // redistribuir a diferença entre as outras colunas.
+            table!.style.width = `${totalColWidth()}px`;
+          };
+          const onUp = () => {
+            handle.removeEventListener("pointermove", onMove);
+            handle.removeEventListener("pointerup", onUp);
+            document.body.style.userSelect = "";
+            document.body.style.cursor = "";
+          };
+          handle.addEventListener("pointermove", onMove);
+          handle.addEventListener("pointerup", onUp);
+        });
+
+        // Duplo clique redefine todas as colunas: devolver uma só ao padrão
+        // misturaria px com porcentagem e traria o empurrão de volta.
+        handle.addEventListener("dblclick", (e) => {
+          if (!resizeReady) return;
+          e.preventDefault();
+          e.stopPropagation();
+          resetColWidths();
+        });
+      });
+
+      initColumnWidths();
+      // Registrado depois do handler que troca a visão, então a tabela já está
+      // visível quando este roda.
+      viewTableBtn?.addEventListener("click", initColumnWidths);
+
+      // ── Modal "Como utilizar" ────────────────────────────────────────
+      const helpDialog = document.getElementById(
+        "help-dialog",
+      ) as HTMLDialogElement | null;
+      document
+        .getElementById("help-btn")
+        ?.addEventListener("click", () => helpDialog?.showModal());
+      document
+        .getElementById("help-close")
+        ?.addEventListener("click", () => helpDialog?.close());
+      // Clique fora do conteúdo: o alvo do clique é o próprio <dialog> só quando
+      // ele cai no backdrop, então isso não fecha ao clicar no texto.
+      helpDialog?.addEventListener("click", (e) => {
+        if (e.target === helpDialog) helpDialog.close();
+      });
+
+      // ── Table Sorting ────────────────────────────────────────────────
+      const tableHeaders = table?.querySelectorAll<HTMLElement>("thead th");
+      let currentSort = { col: -1, asc: true };
+
+      tableHeaders?.forEach((th, index) => {
+        if (index === tableHeaders.length - 1) return; // Pular última coluna
+        th.style.cursor = "pointer";
+        th.setAttribute("aria-sort", "none");
+        th.addEventListener("click", () => {
+          const rows = Array.from(
+            table!.querySelectorAll<HTMLTableRowElement>("tbody tr"),
+          );
+          const isAsc = currentSort.col === index ? !currentSort.asc : true;
+
+          rows.sort((a, b) => {
+            const aVal = a.children[index].textContent?.toLowerCase() || "";
+            const bVal = b.children[index].textContent?.toLowerCase() || "";
+            return isAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+          });
+
+          rows.forEach((row) =>
+            table!.querySelector("tbody")!.appendChild(row),
+          );
+          currentSort = { col: index, asc: isAsc };
+          tableHeaders.forEach((h, i) => {
+            h.setAttribute(
+              "aria-sort",
+              i === index ? (isAsc ? "ascending" : "descending") : "none",
+            );
+          });
+        });
+      });
+
+      // ── Botão "Limpar filtros" ──────────────────────────────────────
+      const clearFiltersBtn = document.getElementById("clear-filters-btn");
+      const updateClearBtnVisibility = () => {
+        const hasFilters =
+          (
+            document.getElementById("filter-search") as HTMLInputElement
+          )?.value.trim() !== "";
+        if (hasFilters) {
+          clearFiltersBtn?.classList.remove("hidden");
+        } else {
+          clearFiltersBtn?.classList.add("hidden");
+        }
+      };
+      clearFiltersBtn?.addEventListener("click", () => {
+        // Uncheck all checkboxes
+        document
+          .querySelectorAll<HTMLInputElement>("input[type='checkbox']")
+          .forEach((cb) => {
+            cb.checked = false;
+          });
+        // Clear search
+        const searchInput = document.getElementById(
+          "filter-search",
+        ) as HTMLInputElement;
+        if (searchInput) searchInput.value = "";
+        // Re-filter
+        filterResearchers();
+        updateClearBtnVisibility();
+        updateURL();
+      });
+      document
+        .getElementById("filter-search")
+        ?.addEventListener("input", updateClearBtnVisibility);
+      updateClearBtnVisibility();
+
+      // ── URL Query Parameters ────────────────────────────────────────
+      const updateURL = () => {
+        const params = new URLSearchParams();
+        const searchVal = (
+          document.getElementById("filter-search") as HTMLInputElement
+        )?.value;
+        const pageVal = currentPage;
+        if (searchVal) params.set("q", searchVal);
+        if (pageVal > 1) params.set("page", String(pageVal));
+        const newURL = params.toString()
+          ? `?${params.toString()}`
+          : location.pathname;
+        window.history.replaceState({}, "", newURL);
+      };
+
+      // Restaurar state da URL
+      const urlParams = new URLSearchParams(location.search);
+      const initialSearch = urlParams.get("q");
+      const initialPage = parseInt(urlParams.get("page") || "1");
+      if (initialSearch) {
+        (document.getElementById("filter-search") as HTMLInputElement).value =
+          initialSearch;
+        currentPage = initialPage;
+      }
+
+      // Atualizar URL quando filtros mudam
+      document
+        .getElementById("filter-search")
+        ?.addEventListener("input", () => {
+          currentPage = 1;
+          filterResearchers();
+          updateURL();
+        });
+
+      // Estado inicial: sem filtros aplicados ainda mostra a 1ª página de todas.
+      filterResearchers();
+      updateURL();
     }
-  </style>
+
+    // Dispara na primeira carga e depois de cada navegacao do ClientRouter.
+    document.addEventListener("astro:page-load", initDiretorio);
+
+    /*
+     * Atalho global, registrado uma unica vez na vida do modulo: window
+     * sobrevive a troca de pagina, entao registrar dentro de initDiretorio()
+     * empilharia um listener novo a cada navegacao. Busca o dialog na hora do
+     * evento pra nunca guardar referencia a um DOM ja descartado.
+     */
+    document.addEventListener("keydown", (e) => {
+      if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== "b") return;
+      const tag = (e.target as HTMLElement | null)?.tagName ?? "";
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      const dlg = document.getElementById(
+        "filter-drawer",
+      ) as HTMLDialogElement | null;
+      if (!dlg) return;
+      e.preventDefault();
+      if (dlg.open) dlg.close();
+      else dlg.showModal();
+    });
+  </script>
 </BaseLayout>

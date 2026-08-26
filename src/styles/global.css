@@ -66,6 +66,53 @@ button:focus-visible {
   padding-left: 0;
 }
 
+/*
+ * Selo circular com número — contadores de filtro, "+N" de etiquetas etc.
+ *
+ * Com `rounded-full` + padding, a largura cresce com os dígitos e a altura
+ * não: "5" saía redondo e "253" saía elipse. `aspect-ratio` amarra a altura
+ * à largura, então o círculo se mantém em qualquer contagem, e `min-width`
+ * impede que um dígito só vire um ponto miúdo.
+ *
+ * Fica em @layer components de propósito: não declara `display`, que continua
+ * vindo das utilitárias de cada uso — há selos que o JS alterna entre `hidden`
+ * e `flex`, e uma regra de display aqui atropelaria esse controle.
+ *
+ * `line-height: 1` tira a folga vertical da linha (senão o número desce do
+ * centro) e `tabular-nums` dá largura igual a todos os dígitos, pra selos de
+ * mesma contagem ficarem do mesmo tamanho.
+ */
+@layer components {
+  .badge-numero {
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    min-width: 1.25rem;
+    padding-inline: 0.25rem;
+    border-radius: 9999px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+}
+
+/*
+ * Drawer de filtros do diretório de pesquisadoras.
+ *
+ * Mora aqui, e não num <style> da própria página, porque o ClientRouter troca
+ * o <head> a cada navegação: um estilo de página some ao ir pro perfil e não
+ * volta ao retornar — o drawer parava de abrir na volta. Esta folha é
+ * compartilhada por todas as páginas, então sobrevive à troca.
+ *
+ * O display não pode virar classe utilitária no elemento: qualquer `display`
+ * de folha de autor vence o `dialog:not([open]) { display: none }` do
+ * navegador (regra de UA perde por origem, não por especificidade) e o drawer
+ * ficaria pintado mesmo fechado.
+ */
+#filter-drawer[open] {
+  display: flex;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 3px;
 }
