@@ -6,11 +6,19 @@ import { Icon } from "astro-icon/components";
   id="pagination-bar"
   class="flex flex-col items-center justify-between gap-4 rounded-lg bg-white px-6 py-4 text-sm text-gray-600 sm:flex-row"
 >
-  <div class="flex items-center gap-2">
-    <span>Itens por página:</span>
+  {
+    /* Mesma marcacao do seletor da toolbar (ver ResearchersToolbar.astro): sao
+    o mesmo controle, repetido no topo e no rodape da lista, entao precisam ler
+    como um so. Antes divergiam no rotulo ("Itens por pagina:" antes do campo
+    contra "por pagina" depois) e no estilo do campo. */
+  }
+  <label
+    class="flex h-12 shrink-0 items-center justify-center gap-2 text-sm font-medium whitespace-nowrap text-gray-600"
+  >
+    <span class="sr-only">Itens por página</span>
     <select
       data-page-size
-      class="rounded-lg bg-white px-3 py-2 text-sm font-medium focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+      class="h-10 rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
     >
       <option value="5">5</option>
       <option value="10">10</option>
@@ -18,7 +26,8 @@ import { Icon } from "astro-icon/components";
       <option value="50">50</option>
       <option value="100">100</option>
     </select>
-  </div>
+    por página
+  </label>
 
   <div
     id="pagination-info"

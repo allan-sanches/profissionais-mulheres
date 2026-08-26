@@ -59,13 +59,43 @@ function esc(value: string): string {
 }
 
 /**
+ * viewBox de cada ícone, lido do banco de símbolos que a página mantém.
+ *
+ * O astro-icon põe o `viewBox` no `<svg>` que envolve o símbolo, e NÃO no
+ * `<symbol>`. Um `<use>` nosso sem viewBox próprio herda coisa nenhuma: o path
+ * é desenhado em coordenadas cruas dentro da caixa do ícone, e o que aparece é
+ * um fragmento — foi o que quebrou os ícones dos cards.
+ *
+ * Fixar "0 0 24 24" não serve: os academicons usam 448x512, 384x512 e 512x512.
+ * Por isso o valor é lido do DOM, e não codificado aqui.
+ */
+const iconViewBoxes = new Map<string, string>();
+
+/**
+ * Relê os viewBox do banco de símbolos. Precisa rodar antes do primeiro card e
+ * a cada navegação — o ClientRouter troca o documento, e o banco vai junto.
+ */
+export function readIconViewBoxes(root: ParentNode = document) {
+  iconViewBoxes.clear();
+  for (const svg of root.querySelectorAll("svg[data-icon][viewBox]")) {
+    const name = svg.getAttribute("data-icon");
+    const viewBox = svg.getAttribute("viewBox");
+    if (name && viewBox && !iconViewBoxes.has(name)) {
+      iconViewBoxes.set(name, viewBox);
+    }
+  }
+}
+
+/**
  * O astro-icon injeta cada `<symbol>` na primeira vez que o ícone é renderizado
  * no servidor. Como os cards não são mais renderizados lá, a página mantém um
  * banco de símbolos escondido (ver ResearchersCards.astro) e aqui só
  * referenciamos por `<use>`.
  */
 function icon(name: string, cls: string): string {
-  return `<svg width="1em" height="1em" class="${cls}" aria-hidden="true"><use href="#ai:${name}"></use></svg>`;
+  const viewBox = iconViewBoxes.get(name);
+  const attr = viewBox ? ` viewBox="${esc(viewBox)}"` : "";
+  return `<svg width="1em" height="1em"${attr} class="${cls}" aria-hidden="true"><use href="#ai:${name}"></use></svg>`;
 }
 
 // Copia do PILL_BASE de utils/labels.ts — este modulo roda no cliente e nao

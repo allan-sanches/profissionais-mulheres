@@ -236,7 +236,7 @@ const regiaoOptions = [...regiaoCounts.entries()]
 
 const title = "Pesquisadoras";
 const description =
-  "O Mulheres na Ecologia é um projeto de comunicação e divulgação científica que promove e fortalece a atuação de mulheres na ecologia no Brasil, ampliando a visibilidade de suas trajetórias e pesquisas. Ao traduzir o conhecimento científico para diferentes públicos, o projeto fortalece o diálogo entre a ciência ecológica e a sociedade brasileira.";
+  "O Mulheres na Ecologia é uma iniciativa de comunicação e divulgação científica que promove e fortalece a atuação de mulheres na ecologia no Brasil, ampliando a visibilidade de suas trajetórias e pesquisas. Ao traduzir o conhecimento científico para diferentes públicos, a iniciativa fortalece o diálogo entre a ciência ecológica e a sociedade brasileira.";
 ---
 
 <BaseLayout title={title} description={description}>
@@ -249,7 +249,7 @@ const description =
     <div class="mx-auto w-full max-w-[1800px] space-y-6 px-4 pb-6 md:px-8">
       {/* Header */}
       <div
-        class="relative overflow-hidden rounded-lg bg-meco-purple-primary p-16"
+        class="relative overflow-hidden rounded-lg bg-meco-purple-primary p-8 sm:p-12 md:p-16"
         style="background-image: url('/folhas-verdes.jpeg'); background-size: cover; background-position: center;"
       >
         <div
@@ -257,17 +257,21 @@ const description =
           style="background: linear-gradient(to bottom, rgba(125, 28, 212, 0.45), rgba(125, 28, 212, 0.60))"
         >
         </div>
-        <div class="relative space-y-10 text-center">
+        {
+          /* Escala mobile-first: os tamanhos base valem na tela estreita e
+          crescem a partir do sm. No mobile o titulo em text-5xl ocupava quase
+          a altura toda da dobra e o paragrafo em text-xl empurrava a listagem
+          pra fora da primeira tela. */
+        }
+        <div class="relative space-y-6 text-center sm:space-y-10">
           <h1
-            class="font-epilogue text-5xl leading-tight font-black tracking-tight text-white sm:text-6xl md:text-7xl"
+            class="font-epilogue text-3xl leading-tight font-black tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
           >
             {title}
           </h1>
-          {
-            /* max-w-prose mantem a linha em ~65 caracteres: texto corrido na
-            largura inteira de 1800px fica ilegivel. */
-          }
-          <p class="text-xl leading-relaxed font-semibold text-white">
+          <p
+            class="text-sm leading-relaxed font-semibold text-white sm:text-lg md:text-xl"
+          >
             {description}
           </p>
         </div>
@@ -333,15 +337,15 @@ const description =
       }
       <dialog
         id="help-dialog"
-        class="m-auto w-[min(46rem,calc(100vw-2rem))] rounded-lg p-0 text-gray-700 backdrop:bg-gray-900/50"
+        class="m-auto w-[min(46rem,calc(100vw-1.5rem))] rounded-lg p-0 text-gray-700 backdrop:bg-gray-900/50"
         aria-labelledby="help-title"
       >
         <div
-          class="flex items-center justify-between gap-4 bg-meco-purple-primary px-6 py-4"
+          class="flex items-center justify-between gap-3 bg-meco-purple-primary px-4 py-3 sm:px-6 sm:py-4"
         >
           <h2
             id="help-title"
-            class="font-epilogue text-lg font-bold text-white"
+            class="font-epilogue text-base font-bold text-white sm:text-lg"
           >
             Como utilizar esta tela
           </h2>
@@ -355,8 +359,13 @@ const description =
           </button>
         </div>
 
+        {
+          /* Mais altura util no mobile: a modal e a unica coisa na tela, e com
+          70vh o conteudo rolava dentro de uma caixa que ja tinha folga em volta.
+          O texto tambem comeca menor — sao sete blocos de explicacao. */
+        }
         <div
-          class="max-h-[70vh] space-y-5 overflow-y-auto px-6 py-5 text-sm leading-relaxed"
+          class="max-h-[80vh] space-y-4 overflow-y-auto px-4 py-4 text-xs leading-relaxed sm:max-h-[70vh] sm:space-y-5 sm:px-6 sm:py-5 sm:text-sm"
         >
           {
             [
@@ -432,8 +441,7 @@ const description =
   }
   <dialog
     id="filter-drawer"
-    class="fixed inset-y-0 left-0 m-0 h-screen max-h-screen flex-col rounded-none p-0 backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm"
-    style="width: 24rem"
+    class="fixed inset-y-0 left-0 m-0 h-screen max-h-screen w-[30rem] max-w-[90vw] flex-col rounded-none p-0 backdrop:bg-slate-900/40 backdrop:backdrop-blur-sm"
     aria-labelledby="filter-drawer-title"
   >
     <div class="flex flex-col bg-white">
@@ -441,8 +449,25 @@ const description =
       <div
         class="flex shrink-0 items-center justify-between bg-meco-purple-primary px-6 py-5 text-white"
       >
-        <div class="flex items-center gap-2">
-          <Icon name="mdi:tune-variant" class="size-5 text-white" />
+        <div class="flex items-center gap-2.5">
+          {
+            /* Chip branco por baixo: o "m" da marca e roxo e sumiria no roxo do
+            header. O fundo claro preserva as cores originais em vez de recolorir
+            a logo, que descaracterizaria a marca. Substitui o icone de ajustes —
+            o titulo ao lado ja diz que o painel e de filtros. */
+          }
+          <span
+            class="flex shrink-0 items-center rounded-md bg-white px-1.5 py-1"
+          >
+            <img
+              src="/logo abreviada colorida.png"
+              alt=""
+              width="1771"
+              height="438"
+              class="h-4 w-auto"
+              decoding="async"
+            />
+          </span>
           <h2 id="filter-drawer-title" class="font-epilogue text-lg font-bold">
             Filtrar Pesquisadoras
           </h2>
@@ -561,7 +586,11 @@ const description =
   </script>
 
   <script>
-    import { renderCard, type CardData } from "@/utils/card-template";
+    import {
+      renderCard,
+      readIconViewBoxes,
+      type CardData,
+    } from "@/utils/card-template";
 
     /*
      * Todo o comportamento da tela vive dentro de initDiretorio(), chamada a
@@ -687,6 +716,11 @@ const description =
           if (slug) rowBySlug.set(slug, el);
         });
 
+      // Os viewBox vem do banco de simbolos que esta neste documento, entao
+      // precisam ser relidos aqui: o ClientRouter troca o documento a cada
+      // navegacao e leva o banco junto.
+      readIconViewBoxes();
+
       // Dados dos cards, injetados como JSON pelo servidor. Indexados por slug
       // pra montar o card na hora em que ele entra na página corrente.
       const cardDataBySlug = new Map<string, CardData>();
@@ -708,8 +742,21 @@ const description =
           currentView = storedView;
       } catch {}
 
+      /*
+       * No mobile a listagem e sempre em cards: a tabela tem cinco colunas e
+       * nao cabe numa tela estreita sem rolagem horizontal. O breakpoint e o
+       * mesmo `sm` que esconde o alternador na toolbar.
+       *
+       * `currentView` guarda a PREFERENCIA da pessoa, que sobrevive intacta —
+       * quem escolheu tabela no desktop volta a ve-la ao alargar a janela.
+       * Quem decide o que aparece agora e `visaoEfetiva()`.
+       */
+      const telaLarga = window.matchMedia("(min-width: 640px)");
+      const visaoEfetiva = (): "table" | "cards" =>
+        telaLarga.matches ? currentView : "cards";
+
       function applyView() {
-        const showTable = currentView === "table";
+        const showTable = visaoEfetiva() === "table";
 
         tableWrapper?.classList.toggle("hidden", !showTable);
         // O container de cards é um grid: alterna hidden/grid pra não perder o
@@ -745,6 +792,14 @@ const description =
       viewTableBtn?.addEventListener("click", () => setView("table"));
       viewCardsBtn?.addEventListener("click", () => setView("cards"));
       applyView();
+
+      // Girar o aparelho ou redimensionar a janela cruza o breakpoint: quem
+      // prefere tabela e estreita a janela cai pra cards, e volta pra tabela ao
+      // alargar. Sem isso a tela ficaria com a visao errada ate um novo clique.
+      telaLarga.addEventListener("change", () => {
+        applyView();
+        renderCardsDaPagina(slugsPaginaAtual);
+      });
 
       // Paginação — aplicada em cima do resultado já filtrado/buscado.
       const PAGE_SIZES = [5, 10, 20, 50, 100];
@@ -803,7 +858,7 @@ const description =
         slugsPaginaAtual = slugs;
         if (!cardsContainer) return;
 
-        if (currentView !== "cards") {
+        if (visaoEfetiva() !== "cards") {
           assinaturaCards = "";
           return;
         }
@@ -914,11 +969,50 @@ const description =
         }
       }
 
+      /*
+       * Os checkboxes do drawer sao rascunho: marcar um nao mexe na listagem.
+       * Só "Aplicar Filtros" promove o rascunho a estado aplicado, que é o que
+       * a listagem, os chips e os contadores leem. Sem isso a lista se
+       * remontava a cada clique, e quem queria combinar quatro recortes via a
+       * tela piscar quatro vezes pelo caminho.
+       */
+      let appliedFilters = new Map<string, string[]>();
+
+      const lerRascunho = () =>
+        new Map(FILTER_GROUPS.map((g) => [g.name, getChecked(g.name)]));
+
+      const inputDoFiltro = (group: string, value: string) =>
+        document.querySelector<HTMLInputElement>(
+          `input[data-filter-group="${group}"][value="${CSS.escape(value)}"]`,
+        );
+
+      /** Promove o rascunho a aplicado e refaz a listagem. */
+      function aplicarFiltros() {
+        appliedFilters = lerRascunho();
+        filterResearchers();
+      }
+
+      /**
+       * Devolve os checkboxes ao que está de fato aplicado. Roda ao fechar o
+       * drawer: quem marca opções e desiste (Esc, X, clique no backdrop) nao
+       * pode reabrir o painel e ver marcado o que nunca entrou em vigor.
+       * Depois de Aplicar é inócuo — rascunho e aplicado já são iguais.
+       */
+      function descartarRascunho() {
+        for (const [group, values] of appliedFilters) {
+          for (const el of document.querySelectorAll<HTMLInputElement>(
+            `input[data-filter-group="${group}"]`,
+          )) {
+            el.checked = values.includes(el.value);
+          }
+        }
+      }
+
       function filterResearchers() {
         const searchValue = (searchInput?.value || "").trim().toLowerCase();
         const active = FILTER_GROUPS.map((g) => ({
           ...g,
-          checked: getChecked(g.name),
+          checked: appliedFilters.get(g.name) ?? [],
         }));
 
         renderActiveCount(active.reduce((sum, f) => sum + f.checked.length, 0));
@@ -948,23 +1042,24 @@ const description =
         renderPage();
       }
 
-      // Filtragem reativa: busca e checkboxes aplicam na hora. "Aplicar filtros"
-      // continua existindo pra fechar o painel no mobile (onde ele cobre a lista)
-      // e como confirmação explícita.
+      // A busca continua reagindo a cada tecla: ela mora na toolbar, fora do
+      // drawer, e digitar já é a confirmação. Os checkboxes, não — eles são
+      // rascunho até o Aplicar.
       searchInput?.addEventListener("input", filterResearchers);
-      document
-        .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
-        .forEach((el) => el.addEventListener("change", filterResearchers));
 
-      // A filtragem já roda no change de cada checkbox; "Aplicar Filtros" serve
-      // como confirmação explícita e fecha o drawer pra revelar o resultado.
       applyBtn?.addEventListener("click", () => {
-        filterResearchers();
+        aplicarFiltros();
         drawer?.close();
       });
 
-      function clearAllFilters() {
-        if (searchInput) searchInput.value = "";
+      // `close` cobre todas as saídas do drawer — X, Esc, clique no backdrop e
+      // o próprio Aplicar. Depois de Aplicar não há o que descartar, então um
+      // único gancho dá conta das duas situações.
+      drawer?.addEventListener("close", descartarRascunho);
+
+      /** Zera só o rascunho: desmarca tudo e reabre as opções que a busca
+       * interna de cada categoria tinha escondido. Não mexe na listagem. */
+      function limparRascunho() {
         document
           .querySelectorAll<HTMLInputElement>("input[data-filter-group]")
           .forEach((el) => (el.checked = false));
@@ -981,11 +1076,21 @@ const description =
               ?.querySelectorAll<HTMLElement>("[data-option-label]")
               .forEach((label) => (label.style.display = ""));
           });
-        filterResearchers();
       }
 
-      clearBtn?.addEventListener("click", clearAllFilters);
-      clearAllBtn?.addEventListener("click", clearAllFilters);
+      /** Limpa e já aplica — para os controles que ficam FORA do drawer e por
+       * isso agem sobre o que está em vigor, não sobre o rascunho. */
+      function limparTudoEAplicar() {
+        limparRascunho();
+        if (searchInput) searchInput.value = "";
+        aplicarFiltros();
+      }
+
+      // Dentro do drawer, "Limpar" zera só as marcações: nada ali vale sem
+      // Aplicar, e desistir é fechar o painel.
+      clearBtn?.addEventListener("click", limparRascunho);
+      // Na faixa de chips, o alvo é o filtro em vigor — some na hora.
+      clearAllBtn?.addEventListener("click", limparTudoEAplicar);
 
       // ── Chips dos filtros aplicados ──────────────────────────────────
       // Espelham os checkboxes marcados: desmarcar pelo X do chip é a mesma
@@ -994,10 +1099,14 @@ const description =
 
       function renderChips() {
         if (!chipsContainer) return;
-        const checked = Array.from(
-          document.querySelectorAll<HTMLInputElement>(
-            "input[data-filter-group]:checked",
-          ),
+        // Vem do aplicado, e nao dos checkboxes: com o drawer aberto e um
+        // rascunho por confirmar, digitar na busca redesenharia os chips com
+        // marcacoes que ainda nao entraram em vigor.
+        const checked = Array.from(appliedFilters.entries()).flatMap(
+          ([group, values]) =>
+            values
+              .map((value) => inputDoFiltro(group, value))
+              .filter((el): el is HTMLInputElement => el !== null),
         );
 
         chipsContainer.replaceChildren();
@@ -1028,9 +1137,11 @@ const description =
           remove.setAttribute("aria-label", `Remover filtro ${text}`);
           remove.innerHTML =
             '<svg viewBox="0 0 24 24" class="size-3" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+          // O chip representa filtro em vigor, entao o X age na hora — sem
+          // passar pelo Aplicar, que e so o compromisso do painel.
           remove.addEventListener("click", () => {
             input.checked = false;
-            filterResearchers();
+            aplicarFiltros();
           });
           chip.appendChild(remove);
 
@@ -1242,19 +1353,8 @@ const description =
         }
       };
       clearFiltersBtn?.addEventListener("click", () => {
-        // Uncheck all checkboxes
-        document
-          .querySelectorAll<HTMLInputElement>("input[type='checkbox']")
-          .forEach((cb) => {
-            cb.checked = false;
-          });
-        // Clear search
-        const searchInput = document.getElementById(
-          "filter-search",
-        ) as HTMLInputElement;
-        if (searchInput) searchInput.value = "";
-        // Re-filter
-        filterResearchers();
+        // Fica na toolbar, fora do drawer: age sobre o que esta em vigor.
+        limparTudoEAplicar();
         updateClearBtnVisibility();
         updateURL();
       });

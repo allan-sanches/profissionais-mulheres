@@ -24,13 +24,21 @@ const links = site.siteLinks.map((link) => ({
       class="shrink-0 transition-opacity hover:opacity-80"
       aria-label={`Ir para ${site.mainSite.label}`}
     >
+      {
+        /* Wordmark horizontal (proporcao 6.11): a versao empilhada da mesma
+        logo obrigava a subir a barra pra manter as tres linhas legiveis. Nesta,
+        48px de altura ja rendem ~293px de largura com o texto folgado.
+
+        width/height sao as dimensoes reais do arquivo: reservam a caixa antes
+        de a imagem carregar e evitam o salto de layout. Sem `lazy` — a barra
+        fica no topo, entao adiar a carga so atrasaria o que ja esta na tela. */
+      }
       <img
-        src="/logo abreviada colorida.png"
+        src="/logo 1 colorida horizontal.png"
         alt=""
-        width="100"
-        height="100"
+        width="751"
+        height="123"
         class="h-12 w-auto"
-        loading="lazy"
         decoding="async"
       />
     </a>

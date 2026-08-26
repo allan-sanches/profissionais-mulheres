@@ -46,8 +46,12 @@ const { ultimaSincronizacaoLabel } = Astro.props;
     </div>
   </div>
 
+  {
+    /* flex-wrap no mobile: os quatro controles nao cabem numa linha de 360px e
+    sem quebra o ultimo era empurrado pra fora da tela. */
+  }
   <div
-    class="flex shrink-0 items-center justify-between gap-4 text-sm text-gray-500 sm:justify-end"
+    class="flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-3 text-sm text-gray-500 sm:flex-nowrap sm:justify-end"
   >
     <div
       class="flex shrink-0 items-center gap-2 text-sm font-medium text-gray-500"
@@ -78,8 +82,13 @@ const { ultimaSincronizacaoLabel } = Astro.props;
     <div
       class="inline-flex h-12 shrink-0 items-center gap-1 rounded-lg border border-gray-200/80 bg-gray-100 p-1"
     >
+      {
+        /* Escondido no mobile: ali a listagem e sempre em cards — a tabela tem
+        cinco colunas e nao cabe numa tela estreita — entao um alternador de
+        visao so ofereceria uma opcao que nao existe. */
+      }
       <div
-        class="inline-flex items-center gap-1"
+        class="hidden items-center gap-1 sm:inline-flex"
         role="group"
         aria-label="Alternar visualização"
       >
@@ -108,25 +117,30 @@ const { ultimaSincronizacaoLabel } = Astro.props;
           Cards
         </button>
       </div>
-
-      <span class="h-6 w-px shrink-0 bg-gray-300" aria-hidden="true"></span>
-
-      <label
-        class="flex items-center gap-1.5 pr-2 text-sm font-medium whitespace-nowrap text-gray-600"
-      >
-        <span class="sr-only">Itens por página</span>
-        <select
-          data-page-size
-          class="h-full rounded-lg border-0 bg-transparent pr-1 pl-2 text-sm font-bold focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
-        >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="20" selected>20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-        por página
-      </label>
     </div>
+
+    {
+      /* Fora da pilula: ela agrupa o alternador de visao, e o seletor de itens
+      por pagina nao tem relacao com ele — juntos, so obrigavam um divisor no
+      meio. Solto aqui, usa a mesma marcacao do seletor da barra de paginacao
+      (ver ResearchersPagination.astro), pra os dois lerem como o mesmo
+      controle repetido no topo e no rodape da lista. */
+    }
+    <label
+      class="flex h-12 shrink-0 items-center justify-center gap-2 text-sm font-medium whitespace-nowrap text-gray-600"
+    >
+      <span class="sr-only">Itens por página</span>
+      <select
+        data-page-size
+        class="h-10 rounded-lg border border-gray-300 bg-white px-2 text-sm font-bold focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
+      >
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+      por página
+    </label>
   </div>
 </div>
