@@ -7,17 +7,20 @@ Este projeto integra Google Sheets (alimentado por Google Forms) com Astro para 
 ### 1️⃣ Setup Google Cloud Project
 
 #### Passo 1: Criar Projeto
+
 1. Acesse [Google Cloud Console](https://console.cloud.google.com/projectcreate)
 2. Crie um novo projeto (ex: "Pesquisadoras Portfólio")
 3. Aguarde a criação ser concluída
 
 #### Passo 2: Habilitar APIs
+
 1. No Cloud Console, vá para **APIs & Services** → **Enabled APIs and Services**
 2. Clique em **+ ENABLE APIS AND SERVICES**
 3. Procure por **"Google Sheets API"** → **Enable**
 4. Procure por **"Google Drive API"** → **Enable**
 
 #### Passo 3: Criar Service Account
+
 1. Vá para **APIs & Services** → **Credentials**
 2. Clique em **+ Create Credentials** → **Service Account**
 3. Preencha:
@@ -29,6 +32,7 @@ Este projeto integra Google Sheets (alimentado por Google Forms) com Astro para 
 6. Clique em **DONE**
 
 #### Passo 4: Gerar Chave JSON
+
 1. Clique na service account que acabou de criar
 2. Vá para a aba **KEYS**
 3. Clique em **Add Key** → **Create new key**
@@ -42,6 +46,7 @@ Este projeto integra Google Sheets (alimentado por Google Forms) com Astro para 
 ### 2️⃣ Setup Google Sheets
 
 #### Criar Planilha
+
 1. Acesse [Google Sheets](https://sheets.google.com)
 2. Crie uma nova planilha: **"Pesquisadoras"**
 3. Crie as colunas (linha 1) exatamente como abaixo:
@@ -50,6 +55,7 @@ Este projeto integra Google Sheets (alimentado por Google Forms) com Astro para 
    ```
 
 #### Configurar Google Form
+
 1. Acesse [Google Forms](https://forms.google.com)
 2. Crie um novo formulário: **"Cadastro de Pesquisadoras"**
 3. Adicione campos correspondentes:
@@ -68,6 +74,7 @@ Este projeto integra Google Sheets (alimentado por Google Forms) com Astro para 
 4. Na aba **RESPONSES**, conecte a planilha criada anteriormente
 
 #### Compartilhar Planilha
+
 1. Abra a planilha "Pesquisadoras"
 2. Clique em **Share** (canto superior direito)
 3. Cole o `client_email` da service account
@@ -75,6 +82,7 @@ Este projeto integra Google Sheets (alimentado por Google Forms) com Astro para 
 5. Clique em **Share**
 
 #### Obter ID da Planilha
+
 1. Na URL da planilha, copie o ID:
    ```
    https://docs.google.com/spreadsheets/d/{SHEET_ID}/edit
@@ -84,6 +92,7 @@ Este projeto integra Google Sheets (alimentado por Google Forms) com Astro para 
 ### 3️⃣ Configurar Variáveis de Ambiente
 
 #### Local (.env.local)
+
 Crie um arquivo `.env.local` na raiz do projeto:
 
 ```env
@@ -94,12 +103,14 @@ ADMIN_TOKEN=gere-um-token-aleatorio-seguro-aqui
 ```
 
 **Como gerar ADMIN_TOKEN:**
+
 ```bash
 # No terminal, execute:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
 #### Vercel (produção)
+
 1. No painel da Vercel do seu projeto
 2. Vá para **Settings** → **Environment Variables**
 3. Adicione as mesmas variáveis:
@@ -115,9 +126,6 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```bash
 # Instale as dependências
 npm install
-
-# Ou, se usar pnpm (recomendado)
-pnpm install
 ```
 
 ### 5️⃣ Testar Sincronização Local
@@ -134,6 +142,7 @@ npm run sync:researchers
 ```
 
 Se receber erro de autenticação, verifique:
+
 - `GOOGLE_SHEET_ID` está correto
 - `GOOGLE_CLIENT_EMAIL` foi compartilhado com a planilha
 - `GOOGLE_PRIVATE_KEY` tem as quebras de linha corretas
@@ -145,12 +154,14 @@ npm run dev
 ```
 
 Acesse:
+
 - **Portfólio:** http://localhost:3000/researchers
 - **Admin:** http://localhost:3000/admin/researchers (use seu ADMIN_TOKEN)
 
 ### 7️⃣ Setup GitHub Actions (Sincronização Automática)
 
 1. Commit e push seu código (com `.env.example`, não `.env.local`):
+
    ```bash
    git add .
    git commit -m "setup: configure researchers integration"
@@ -192,6 +203,7 @@ Acesse:
 ### Para Administradores
 
 #### Sincronizar Manualmente
+
 1. Acesse `seu-dominio.com/admin/researchers`
 2. Digite seu **ADMIN_TOKEN**
 3. Clique em **🚀 Sincronizar Agora**
@@ -199,6 +211,7 @@ Acesse:
 5. Atualize `/researchers` para ver as novas pesquisadoras
 
 #### Sincronização Automática
+
 - O sistema sincroniza automaticamente **toda segunda-feira**
 - Commits são feitos automaticamente se houver mudanças
 - Deploy no Vercel é acionado automaticamente após commit
@@ -210,17 +223,19 @@ Acesse:
 ### Adicionar Mais Campos
 
 1. Edite [src/content.config.ts](src/content.config.ts):
+
    ```typescript
    const researchers = defineCollection({
      // ...
      schema: z.object({
        // ... campos existentes ...
        seu_novo_campo: z.string().optional(),
-     })
+     }),
    });
    ```
 
 2. Edite [src/scripts/sync-researchers.ts](src/scripts/sync-researchers.ts):
+
    ```typescript
    const COLUMN_MAP: Record<number, string> = {
      // ... mapeamentos existentes ...
@@ -243,7 +258,7 @@ Edite [.github/workflows/sync-researchers.yml](.github/workflows/sync-researcher
 on:
   schedule:
     # Mudar esta linha (cron format):
-    - cron: "0 0 * * 1"  # Segunda aos 00:00 UTC
+    - cron: "0 0 * * 1" # Segunda aos 00:00 UTC
     # Exemplos:
     # - cron: "0 * * * *"     # A cada hora
     # - cron: "0 0 * * 0"     # Domingo aos 00:00
@@ -255,21 +270,25 @@ on:
 ## 🐛 Troubleshooting
 
 ### "Cannot find module 'astro:content'"
+
 ```bash
 astro sync
 ```
 
 ### Erro de Autenticação Google
+
 - ✅ Verifique se a string `GOOGLE_PRIVATE_KEY` tem quebras de linha corretamente
 - ✅ Confirme que compartilhou a planilha com `GOOGLE_CLIENT_EMAIL`
 - ✅ Verifique que ambas as APIs estão habilitadas
 
 ### Imagens não aparecem
+
 - ✅ Confirme que compartilhou as imagens no Google Drive com acesso público
 - ✅ Use o **file ID** do Drive (encontre na URL: `/d/{FILE_ID}/`)
 - ✅ Verifique a pasta `/public/researchers/images/` localmente
 
 ### Admin token não funciona
+
 ```bash
 # Regenere um novo token:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
@@ -277,6 +296,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
 ### Sync não roda no GitHub Actions
+
 1. Vá para **Actions** → verifique o histórico
 2. Clique no workflow falhado para ver os logs
 3. Confirme que os Secrets estão configurados corretamente

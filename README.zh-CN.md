@@ -28,30 +28,30 @@ git clone https://github.com/your-username/astro-theme-breeze.git my-site
 cd my-site
 
 # 安装依赖
-pnpm install
+npm install
 
 # 启动开发服务器
-pnpm dev
+npm run dev
 
 # 构建生产版本
-pnpm build
+npm run build
 ```
 
 ## 配置
 
 所有站点配置集中在 `src/config/site.ts`，这是你个性化主题唯一需要编辑的文件。
 
-| 配置项 | 说明 |
-|--------|------|
-| `meta` | 站点标题、描述、作者、Logo、语言 |
-| `navigation` | 导航菜单项及副标题 |
-| `social` | 社交链接（GitHub、邮箱等） |
-| `hero` | 首页问候语、描述、信息卡片 |
-| `footer` | 版权和底部文案 |
-| `comments` | Artalk 评论系统配置 |
-| `features` | 功能开关（搜索、RSS） |
-| `tools` | 工具箱 / 技术栈页面数据 |
-| `labels` | 所有 UI 文案（方便国际化） |
+| 配置项       | 说明                             |
+| ------------ | -------------------------------- |
+| `meta`       | 站点标题、描述、作者、Logo、语言 |
+| `navigation` | 导航菜单项及副标题               |
+| `social`     | 社交链接（GitHub、邮箱等）       |
+| `hero`       | 首页问候语、描述、信息卡片       |
+| `footer`     | 版权和底部文案                   |
+| `comments`   | Artalk 评论系统配置              |
+| `features`   | 功能开关（搜索、RSS）            |
+| `tools`      | 工具箱 / 技术栈页面数据          |
+| `labels`     | 所有 UI 文案（方便国际化）       |
 
 同时修改 `astro.config.mjs` 中的 `site` 为你的域名。
 
@@ -115,7 +115,7 @@ summary: 文章简介。
 支持任意静态托管平台：Vercel、Netlify、Cloudflare Pages 等。
 
 ```bash
-pnpm build
+npm run build
 ```
 
 构建产物在 `dist/` 目录。
