@@ -42,6 +42,8 @@ export interface CardData {
   /** Quantas etiquetas sobraram além das visíveis. */
   extras: number;
   links: CardLink[];
+  /** Rotulo do link pro perfil — vem do painel, junto com os dados. */
+  verPerfil: string;
 }
 
 /**
@@ -183,7 +185,7 @@ export function renderCard(c: CardData): string {
   </div>
   <div class="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
     <div class="flex items-center gap-2">${links}</div>
-    <a href="${perfil}" class="group/btn inline-flex items-center gap-1.5 text-sm font-bold text-meco-purple-primary hover:text-meco-purple-deep">Ver perfil${icon(
+    <a href="${perfil}" class="group/btn inline-flex items-center gap-1.5 text-sm font-bold text-meco-purple-primary hover:text-meco-purple-deep">${esc(c.verPerfil)}${icon(
       "mdi:arrow-right",
       "size-4 transition-transform group-hover/btn:translate-x-0.5",
     )}</a>

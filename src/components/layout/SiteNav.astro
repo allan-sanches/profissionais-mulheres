@@ -1,14 +1,14 @@
 ---
-import site from "@/config/site";
+import { identidade, navegacao } from "@/config/aparencia";
 
 // O menu espelha o do site principal. O item que aponta pra cá é marcado como
 // página atual — é o equivalente ao destaque verde que o Wix dá à seção aberta.
 const aqui = new URL(Astro.site ?? "https://profissionais-mulheres.vercel.app/")
   .hostname;
 
-const links = site.siteLinks.map((link) => ({
+const links = navegacao.links.map((link) => ({
   ...link,
-  atual: new URL(link.href).hostname === aqui,
+  atual: new URL(link.endereco).hostname === aqui,
 }));
 ---
 
@@ -20,25 +20,23 @@ const links = site.siteLinks.map((link) => ({
 >
   <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
     <a
-      href={site.mainSite.href}
+      href={navegacao.enderecoDaLogo}
       class="shrink-0 transition-opacity hover:opacity-80"
-      aria-label={`Ir para ${site.mainSite.label}`}
+      aria-label="Ir para o site principal"
     >
       {
-        /* Wordmark horizontal (proporcao 6.11): a versao empilhada da mesma
-        logo obrigava a subir a barra pra manter as tres linhas legiveis. Nesta,
-        48px de altura ja rendem ~293px de largura com o texto folgado.
+        /* Altura vem do painel; a largura acompanha por `w-auto`, mantendo a
+        proporcao de qualquer imagem que troquem ali. `max-w-full` impede que
+        uma logo muito larga estoure a barra numa tela estreita.
 
-        width/height sao as dimensoes reais do arquivo: reservam a caixa antes
-        de a imagem carregar e evitam o salto de layout. Sem `lazy` — a barra
-        fica no topo, entao adiar a carga so atrasaria o que ja esta na tela. */
+        Sem `lazy`: a barra fica no topo, entao adiar a carga so atrasaria o que
+        ja esta na tela. */
       }
       <img
-        src="/logo 1 colorida horizontal.png"
+        src={identidade.logoMenu}
         alt=""
-        width="751"
-        height="123"
-        class="h-12 w-auto"
+        style={`height: ${identidade.alturaLogoMenu}px`}
+        class="w-auto max-w-full"
         decoding="async"
       />
     </a>
@@ -48,7 +46,7 @@ const links = site.siteLinks.map((link) => ({
         links.map((link) => (
           <li>
             <a
-              href={link.href}
+              href={link.endereco}
               aria-current={link.atual ? "page" : undefined}
               class:list={[
                 "text-base transition-colors hover:text-meco-green-primary",
@@ -57,7 +55,7 @@ const links = site.siteLinks.map((link) => ({
                   : "text-gray-700",
               ]}
             >
-              {link.label}
+              {link.rotulo}
             </a>
           </li>
         ))

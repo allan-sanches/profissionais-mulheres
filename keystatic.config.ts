@@ -1,10 +1,34 @@
 import { config, collection, singleton, fields } from "@keystatic/core";
+import {
+  identidadeVisual,
+  navegacao,
+  paginaDePesquisadoras,
+  rodape,
+} from "./src/keystatic/secoes";
 
 export default config({
   storage: {
     kind: "local",
   },
+  ui: {
+    navigation: {
+      Aparência: [
+        "identidadeVisual",
+        "navegacao",
+        "paginaDePesquisadoras",
+        "rodape",
+      ],
+      Conteúdo: ["researchers"],
+      Ajuda: ["documentacao"],
+    },
+  },
   singletons: {
+    // Aparência — cada seção grava seu proprio JSON em src/content/site/.
+    identidadeVisual,
+    navegacao,
+    paginaDePesquisadoras,
+    rodape,
+
     documentacao: singleton({
       label: "Documentação do Admin",
       path: "src/content/documentacao",

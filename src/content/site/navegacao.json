@@ -1,0 +1,37 @@
+{
+  "enderecoDaLogo": "https://www.mulheresnaecologia.com/",
+  "links": [
+    {
+      "rotulo": "Início",
+      "endereco": "https://www.mulheresnaecologia.com/"
+    },
+    {
+      "rotulo": "Quem somos?",
+      "endereco": "https://www.mulheresnaecologia.com/quemsomos"
+    },
+    {
+      "rotulo": "Linhas editoriais",
+      "endereco": "https://www.mulheresnaecologia.com/linhaseditoriais"
+    },
+    {
+      "rotulo": "Contribua",
+      "endereco": "https://www.mulheresnaecologia.com/contribua"
+    },
+    {
+      "rotulo": "Ações",
+      "endereco": "https://www.mulheresnaecologia.com/a%C3%A7%C3%B5es"
+    },
+    {
+      "rotulo": "FAQ",
+      "endereco": "https://www.mulheresnaecologia.com/faq"
+    },
+    {
+      "rotulo": "Contato",
+      "endereco": "https://www.mulheresnaecologia.com/contato"
+    },
+    {
+      "rotulo": "Lista de mulheres na ecologia",
+      "endereco": "https://profissionais-mulheres.vercel.app/"
+    }
+  ]
+}

@@ -1,12 +1,17 @@
 ---
 import site from "@/config/site";
+import { identidade } from "@/config/aparencia";
 import type { HeadProps } from "@/types";
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 
 type Props = HeadProps;
 
-const { title, description, image = site.ogImage } = Astro.props;
+const {
+  title,
+  description,
+  image = identidade.imagemDeCompartilhamento,
+} = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -15,8 +20,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/logo%20abreviada%20colorida.png" />
+  {/* Favicon — trocavel pela secao "Identidade visual" do painel. */}
+  <link rel="icon" href={identidade.favicon} />
 
   <!-- Apple Touch Icon -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

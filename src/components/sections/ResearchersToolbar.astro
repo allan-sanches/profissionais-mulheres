@@ -1,11 +1,15 @@
 ---
 import { Icon } from "astro-icon/components";
+import { pesquisadoras } from "@/config/aparencia";
 
 interface Props {
   ultimaSincronizacaoLabel?: string;
 }
 
 const { ultimaSincronizacaoLabel } = Astro.props;
+
+// Rotulos vindos do painel (secao "Pagina de pesquisadoras").
+const { botoes, buscaPlaceholder } = pesquisadoras;
 ---
 
 <div
@@ -22,7 +26,7 @@ const { ultimaSincronizacaoLabel } = Astro.props;
       aria-controls="filter-drawer"
     >
       <Icon name="mdi:filter-variant" class="size-5 text-meco-purple-primary" />
-      <span>Filtros</span>
+      <span>{botoes.filtros}</span>
       <span
         id="filter-count-badge"
         class="badge-numero hidden bg-[#bf9ee3] text-xs font-bold text-gray-950"
@@ -40,7 +44,7 @@ const { ultimaSincronizacaoLabel } = Astro.props;
         id="filter-search"
         type="search"
         class="h-12 w-full rounded-lg border border-gray-300 bg-white pr-4 pl-11 text-base transition-all focus:border-transparent focus:ring-2 focus:ring-meco-purple-primary focus:outline-none"
-        placeholder="Buscar por nome ou instituição..."
+        placeholder={buscaPlaceholder}
         aria-label="Buscar pesquisadoras"
       />
     </div>
@@ -76,7 +80,7 @@ const { ultimaSincronizacaoLabel } = Astro.props;
       class="flex shrink-0 items-center gap-2 text-sm font-medium text-meco-purple-primary transition-colors hover:text-meco-purple-deep hover:underline"
     >
       <Icon name="mdi:help-circle-outline" class="size-5 shrink-0" />
-      <span>Como utilizar</span>
+      <span>{botoes.comoUtilizar}</span>
     </button>
 
     {

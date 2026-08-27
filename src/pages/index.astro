@@ -28,6 +28,8 @@ import {
 } from "@/utils/labels";
 import { buildResearcherView } from "@/utils/researcher-view";
 import type { CardData } from "@/utils/card-template";
+import { identidade, pesquisadoras, textoPuro } from "@/config/aparencia";
+import TextoRico from "@/components/blocks/TextoRico.astro";
 
 // A pagina inteira roda no cliente: busca, filtros e paginacao percorrem a
 // lista toda sem ida ao servidor. Por isso todas as pesquisadoras precisam
@@ -141,6 +143,7 @@ const cardsData: CardData[] = views.map((vm) => ({
     icon: link.icon,
     title: link.title,
   })),
+  verPerfil: pesquisadoras.botoes.verPerfil,
 }));
 
 const countAttr = (attr: string, mode: "single" | "list" = "single") => {
@@ -234,9 +237,10 @@ const regiaoOptions = [...regiaoCounts.entries()]
   }))
   .sort((a, b) => compareRegions(a, b));
 
-const title = "Pesquisadoras";
-const description =
-  "O Mulheres na Ecologia é uma iniciativa de comunicação e divulgação científica que promove e fortalece a atuação de mulheres na ecologia no Brasil, ampliando a visibilidade de suas trajetórias e pesquisas. Ao traduzir o conhecimento científico para diferentes públicos, a iniciativa fortalece o diálogo entre a ciência ecológica e a sociedade brasileira.";
+const title = pesquisadoras.titulo;
+// A <meta description> nao aceita marcacao, entao aqui vai a versao achatada do
+// mesmo texto que o <p> desenha com as cores da marca.
+const description = textoPuro(pesquisadoras.subtitulo);
 ---
 
 <BaseLayout title={title} description={description}>
@@ -250,7 +254,7 @@ const description =
       {/* Header */}
       <div
         class="relative overflow-hidden rounded-lg bg-meco-purple-primary p-8 sm:p-12 md:p-16"
-        style="background-image: url('/folhas-verdes.jpeg'); background-size: cover; background-position: center;"
+        style={`background-image: url('${pesquisadoras.imagemDeFundo}'); background-size: cover; background-position: center;`}
       >
         <div
           class="absolute inset-0 rounded-lg"
@@ -269,11 +273,14 @@ const description =
           >
             {title}
           </h1>
-          <p
+          {
+            /* Rich text: o painel permite destacar trechos com as duas cores da
+            marca. Sem destaque, sai um paragrafo branco como antes. */
+          }
+          <TextoRico
+            conteudo={pesquisadoras.subtitulo}
             class="text-sm leading-relaxed font-semibold text-white sm:text-lg md:text-xl"
-          >
-            {description}
-          </p>
+          />
         </div>
       </div>
 
@@ -302,7 +309,7 @@ const description =
             type="button"
             class="hidden text-sm font-medium text-meco-purple-primary transition-colors hover:text-meco-purple-deep hover:underline"
           >
-            Limpar filtros
+            {pesquisadoras.botoes.limparFiltros}
           </button>
 
           <ResearchersTable researchers={researchers} resolvers={resolvers} />
@@ -324,8 +331,11 @@ const description =
               name="mdi:account-search-outline"
               class="size-16 text-gray-300"
             />
-            <p class="text-lg text-gray-500">
-              Nenhuma pesquisadora encontrada com esses filtros.
+            <p class="text-lg font-semibold text-gray-700">
+              {pesquisadoras.semResultados.titulo}
+            </p>
+            <p class="text-sm text-gray-500">
+              {pesquisadoras.semResultados.descricao}
             </p>
           </div>
         </div>
@@ -460,10 +470,8 @@ const description =
             class="flex shrink-0 items-center rounded-md bg-white px-1.5 py-1"
           >
             <img
-              src="/logo abreviada colorida.png"
+              src={identidade.logoPainelDeFiltros}
               alt=""
-              width="1771"
-              height="438"
               class="h-4 w-auto"
               decoding="async"
             />
@@ -563,14 +571,14 @@ const description =
           type="button"
           class="w-full rounded-lg bg-meco-purple-primary px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-meco-purple-deep"
         >
-          Aplicar Filtros
+          {pesquisadoras.botoes.aplicarFiltros}
         </button>
         <button
           id="filter-clear"
           type="button"
           class="shrink-0 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-100"
         >
-          Limpar
+          {pesquisadoras.botoes.limparFiltros}
         </button>
       </div>
     </div>
@@ -581,8 +589,20 @@ const description =
     de cards nascer vazia. `is:inline` porque define:vars serializa os valores
     direto no HTML — o <script> abaixo e um modulo bundlado e nao receberia. */
   }
-  <script is:inline define:vars={{ cardsData }}>
+  {
+    /* `textoSemResultados` viaja junto porque o <script> abaixo e um modulo
+    bundlado e nao enxerga o frontmatter. Sem isso o JS reescreveria com um
+    texto fixo aquilo que o painel acabou de definir. */
+  }
+  <script
+    is:inline
+    define:vars={{
+      cardsData,
+      textoSemResultados: pesquisadoras.semResultados.titulo,
+    }}
+  >
     window.__CARDS_DATA__ = cardsData;
+    window.__SEM_RESULTADOS__ = textoSemResultados;
   </script>
 
   <script>
@@ -897,19 +917,22 @@ const description =
         // Os dois contadores saem dos mesmos start/end/total: enquanto o de
         // cima era calculado fora do renderPage, ele mostrava o total filtrado
         // e o de baixo a janela da página, divergindo a cada paginação.
+        const SEM_RESULTADOS =
+          (window as any).__SEM_RESULTADOS__ ??
+          "Nenhuma pesquisadora encontrada";
         const inicio = start + 1;
         const fim = Math.min(end, total);
 
         if (paginationInfo) {
           paginationInfo.textContent =
             total === 0
-              ? "Nenhuma pesquisadora encontrada"
+              ? SEM_RESULTADOS
               : `Mostrando ${inicio}–${fim} de ${total} pesquisadoras`;
         }
         if (resultsCounter) {
           resultsCounter.innerHTML =
             total === 0
-              ? "Nenhuma pesquisadora encontrada"
+              ? SEM_RESULTADOS
               : `Exibindo <strong class="text-gray-900">${inicio}–${fim}</strong> de <strong class="text-gray-900">${total}</strong>`;
         }
         if (pageIndicator) {

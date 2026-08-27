@@ -2,6 +2,7 @@
 import ResearcherRow from "@/components/blocks/ResearcherRow.astro";
 import type { CollectionEntry } from "astro:content";
 import type { ResearcherResolvers } from "@/utils/researcher-view";
+import { pesquisadoras } from "@/config/aparencia";
 
 interface Props {
   researchers: CollectionEntry<"researchers">[];
@@ -9,6 +10,10 @@ interface Props {
 }
 
 const { researchers, resolvers } = Astro.props;
+
+// Os titulos vem do painel; a ordem e a quantidade de colunas sao fixas, porque
+// cada uma tem largura e conteudo proprios definidos no codigo.
+const { colunas } = pesquisadoras;
 ---
 
 <div
@@ -32,7 +37,7 @@ const { researchers, resolvers } = Astro.props;
           class="bg-meco-purple-primary text-sm font-bold tracking-wider text-white uppercase"
         >
           <th scope="col" class="relative px-6 py-4 text-center">
-            Pesquisadora
+            {colunas.pesquisadora}
             <span
               class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
               data-resize-col="0"
@@ -44,7 +49,7 @@ const { researchers, resolvers } = Astro.props;
             </span>
           </th>
           <th scope="col" class="relative px-4 py-4 text-center">
-            Instituição
+            {colunas.instituicao}
             <span
               class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
               data-resize-col="1"
@@ -56,7 +61,7 @@ const { researchers, resolvers } = Astro.props;
             </span>
           </th>
           <th scope="col" class="relative px-4 py-4 text-center">
-            Formação
+            {colunas.formacao}
             <span
               class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
               data-resize-col="2"
@@ -68,7 +73,7 @@ const { researchers, resolvers } = Astro.props;
             </span>
           </th>
           <th scope="col" class="relative px-4 py-4 text-center">
-            Localização
+            {colunas.localizacao}
             <span
               class="col-resizer group/rz absolute top-0 -right-1 z-10 flex h-full w-2 cursor-col-resize items-center justify-center"
               data-resize-col="3"
@@ -79,8 +84,7 @@ const { researchers, resolvers } = Astro.props;
               ></span>
             </span>
           </th>
-          <th scope="col" class="px-4 py-4 text-center">Perfil &amp; Atuação</th
-          >
+          <th scope="col" class="px-4 py-4 text-center">{colunas.perfil}</th>
         </tr>
       </thead>
       <tbody id="researchers-container" class="text-sm">

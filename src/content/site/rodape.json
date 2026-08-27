@@ -1,0 +1,65 @@
+{
+  "tituloDasRedes": "Siga-nos nas redes sociais:",
+  "redes": [
+    {
+      "nome": "Instagram",
+      "endereco": "https://www.instagram.com/mulheres_na_ecologia/",
+      "icone": "mdi:instagram"
+    },
+    {
+      "nome": "LinkedIn",
+      "endereco": "https://www.linkedin.com/company/mulheres-na-ecologia/",
+      "icone": "mdi:linkedin"
+    },
+    {
+      "nome": "YouTube",
+      "endereco": "https://www.youtube.com/@Mulheresnaecologia",
+      "icone": "mdi:youtube"
+    },
+    {
+      "nome": "TikTok",
+      "endereco": "https://www.tiktok.com/@mulheres.na.ecologia",
+      "icone": "tiktok"
+    }
+  ],
+  "links": [
+    {
+      "rotulo": "Início",
+      "endereco": "https://www.mulheresnaecologia.com/"
+    },
+    {
+      "rotulo": "Quem somos?",
+      "endereco": "https://www.mulheresnaecologia.com/quemsomos"
+    },
+    {
+      "rotulo": "Linhas editoriais",
+      "endereco": "https://www.mulheresnaecologia.com/linhaseditoriais"
+    },
+    {
+      "rotulo": "Contribua",
+      "endereco": "https://www.mulheresnaecologia.com/contribua"
+    },
+    {
+      "rotulo": "Ações",
+      "endereco": "https://www.mulheresnaecologia.com/a%C3%A7%C3%B5es"
+    },
+    {
+      "rotulo": "FAQ",
+      "endereco": "https://www.mulheresnaecologia.com/faq"
+    },
+    {
+      "rotulo": "Contato",
+      "endereco": "https://www.mulheresnaecologia.com/contato"
+    },
+    {
+      "rotulo": "Lista de mulheres na ecologia",
+      "endereco": "https://profissionais-mulheres.vercel.app/"
+    }
+  ],
+  "creditos": {
+    "organizacao": "Mulheres na Ecologia",
+    "cnpj": "33.805.510/0001-95",
+    "frase": "Todos os direitos reservados",
+    "desenvolvidoPor": "Allan Sanches"
+  }
+}

@@ -1,0 +1,92 @@
+---
+/*
+ * Renderiza o rich text do Keystatic.
+ *
+ * O campo `fields.document` grava uma arvore no formato do Slate: nos de bloco
+ * ({ type, children }) e nos de texto ({ text, bold?, italic?, ... }), onde
+ * cada marca e uma propriedade booleana no proprio no de texto.
+ *
+ * Escrito a mao em vez de usar o DocumentRenderer do Keystatic porque aquele e
+ * um componente React: traria uma ilha e uma dependencia de runtime pra
+ * desenhar um paragrafo que ja sai pronto no HTML estatico.
+ */
+
+interface NoDeTexto {
+  text: string;
+  [marca: string]: unknown;
+}
+interface NoDeBloco {
+  type?: string;
+  children: No[];
+  [prop: string]: unknown;
+}
+type No = NoDeTexto | NoDeBloco;
+
+interface Props {
+  /** O valor do campo, direto do JSON. */
+  conteudo?: No[];
+  /** Classes aplicadas a cada paragrafo. */
+  class?: string;
+}
+
+const { conteudo = [], class: classe = "" } = Astro.props;
+
+const ehTexto = (no: No): no is NoDeTexto =>
+  typeof (no as any).text === "string";
+
+// As marcas de cor vem de src/keystatic/marcas-de-cor.tsx. As classes estao
+// escritas por extenso la, que e onde o Tailwind as enxerga — aqui elas so
+// sao referenciadas por nome.
+const CLASSES_POR_MARCA: Record<string, string> = {
+  destaqueRoxo: "text-meco-purple-primary font-bold",
+  destaqueVerde: "text-meco-green-primary font-bold",
+  bold: "font-bold",
+  italic: "italic",
+};
+
+function classesDoTexto(no: NoDeTexto): string {
+  return Object.keys(CLASSES_POR_MARCA)
+    .filter((marca) => no[marca] === true)
+    .map((marca) => CLASSES_POR_MARCA[marca])
+    .join(" ");
+}
+---
+
+{
+  conteudo.map((bloco) => {
+    if (ehTexto(bloco)) return bloco.text;
+
+    const filhos = bloco.children ?? [];
+    const linha = (
+      <>
+        {filhos.map((filho) => {
+          if (!ehTexto(filho)) {
+            // Link: unico bloco inline que o campo permite.
+            const href = (filho as any).href;
+            if (href) {
+              return (
+                <a href={href} class="underline underline-offset-2">
+                  {(filho.children ?? []).map((n) =>
+                    ehTexto(n) ? n.text : "",
+                  )}
+                </a>
+              );
+            }
+            return "";
+          }
+          const classes = classesDoTexto(filho);
+          return classes ? (
+            <span class={classes}>{filho.text}</span>
+          ) : (
+            filho.text
+          );
+        })}
+      </>
+    );
+
+    if (bloco.type === "heading") {
+      return <h2 class={classe}>{linha}</h2>;
+    }
+    return <p class={classe}>{linha}</p>;
+  })
+}

@@ -12,6 +12,7 @@ import {
   formatPlace,
 } from "@/utils/labels";
 import { buildResearcherView } from "@/utils/researcher-view";
+import { pesquisadoras } from "@/config/aparencia";
 
 export async function getStaticPaths() {
   const researchers = await getCollection("researchers");
@@ -61,7 +62,7 @@ const description =
         class="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-600 transition-colors hover:text-meco-purple-deep"
       >
         <Icon name="mdi:arrow-left" class="size-3.5" />
-        Voltar para a busca de pesquisadoras
+        {pesquisadoras.botoes.voltar}
       </a>
 
       {/* Layout assimétrico: 70% conteúdo principal / 30% sidebar */}
