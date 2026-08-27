@@ -6,10 +6,29 @@ import {
   rodape,
 } from "./src/keystatic/secoes";
 
+/*
+ * Onde o painel grava.
+ *
+ * Rodando local (`npm run dev`), grava direto nos arquivos: sem login, sem
+ * commit automático — é o fluxo de quem está mexendo no código.
+ *
+ * Publicado, grava por GitHub: quem edita entra com a própria conta e cada
+ * "Save" vira um commit assinado por ela, que dispara o build no Vercel.
+ * Precisa ser assim porque o disco do servidor na Vercel é efêmero e somente
+ * leitura — `kind: "local"` no ar não tem onde escrever.
+ *
+ * As três variáveis vêm do GitHub App (ver .env.example). Faltando qualquer
+ * uma, o painel publicado abre mas não autentica.
+ */
+const armazenamento = import.meta.env.DEV
+  ? ({ kind: "local" } as const)
+  : ({
+      kind: "github",
+      repo: { owner: "allan-sanches", name: "profissionais-mulheres" },
+    } as const);
+
 export default config({
-  storage: {
-    kind: "local",
-  },
+  storage: armazenamento,
   ui: {
     navigation: {
       Aparência: [
