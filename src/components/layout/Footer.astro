@@ -21,7 +21,9 @@ const linkRows = Math.ceil(footer.links.length / 2);
     /* Padding inferior menor que o superior: a ultima linha ja vem com o
     respiro do mt-12 e do filete, entao 56px embaixo viravam vazio. */
   }
-  <div class="bg-[#9c00ff] px-8 pt-14 pb-8 text-white md:px-16">
+  <div
+    class="bg-[#9c00ff] px-5 pt-10 pb-6 text-white sm:px-8 sm:pt-14 sm:pb-8 md:px-16"
+  >
     {
       /* Sem largura máxima própria: herda a do container da página. Um max-w
       fixo aqui desalinharia, e mudaria a cada página que usasse um container
@@ -32,19 +34,29 @@ const linkRows = Math.ceil(footer.links.length / 2);
       reparte a folga restante igualmente entre os dois vaos. Dar a folga a
       uma coluna so (1fr) inflava aquele bloco e apertava os outros dois. */
     }
-    <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
+    <div class="grid grid-cols-1 gap-8 sm:gap-12 md:grid-cols-3">
       {/* Logo */}
       <div class="flex flex-col items-center justify-center">
         <a
           href={site.mainSite.href}
-          class="inline-flex transition-opacity hover:opacity-80"
+          class="inline-flex max-w-full transition-opacity hover:opacity-80"
         >
+          {
+            /* h-8 no mobile: a proporcao e 9.63, entao os h-12 do desktop dao
+            462px de largura e transbordavam uma tela de 360px. `max-w-full`
+            fica como trava — se a altura mudar, a logo encolhe em vez de
+            estourar a faixa.
+
+            width/height sao as dimensoes reais do arquivo. Estavam em 100x100,
+            que descrevia um quadrado: o navegador reservava a caixa errada
+            antes da imagem chegar e o rodape saltava ao carregar. */
+          }
           <img
             src="/logo 2 branca.png"
             alt={footer.copyright}
-            width="100"
-            height="100"
-            class="h-12 w-auto"
+            width="5730"
+            height="595"
+            class="h-8 w-auto max-w-full sm:h-12"
             loading="lazy"
             decoding="async"
           />
@@ -53,13 +65,13 @@ const linkRows = Math.ceil(footer.links.length / 2);
 
       {/* Links do site */}
       <nav aria-label="Links do site">
-        <ul class="grid grid-cols-2 gap-x-6 gap-y-4">
+        <ul class="grid grid-cols-2 gap-x-4 gap-y-3 sm:gap-x-6 sm:gap-y-4">
           {
             footer.links.map((link) => (
               <li>
                 <a
                   href={link.href}
-                  class="text-lg text-white transition-colors hover:text-gray-200 hover:underline"
+                  class="text-sm text-white transition-colors hover:text-gray-200 hover:underline sm:text-lg"
                 >
                   {link.label}
                 </a>
@@ -71,15 +83,19 @@ const linkRows = Math.ceil(footer.links.length / 2);
 
       {/* Redes sociais */}
       <div class="flex flex-col items-center">
+        {
+          /* text-lg no mobile: em text-3xl o titulo quebrava em duas linhas e
+          pesava mais que o proprio nome da organizacao logo acima. */
+        }
         <h2
           id="footer-social-heading"
-          class="mb-6 text-center font-epilogue text-3xl font-bold text-white"
+          class="mb-4 text-center font-epilogue text-lg font-bold text-white sm:mb-6 sm:text-2xl md:text-3xl"
         >
           {footer.socialHeading}
         </h2>
         <ul
           aria-labelledby="footer-social-heading"
-          class="flex flex-wrap justify-center gap-4"
+          class="flex flex-wrap justify-center gap-1 sm:gap-4"
         >
           {
             footer.social.map((item) => (
@@ -90,9 +106,11 @@ const linkRows = Math.ceil(footer.links.length / 2);
                   rel="noopener noreferrer"
                   title={item.name}
                   aria-label={item.name}
-                  class="flex size-16 items-center justify-center text-white transition-colors hover:text-gray-200"
+                  class="flex size-11 items-center justify-center text-white transition-colors hover:text-gray-200 sm:size-16"
                 >
-                  <Icon name={item.icon} class="size-8" />
+                  {/* size-11 mantem o alvo de toque em 44px, o minimo
+                    recomendado, mesmo com o icone menor dentro. */}
+                  <Icon name={item.icon} class="size-6 sm:size-8" />
                 </a>
               </li>
             ))
@@ -106,7 +124,7 @@ const linkRows = Math.ceil(footer.links.length / 2);
       um filete discreto pra ler como rodape do rodape. */
     }
     <div
-      class="mt-12 border-t border-white/20 pt-6 text-center text-sm text-white"
+      class="mt-8 border-t border-white/20 pt-5 text-center text-xs text-white sm:mt-12 sm:pt-6 sm:text-sm"
     >
       <p>
         Copyright © {year}
