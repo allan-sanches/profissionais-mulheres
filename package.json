@@ -5,7 +5,7 @@
   "packageManager": "npm@10.9.2",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && npx pagefind --site dist",
+    "build": "astro build && npx pagefind --site dist && node scripts/smoke-listagem.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky",
@@ -45,6 +45,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "cheerio": "^1.2.0",
     "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
     "lint-staged": "^16.2.7",
     "pagefind": "^1.4.0",
     "prettier": "3.7.4",

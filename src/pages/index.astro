@@ -1176,7 +1176,9 @@ const description = textoPuro(pesquisadoras.subtitulo);
         clearAll.className =
           "text-xs font-semibold text-gray-500 underline-offset-2 transition-colors hover:text-red-600 hover:underline";
         clearAll.textContent = "Limpar todos os filtros";
-        clearAll.addEventListener("click", clearAllFilters);
+        // Fica na faixa de chips, fora do drawer: age sobre o filtro em vigor,
+        // entao limpa e aplica de uma vez.
+        clearAll.addEventListener("click", limparTudoEAplicar);
         chipsContainer.appendChild(clearAll);
       }
 
