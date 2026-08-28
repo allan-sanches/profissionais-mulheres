@@ -26,8 +26,16 @@ const SEARCH_THRESHOLD = 8;
 const showSearch = searchable ?? options.length > SEARCH_THRESHOLD;
 ---
 
+{
+  /* data-group-title identifica a categoria pro chip do filtro ativo: "Sim" e
+  "Não" se repetem em LGBTQIAP+, PCD e Aceita palestras, entao um chip com so
+  "Sim" nao diz a qual das tres pertence — sobretudo com duas marcadas ao
+  mesmo tempo, onde os dois chips ficam identicos. Ver renderChips() em
+  index.astro. */
+}
 <details
   class="filter-accordion-item border-b border-gray-100 py-3"
+  data-group-title={title}
   open={open}
 >
   <summary

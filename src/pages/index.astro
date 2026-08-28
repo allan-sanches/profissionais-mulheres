@@ -1143,7 +1143,20 @@ const description = textoPuro(pesquisadoras.subtitulo);
             input.parentElement?.querySelector("span")?.textContent?.trim() ??
             input.value;
           // Remove o "(N)" da contagem — no chip ele só polui.
-          const text = label.replace(/\s*\(\d+\)\s*$/, "");
+          const opcaoTexto = label.replace(/\s*\(\d+\)\s*$/, "");
+
+          // "Sim"/"Não" se repetem em LGBTQIAP+, PCD e Aceita palestras: um
+          // chip com só "Sim" não diz a qual das três pertence — com duas
+          // marcadas ao mesmo tempo, os chips ficam idênticos e a pessoa não
+          // sabe qual X remove qual filtro. Prefixa com a categoria só nesse
+          // caso; as demais opções (ex.: "Mulher trans", "Preta") já são
+          // autoexplicativas sozinhas.
+          const ambiguo = opcaoTexto === "Sim" || opcaoTexto === "Não";
+          const categoria = ambiguo
+            ? input.closest<HTMLElement>("[data-group-title]")?.dataset
+                .groupTitle
+            : undefined;
+          const text = categoria ? `${categoria}: ${opcaoTexto}` : opcaoTexto;
 
           const chip = document.createElement("span");
           chip.className =
