@@ -64,7 +64,9 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
   <td class="px-4 py-4">
     {
       r.nivel_formacao && (
-        <span class="inline-block rounded-md bg-gray-100 px-2.5 py-1 text-sm font-semibold text-gray-700">
+        <span
+          class={`${PILL_BASE} ${CATEGORY_BADGE.nivelFormacao.color} text-sm`}
+        >
           {NIVEL_LABELS[r.nivel_formacao]}
         </span>
       )
@@ -137,7 +139,7 @@ const remainingBadges = vm.badges.slice(VISIBLE_BADGES);
               dado de perfil. */}
               {remainingBadges.map((badge) => (
                 <span
-                  class={`max-w-full rounded-full border px-2 py-0.5 text-xs font-semibold break-words ${CATEGORY_BADGE[badge.key].color}`}
+                  class={`max-w-full rounded-full border px-2 py-0.5 text-center text-xs font-semibold break-words ${CATEGORY_BADGE[badge.key].color}`}
                   title={badge.full !== badge.label ? badge.full : undefined}
                 >
                   {badge.label}

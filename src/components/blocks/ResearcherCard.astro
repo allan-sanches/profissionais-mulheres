@@ -62,9 +62,11 @@ const remainingCount = vm.badges.length - visibleBadges.length;
         </h3>
         {
           r.nivel_formacao && (
-            <p class="text-sm font-semibold text-meco-purple-primary">
+            <span
+              class={`${PILL_BASE} ${CATEGORY_BADGE.nivelFormacao.color} mt-1 text-sm`}
+            >
               {NIVEL_LABELS[r.nivel_formacao]}
-            </p>
+            </span>
           )
         }
         {

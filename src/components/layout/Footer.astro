@@ -16,8 +16,15 @@ const { creditos } = rodape;
     respiro do mt-8/mt-12 e do filete, entao um valor igual embaixo viraria
     vazio. */
   }
+  {
+    /* Gradiente radial (roxo -> verde -> verde -> roxo) ancorado no canto
+    inferior direito, fornecido pelo design. Os stops percentuais nao
+    redondos vem direto da ferramenta de design — mantidos como estao pra
+    bater exatamente com o que foi aprovado. */
+  }
   <div
-    class="bg-[#9c00ff] px-5 pt-10 pb-6 text-white sm:px-8 sm:pt-14 sm:pb-8 md:px-16"
+    class="px-5 pt-10 pb-6 text-white sm:px-8 sm:pt-14 sm:pb-8 md:px-16"
+    style="background: radial-gradient(circle at 100% 100%, #7D1CD4 0%, #297552 17.543859649122805%, #297552 61.4035355417352%, #0D9426 100%)"
   >
     {
       /* Sem largura máxima própria: herda a do container da página. Um max-w

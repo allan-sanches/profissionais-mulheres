@@ -104,7 +104,7 @@ function icon(name: string, cls: string): string {
 // importa de la pra nao arrastar o resto do arquivo pro bundle. Ao mexer em um,
 // mexa no outro.
 const PILL_BASE =
-  "inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium break-words";
+  "inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-center text-xs font-medium break-words";
 
 export function renderCard(c: CardData): string {
   const perfil = `/pesquisadoras/${esc(c.slug)}`;

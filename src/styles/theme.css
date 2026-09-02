@@ -143,5 +143,13 @@
   --color-meco-green-soft: #9cd4b8;
   --color-meco-green-bg: #d1ebd1;
 
+  /* Terceira família do brandbook, pra metadados neutros (nível de
+     formação, localização) que não são nem identidade (roxo) nem pesquisa
+     (verde). Já citada no comentário acima ("Slate #45597D" + tint
+     "#B5C9EB") mas nunca virou token nomeado — os badges desses metadados
+     usavam cinza genérico do Tailwind em vez da cor própria da marca. */
+  --color-meco-slate-primary: #45597d;
+  --color-meco-slate-bg: #b5c9eb;
+
   --font-epilogue: var(--font-display);
 }

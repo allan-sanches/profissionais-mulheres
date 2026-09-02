@@ -12,7 +12,8 @@ export const CATEGORY_BADGE: Record<string, { color: string }> = {
     color: "bg-gray-100 text-gray-600 border-gray-200",
   },
   nivelFormacao: {
-    color: "bg-gray-100 text-gray-700 border-gray-200",
+    color:
+      "bg-meco-slate-bg text-meco-slate-primary border-meco-slate-primary/20",
   },
   identidade: {
     color: "bg-meco-purple-bg text-meco-purple-deep border-meco-purple-soft/50",
@@ -55,8 +56,13 @@ export const CATEGORY_BADGE: Record<string, { color: string }> = {
 //
 // `max-w-full` prende a pílula à largura do container, e `break-words` cobre o
 // caso de uma única palavra maior que a coluna, que nem espaço tem pra quebrar.
+//
+// `text-center`: quando o texto quebra em duas linhas, `items-center` do flex
+// só centraliza a caixa de texto como um todo verticalmente — o alinhamento de
+// cada linha continua seguindo o text-align padrão (esquerda). Sem isso a
+// segunda linha ficava desalinhada da primeira dentro da pílula arredondada.
 export const PILL_BASE =
-  "inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium break-words";
+  "inline-flex max-w-full items-center gap-1 rounded-full border px-2.5 py-1 text-center text-xs font-medium break-words";
 
 // Ícone descritivo por forma de colaboração, pros mini-cards do perfil.
 // As chaves são fragmentos em minúsculo casados por `includes` — o texto vem

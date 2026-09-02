@@ -93,7 +93,9 @@ const description =
                   </h1>
                   {
                     r.nivel_formacao && (
-                      <span class="rounded-full border border-meco-purple-soft/50 bg-meco-purple-bg px-2.5 py-0.5 text-xs font-bold text-meco-purple-deep">
+                      <span
+                        class={`${PILL_BASE} ${CATEGORY_BADGE.nivelFormacao.color} text-xs font-bold`}
+                      >
                         {NIVEL_LABELS[r.nivel_formacao]}
                       </span>
                     )
