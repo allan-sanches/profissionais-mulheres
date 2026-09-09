@@ -17,20 +17,19 @@
     "check:sheet": "tsx ./src/scripts/check-sheet.ts"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.3",
-    "@astrojs/react": "^6.0.1",
+    "@astrojs/mdx": "^8.0.1",
+    "@astrojs/react": "^6.0.5",
     "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.2",
-    "@astrojs/vercel": "^10.0.4",
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vercel": "^11.0.10",
     "@googleapis/sheets": "^13.0.1",
     "@iconify-json/academicons": "^1.2.4",
-    "@keystatic/astro": "^5.2.0",
+    "@keystatic/astro": "^6.0.0",
     "@keystatic/core": "^0.6.0",
     "@tailwindcss/vite": "^4.1.18",
     "artalk": "^2.9.1",
-    "astro": "^6.1.1",
-    "astro-expressive-code": "^0.41.5",
-    "astro-icon": "^1.1.5",
+    "astro": "^7.3.2",
+    "astro-icon": "^1.2.0",
     "daisyui": "^5.7.0",
     "dayjs": "^1.11.19",
     "dotenv": "^10.0.0",
@@ -58,6 +57,6 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "overrides": {
-    "vite": "^7"
+    "vite": "^8"
   }
 }
