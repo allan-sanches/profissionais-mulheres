@@ -21,6 +21,10 @@ export default defineConfig({
       // Excluir daqui evita o erro cosmético "Could not resolve
       // virtual:keystatic-config" no início do dev server.
       exclude: ["virtual:keystatic-config"],
+      // A UI do painel só é carregada no cliente e o scanner não a encontra;
+      // sem pré-empacotar, dependências CommonJS dela (lodash) chegam cruas ao
+      // navegador e /keystatic fica em branco.
+      include: ["@keystatic/core/ui"],
     },
   },
 

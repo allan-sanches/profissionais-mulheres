@@ -19,13 +19,18 @@ import {
  *
  * As três variáveis vêm do GitHub App (ver .env.example). Faltando qualquer
  * uma, o painel publicado abre mas não autentica.
+ *
+ * `PUBLIC_KEYSTATIC_STORAGE=github` força o modo GitHub também no dev — serve
+ * para criar o GitHub App pelo assistente em /keystatic/setup e para testar o
+ * login antes de publicar.
  */
-const armazenamento = import.meta.env.DEV
-  ? ({ kind: "local" } as const)
-  : ({
-      kind: "github",
-      repo: { owner: "allan-sanches", name: "profissionais-mulheres" },
-    } as const);
+const armazenamento =
+  import.meta.env.DEV && import.meta.env.PUBLIC_KEYSTATIC_STORAGE !== "github"
+    ? ({ kind: "local" } as const)
+    : ({
+        kind: "github",
+        repo: { owner: "allan-sanches", name: "profissionais-mulheres" },
+      } as const);
 
 export default config({
   storage: armazenamento,
@@ -147,6 +152,41 @@ export default config({
           label: "ORCID",
           description: "Ex: 0000-0002-1825-0097 ou URL completa",
         }),
+        // Campos que o sync da planilha grava. Precisam estar declarados aqui:
+        // o Keystatic recusa salvar um JSON com chave fora do schema.
+        genero: fields.text({
+          label: "Gênero (como respondido na planilha)",
+          description: "Ex: Feminino / Cisgênero",
+        }),
+        cidade_natal: fields.text({ label: "Cidade natal" }),
+        grupo_tradicional: fields.text({
+          label: "Grupo tradicional",
+          description: "Povos e comunidades tradicionais, como respondido",
+        }),
+        lgbtqiap: fields.checkbox({ label: "LGBTQIAP+", defaultValue: false }),
+        pcd: fields.checkbox({
+          label: "Pessoa com deficiência",
+          defaultValue: false,
+        }),
+        trabalho_atual: fields.text({ label: "Trabalho atual" }),
+        instituicao_atual: fields.text({ label: "Instituição atual" }),
+        aceita_palestras: fields.text({
+          label: "Aceita convites para palestras",
+          description: "Ex: Sim / Não",
+        }),
+        areas_pesquisa: fields.array(fields.text({ label: "Área" }), {
+          label: "Áreas de pesquisa",
+          itemLabel: (props) => props.value,
+        }),
+        grupos_biologicos: fields.array(fields.text({ label: "Grupo" }), {
+          label: "Grupos biológicos",
+          itemLabel: (props) => props.value,
+        }),
+        formas_colaboracao: fields.array(fields.text({ label: "Forma" }), {
+          label: "Formas de colaboração",
+          itemLabel: (props) => props.value,
+        }),
+        observacoes: fields.text({ label: "Observações", multiline: true }),
         data_sincronizacao: fields.text({
           label: "Última sincronização (automático)",
           description: "Preenchido automaticamente pelo sync do Google Sheets",
