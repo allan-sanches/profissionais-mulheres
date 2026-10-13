@@ -9,7 +9,7 @@ import react from "@astrojs/react";
 import keystatic from "@keystatic/astro";
 
 export default defineConfig({
-  site: "https://profissionais-mulheres.vercel.app",
+  site: "https://rede.mulheresnaecologia.com",
   adapter: vercel(),
   output: "static",
 

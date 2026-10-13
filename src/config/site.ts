@@ -27,7 +27,7 @@ const siteLinks = [
     label: "Lista de mulheres na ecologia",
     // Endereco absoluto de proposito: esta lista tambem descreve o site
     // principal, entao o link precisa funcionar fora daqui.
-    href: "https://profissionais-mulheres.vercel.app/",
+    href: "https://rede.mulheresnaecologia.com/",
   },
 ];
 
