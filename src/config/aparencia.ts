@@ -46,6 +46,9 @@ export const navegacao = navegacaoJson as {
 
 export const pesquisadoras = pesquisadorasJson as {
   titulo: string;
+  /** Em %. Campo vazio no painel some do JSON, por isso opcional. */
+  escalaTitulo?: number;
+  escalaSubtitulo?: number;
   imagemDeFundo: string;
   colunas: {
     pesquisadora: string;

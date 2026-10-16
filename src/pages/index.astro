@@ -244,6 +244,10 @@ const regiaoOptions = [...regiaoCounts.entries()]
 
 const title = pesquisadoras.titulo;
 const subtitulo = await lerSubtitulo();
+// Escalas do painel, em %. Viram variaveis CSS que multiplicam os tamanhos de
+// cada largura de tela no header abaixo.
+const escalaTitulo = (pesquisadoras.escalaTitulo ?? 100) / 100;
+const escalaSubtitulo = (pesquisadoras.escalaSubtitulo ?? 100) / 100;
 // A <meta description> nao aceita marcacao, entao aqui vai a versao achatada do
 // mesmo texto que o <p> desenha com as cores da marca.
 const description = textoPuro(subtitulo);
@@ -277,11 +281,16 @@ const description = textoPuro(subtitulo);
           /* Escala mobile-first: os tamanhos base valem na tela estreita e
           crescem a partir do sm. No mobile o titulo em text-5xl ocupava quase
           a altura toda da dobra e o paragrafo em text-xl empurrava a listagem
-          pra fora da primeira tela. */
+          pra fora da primeira tela. Os tamanhos sao os de text-3xl/5xl/6xl/7xl
+          (titulo) e text-sm/lg/xl (paragrafo) escritos por extenso, para poder
+          multiplicar pela escala que vem do painel. */
         }
-        <div class="relative space-y-6 text-center sm:space-y-10">
+        <div
+          class="relative space-y-6 text-center sm:space-y-10"
+          style={`--escala-titulo: ${escalaTitulo}; --escala-subtitulo: ${escalaSubtitulo};`}
+        >
           <h1
-            class="font-epilogue text-3xl leading-tight font-black tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+            class="font-epilogue text-[length:calc(1.875rem*var(--escala-titulo))] leading-tight font-black tracking-tight text-white sm:text-[length:calc(3rem*var(--escala-titulo))] md:text-[length:calc(3.75rem*var(--escala-titulo))] lg:text-[length:calc(4.5rem*var(--escala-titulo))]"
           >
             {title}
           </h1>
@@ -291,7 +300,7 @@ const description = textoPuro(subtitulo);
           }
           <TextoRico
             conteudo={subtitulo}
-            class="text-sm leading-relaxed font-semibold text-white sm:text-lg md:text-xl"
+            class="text-[length:calc(0.875rem*var(--escala-subtitulo))] leading-relaxed font-semibold text-white sm:text-[length:calc(1.125rem*var(--escala-subtitulo))] md:text-[length:calc(1.25rem*var(--escala-subtitulo))]"
           />
         </div>
       </div>

@@ -133,10 +133,27 @@ export const paginaDePesquisadoras = singleton({
       description: "O texto grande no alto da página.",
       validation: { isRequired: true },
     }),
+    // Em %, e não em px: o título e o texto mudam de tamanho conforme a largura
+    // da tela, e a escala multiplica todos os tamanhos de uma vez. Um valor em
+    // px valeria igual no celular e no computador.
+    escalaTitulo: fields.integer({
+      label: "Tamanho do título (%)",
+      description:
+        "100 é o tamanho normal. Use mais para aumentar (ex.: 120) ou menos para diminuir (ex.: 80). Vale para celular e computador.",
+      defaultValue: 100,
+      validation: { min: 50, max: 150 },
+    }),
     subtitulo: textoRico(
       "Texto de apresentação",
       "Aparece abaixo do título. Selecione um trecho e use os botões de destaque roxo ou verde para colorir com as cores da marca.",
     ),
+    escalaSubtitulo: fields.integer({
+      label: "Tamanho do texto de apresentação (%)",
+      description:
+        "100 é o tamanho normal. Use mais para aumentar (ex.: 120) ou menos para diminuir (ex.: 80). Vale para celular e computador.",
+      defaultValue: 100,
+      validation: { min: 50, max: 150 },
+    }),
     imagemDeFundo: imagem(
       "Imagem de fundo do título",
       "Fica atrás do título, sob um véu roxo que garante a leitura do texto.",
