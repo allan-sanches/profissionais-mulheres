@@ -1,18 +1,8 @@
 {
   "titulo": "Pesquisadoras",
-  "subtitulo": [
-    {
-      "type": "paragraph",
-      "children": [
-        {
-          "text": "O Mulheres na Ecologia é uma iniciativa de comunicação e divulgação científica que promove e fortalece a atuação de mulheres na ecologia no Brasil, ampliando a visibilidade de suas trajetórias e pesquisas. Ao traduzir o conhecimento científico para diferentes públicos, a iniciativa fortalece o diálogo entre a ciência ecológica e a sociedade brasileira."
-        }
-      ]
-    }
-  ],
-  "imagemDeFundo": "/imagens/folhas-verdes.jpeg",
+  "imagemDeFundo": "/imagens/imagemDeFundo.jpeg",
   "colunas": {
-    "pesquisadora": "Pesquisadora",
+    "pesquisadora": "Nome",
     "instituicao": "Instituição",
     "formacao": "Formação",
     "localizacao": "Localização",
