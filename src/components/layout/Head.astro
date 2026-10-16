@@ -13,6 +13,12 @@ const {
   image = identidade.imagemDeCompartilhamento,
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// A aba sempre termina no nome do site (secao "Identidade visual" do painel);
+// a home nao passa titulo e fica so com ele.
+const tituloDaAba = title
+  ? `${title} — ${identidade.nomeDoSite}`
+  : identidade.nomeDoSite;
 ---
 
 <!-- Global Metadata -->
@@ -20,18 +26,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  {/* Favicon — trocavel pela secao "Identidade visual" do painel. */}
+  {
+    /* Favicon — trocavel pela secao "Identidade visual" do painel. E o unico
+     icone declarado de proposito: qualquer outro <link rel="icon"> com
+     `sizes` concorre com ele, e o navegador escolhe o de tamanho mais
+     proximo em vez deste. */
+  }
   <link rel="icon" href={identidade.favicon} />
+  <link rel="apple-touch-icon" href={identidade.favicon} />
 
-  <!-- Apple Touch Icon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-
-  <!-- PWA Icons -->
-  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
-
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json" />
+  <!-- PWA Manifest — gerado a partir do painel (src/pages/manifest.webmanifest.ts) -->
+  <link rel="manifest" href="/manifest.webmanifest" />
 
   <!-- Theme Color -->
   <meta name="theme-color" content="#3F9C87" />
@@ -40,21 +45,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta name="generator" content={Astro.generator} />
 
   <!-- Primary Meta Tags -->
-  <title>{title}</title>
-  <meta name="title" content={title} />
+  <title>{tituloDaAba}</title>
+  <meta name="title" content={tituloDaAba} />
   <meta name="description" content={description} />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content={Astro.url} />
-  <meta property="og:title" content={title} />
+  <meta property="og:title" content={tituloDaAba} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={new URL(image, Astro.url)} />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content={Astro.url} />
-  <meta property="twitter:title" content={title} />
+  <meta property="twitter:title" content={tituloDaAba} />
   <meta property="twitter:description" content={description} />
   <meta name="twitter:creator" content={`@${site.meta.author}`} />
   <meta name="twitter:image" content={new URL(image, Astro.url)} />
@@ -63,7 +68,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <link
     rel="alternate"
     type="application/rss+xml"
-    title={site.meta.title}
+    title={identidade.nomeDoSite}
     href={new URL("rss.xml", Astro.site)}
   />
 

@@ -243,7 +243,8 @@ const title = pesquisadoras.titulo;
 const description = textoPuro(pesquisadoras.subtitulo);
 ---
 
-<BaseLayout title={title} description={description}>
+{/* Sem title: na home a aba mostra so o nome do site (ver Head.astro). */}
+<BaseLayout description={description}>
   <a href="#layout-root" class="sr-only focus:not-sr-only"
     >Pular para conteúdo principal</a
   >

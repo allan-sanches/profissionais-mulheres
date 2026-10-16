@@ -33,6 +33,7 @@ export interface NoDeBloco {
 }
 
 export const identidade = identidadeJson as {
+  nomeDoSite: string;
   logoMenu: string;
   alturaLogoMenu: number;
   logoRodape: string;

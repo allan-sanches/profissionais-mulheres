@@ -51,6 +51,12 @@ export const identidadeVisual = singleton({
   path: "src/content/site/identidade",
   format: "json",
   schema: {
+    nomeDoSite: fields.text({
+      label: "Nome do site",
+      description:
+        "Aparece na aba do navegador, no Google e quando o link é compartilhado. Nas páginas de perfil vem depois do nome da pesquisadora.",
+      validation: { isRequired: true },
+    }),
     logoMenu: imagem(
       "Logo do menu do topo",
       "Aparece na barra de navegação de todas as páginas. Formato horizontal funciona melhor aqui.",
@@ -72,7 +78,7 @@ export const identidadeVisual = singleton({
     ),
     favicon: imagem(
       "Favicon",
-      "Ícone que aparece na aba do navegador. Use uma imagem quadrada.",
+      "Ícone que aparece na aba do navegador e no atalho do celular. Use uma imagem quadrada (512x512 é o ideal) — logo horizontal fica ilegível desse tamanho.",
     ),
     imagemDeCompartilhamento: imagem(
       "Imagem de compartilhamento",
