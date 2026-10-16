@@ -13,17 +13,37 @@ import { marcasDeCor } from "./marcas-de-cor";
  * no rodapé e no favicon ao mesmo tempo.
  */
 
-/** Rich text com as duas cores da marca. Usado onde o texto é corrido. */
+/**
+ * Rich text com as duas cores da marca. Usado onde o texto é corrido.
+ *
+ * Grava em Markdoc num arquivo à parte (<seção>/<campo>.mdoc), e não dentro do
+ * JSON da seção — campo de conteúdo no Keystatic é sempre assim. Quem lê é
+ * `lerSubtitulo` em src/config/aparencia.ts.
+ *
+ * Precisa ser `fields.markdoc`: as marcas de cor são `mark()` de
+ * content-components, que só o markdoc entende. O antigo `fields.document`
+ * (deprecado) não reconhece a tag ao ler o arquivo e derruba o painel e o build.
+ */
 const textoRico = (label: string, description: string) =>
-  fields.document({
+  fields.markdoc({
     label,
     description,
-    formatting: {
-      inlineMarks: ["bold", "italic"],
-      softBreaks: true,
+    options: {
+      bold: true,
+      italic: true,
+      link: true,
+      strikethrough: false,
+      code: false,
+      heading: [],
+      blockquote: false,
+      orderedList: false,
+      unorderedList: false,
+      table: false,
+      image: false,
+      divider: false,
+      codeBlock: false,
     },
-    links: true,
-    componentBlocks: marcasDeCor,
+    components: marcasDeCor,
   });
 
 /** Imagem gravada em public/ — o caminho salvo no JSON já é o do site. */

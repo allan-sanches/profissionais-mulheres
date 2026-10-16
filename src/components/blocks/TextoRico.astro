@@ -2,91 +2,73 @@
 /*
  * Renderiza o rich text do Keystatic.
  *
- * O campo `fields.document` grava uma arvore no formato do Slate: nos de bloco
- * ({ type, children }) e nos de texto ({ text, bold?, italic?, ... }), onde
- * cada marca e uma propriedade booleana no proprio no de texto.
+ * O campo `fields.markdoc` grava Markdoc, e o leitor devolve a arvore ja
+ * parseada (ver lerSubtitulo em src/config/aparencia.ts). Aqui ela vira HTML
+ * pelo proprio Markdoc, com tres ajustes: cada paragrafo recebe a classe vinda
+ * da pagina, o link ganha sublinhado e as marcas de cor viram <span> com as
+ * classes declaradas em src/keystatic/marcas-de-cor.tsx.
  *
- * Escrito a mao em vez de usar o DocumentRenderer do Keystatic porque aquele e
- * um componente React: traria uma ilha e uma dependencia de runtime pra
- * desenhar um paragrafo que ja sai pronto no HTML estatico.
+ * Sai como HTML estatico em vez de um componente React: nao vale uma ilha e
+ * uma dependencia de runtime pra desenhar um paragrafo. O renderer de HTML do
+ * Markdoc escapa o texto, entao o set:html nao abre brecha pra marcacao vinda
+ * do painel.
  */
+import Markdoc, { type Config, type Node, type Schema } from "@markdoc/markdoc";
+import { marcasDeCor } from "@/keystatic/marcas-de-cor";
 
-interface NoDeTexto {
-  text: string;
-  [marca: string]: unknown;
-}
-interface NoDeBloco {
-  type?: string;
-  children: No[];
-  [prop: string]: unknown;
-}
-type No = NoDeTexto | NoDeBloco;
+// O pacote resolve para CommonJS no Node, que nao expoe exports nomeados.
+const { Tag } = Markdoc;
 
 interface Props {
-  /** O valor do campo, direto do JSON. */
-  conteudo?: No[];
+  /** A arvore do Markdoc, como o leitor do Keystatic devolve. */
+  conteudo: Node;
   /** Classes aplicadas a cada paragrafo. */
   class?: string;
 }
 
-const { conteudo = [], class: classe = "" } = Astro.props;
+const { conteudo, class: classe = "" } = Astro.props;
 
-const ehTexto = (no: No): no is NoDeTexto =>
-  typeof (no as any).text === "string";
+// As classes estao escritas por extenso em marcas-de-cor.tsx, que e onde o
+// Tailwind as enxerga. Aqui elas so sao lidas de la.
+const tagsDeCor: Record<string, Schema> = Object.fromEntries(
+  Object.entries(marcasDeCor).map(([nome, marca]): [string, Schema] => [
+    nome,
+    {
+      inline: true,
+      transform: (no, config) =>
+        new Tag(
+          marca.tag ?? "span",
+          { class: marca.className },
+          no.transformChildren(config),
+        ),
+    },
+  ]),
+);
 
-// As marcas de cor vem de src/keystatic/marcas-de-cor.tsx. As classes estao
-// escritas por extenso la, que e onde o Tailwind as enxerga — aqui elas so
-// sao referenciadas por nome.
-const CLASSES_POR_MARCA: Record<string, string> = {
-  destaqueRoxo: "text-meco-purple-primary font-bold",
-  destaqueVerde: "text-meco-green-primary font-bold",
-  bold: "font-bold",
-  italic: "italic",
+const config: Config = {
+  nodes: {
+    // Por padrao o documento vira <article>; aqui so os paragrafos interessam.
+    document: {
+      transform: (no, config) => no.transformChildren(config),
+    },
+    paragraph: {
+      transform: (no, config) =>
+        new Tag("p", { class: classe }, no.transformChildren(config)),
+    },
+    link: {
+      attributes: { href: { type: String } },
+      transform: (no, config) =>
+        new Tag(
+          "a",
+          { href: no.attributes.href, class: "underline underline-offset-2" },
+          no.transformChildren(config),
+        ),
+    },
+  },
+  tags: tagsDeCor,
 };
 
-function classesDoTexto(no: NoDeTexto): string {
-  return Object.keys(CLASSES_POR_MARCA)
-    .filter((marca) => no[marca] === true)
-    .map((marca) => CLASSES_POR_MARCA[marca])
-    .join(" ");
-}
+const html = Markdoc.renderers.html(Markdoc.transform(conteudo, config));
 ---
 
-{
-  conteudo.map((bloco) => {
-    if (ehTexto(bloco)) return bloco.text;
-
-    const filhos = bloco.children ?? [];
-    const linha = (
-      <>
-        {filhos.map((filho) => {
-          if (!ehTexto(filho)) {
-            // Link: unico bloco inline que o campo permite.
-            const href = (filho as any).href;
-            if (href) {
-              return (
-                <a href={href} class="underline underline-offset-2">
-                  {(filho.children ?? []).map((n) =>
-                    ehTexto(n) ? n.text : "",
-                  )}
-                </a>
-              );
-            }
-            return "";
-          }
-          const classes = classesDoTexto(filho);
-          return classes ? (
-            <span class={classes}>{filho.text}</span>
-          ) : (
-            filho.text
-          );
-        })}
-      </>
-    );
-
-    if (bloco.type === "heading") {
-      return <h2 class={classe}>{linha}</h2>;
-    }
-    return <p class={classe}>{linha}</p>;
-  })
-}
+<Fragment set:html={html} />
