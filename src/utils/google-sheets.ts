@@ -90,6 +90,8 @@ export function describePrivateKey(raw: string): string {
 }
 
 export const HEADER_MAP = {
+  // Consentimento: só entra no site quem autorizou (ver `autorizaDivulgacao`).
+  divulgacao: "Indique sua preferência para a divulgação dos dados fornecidos:",
   nome: "Nome completo:",
   email: "E-mail para contato:",
   curriculo: "Link do currículo lattes:",
@@ -97,7 +99,9 @@ export const HEADER_MAP = {
   instagram: "Instagram:",
   site_pessoal: "Site/Blog pessoal:",
   genero: "Gênero:",
-  lgbtqiap: "Você se identifica como parte da comunidade LGBTQIAP+?",
+  // O formulário passou de "LGBTQIAP+" para "LGBTQIAPN+" e a planilha
+  // acompanhou. Com o título antigo aqui, o campo vinha sempre vazio.
+  lgbtqiap: "Você se identifica como parte da comunidade LGBTQIAPN+?",
   pcd: "Você se identifica como Pessoa com Deficiência (PCD)?",
   raca_etnia: "Qual a sua raça/cor?",
   grupo_tradicional:
@@ -167,6 +171,16 @@ export async function runFullSync(credentials: {
       columnIndex(header),
     ]),
   ) as Record<keyof typeof HEADER_MAP, number>;
+
+  // Sem a coluna de consentimento, o sync para. Seguir em frente significaria
+  // publicar quem recusou (ou, ao contrário, tirar todo mundo do ar) por causa
+  // de uma pergunta renomeada no Forms — pior do que ficar sem atualizar.
+  if (HEADER_INDEX.divulgacao < 0) {
+    throw new Error(
+      `Coluna de consentimento não encontrada na planilha: "${HEADER_MAP.divulgacao}". ` +
+        "Ajuste HEADER_MAP em src/utils/google-sheets.ts (npm run check:sheet mostra os títulos parecidos).",
+    );
+  }
 
   const cell = (row: unknown[], field: keyof typeof HEADER_MAP): string => {
     const idx = HEADER_INDEX[field];
@@ -262,10 +276,24 @@ export async function runFullSync(credentials: {
   const parseRacaEtnia = (v: string): RacaEtnia =>
     racaEtniaMap[normalize(v)] || "nao-informado";
 
-  const parseSimNao = (v: string): boolean | undefined => {
+  // "Sim" e "Não" viram booleano. Qualquer outra resposta ("Prefiro não
+  // responder", texto digitado no "Outro") vira null e limpa o campo: antes
+  // virava false e a pessoa aparecia no filtro como "Não". Célula vazia
+  // (undefined) preserva o que já existe, como nos outros campos.
+  const parseSimNao = (v: string): boolean | null | undefined => {
     if (!v) return undefined;
-    return normalize(v) === "sim";
+    const n = normalize(v);
+    if (n === "sim") return true;
+    if (n === "nao") return false;
+    return null;
   };
+
+  // Só publica com autorização expressa: "Autorizo que minhas informações..."
+  // (opção atual) ou "Estou de acordo com a divulgação..." (opção antiga, das
+  // primeiras 261 respostas). "Não autorizo...", vazio ou qualquer outra coisa
+  // fica fora do site.
+  const autorizaDivulgacao = (v: string): boolean =>
+    /^(autorizo|estou de acordo)\b/.test(normalize(v));
 
   // Muitas respondentes escreveram "não se aplica" / "não tenho" / "N/A" em
   // vez de deixar em branco. Trata essas variações como campo vazio, senão
@@ -342,6 +370,7 @@ export async function runFullSync(credentials: {
         racaEtniaRaw: cell(row, "raca_etnia"),
         lgbtqiap: parseSimNao(cell(row, "lgbtqiap")),
         pcd: parseSimNao(cell(row, "pcd")),
+        autoriza: autorizaDivulgacao(cell(row, "divulgacao")),
       };
     })
     .filter((r) => r.fromSheet.nome && r.fromSheet.email);
@@ -353,7 +382,17 @@ export async function runFullSync(credentials: {
   for (const entry of rowsData) {
     dedupedBySlug.set(entry.slug, entry);
   }
-  const dedupedRows = [...dedupedBySlug.values()];
+
+  // O consentimento é filtrado DEPOIS de deduplicar: vale a resposta mais
+  // recente. Quem autorizou e depois mandou de novo recusando sai do site — o
+  // arquivo dela some na limpeza logo abaixo, como o de quem saiu da planilha.
+  const semAutorizacao = [...dedupedBySlug.values()].filter((r) => !r.autoriza);
+  if (semAutorizacao.length) {
+    console.log(
+      `ℹ️  ${semAutorizacao.length} resposta(s) sem autorização de divulgação ficaram fora do site.`,
+    );
+  }
+  const dedupedRows = [...dedupedBySlug.values()].filter((r) => r.autoriza);
 
   const OUTPUT_DIR = path.resolve("./src/content/researchers");
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
@@ -442,8 +481,10 @@ export async function runFullSync(credentials: {
         } else if (!merged.raca_etnia) {
           merged.raca_etnia = "nao-informado";
         }
-        if (lgbtqiap !== undefined) merged.lgbtqiap = lgbtqiap;
-        if (pcd !== undefined) merged.pcd = pcd;
+        if (lgbtqiap === null) delete merged.lgbtqiap;
+        else if (lgbtqiap !== undefined) merged.lgbtqiap = lgbtqiap;
+        if (pcd === null) delete merged.pcd;
+        else if (pcd !== undefined) merged.pcd = pcd;
 
         merged.campos_ocultos = existing?.campos_ocultos || [];
         merged.gerenciado_pela_planilha = true;
