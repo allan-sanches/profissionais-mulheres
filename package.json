@@ -5,7 +5,7 @@
   "packageManager": "npm@10.9.2",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && npx pagefind --site dist && node scripts/smoke-listagem.mjs",
+    "build": "astro build && npx pagefind --site dist && node scripts/smoke-listagem.mjs && node scripts/smoke-cadastro.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky",
@@ -14,7 +14,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "generate:stories": "node scripts/generate-storybook-stories.mjs",
-    "check:sheet": "tsx ./src/scripts/check-sheet.ts"
+    "check:sheet": "tsx ./src/scripts/check-sheet.ts",
+    "atualizar:localidades": "node scripts/atualizar-localidades.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",

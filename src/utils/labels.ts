@@ -235,7 +235,7 @@ const ESTADO_POR_NOME: Record<string, string> = {
   tocantins: "TO",
 };
 
-const NOME_POR_UF: Record<string, string> = {
+export const NOME_POR_UF: Record<string, string> = {
   AC: "Acre",
   AL: "Alagoas",
   AP: "Amapá",
@@ -303,6 +303,16 @@ export interface Region {
 
 export function parseRegion(raw?: string): Region | null {
   if (!raw) return null;
+
+  // Formato que o cadastro do site grava ("Pará de Minas, MG, Brasil"): ali a
+  // sigla é a fonte da verdade. Sem esta checagem, o nome da cidade casaria
+  // antes como estado ("Pará de Minas" virava PA, "São Paulo de Olivença", SP).
+  const canonico = /,\s*([a-z]{2})\s*,\s*(brasil|brazil)\s*$/i.exec(raw.trim());
+  if (canonico && UF_SET.has(canonico[1].toUpperCase())) {
+    const uf = canonico[1].toUpperCase();
+    return { value: uf, label: `${NOME_POR_UF[uf]} (${uf})` };
+  }
+
   const c = canonicalizeRegion(raw);
 
   // Nome de estado por extenso. Os mais longos primeiro pra "mato grosso do

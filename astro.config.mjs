@@ -10,7 +10,9 @@ import keystatic from "@keystatic/astro";
 
 export default defineConfig({
   site: "https://rede.mulheresnaecologia.com",
-  adapter: vercel(),
+  // 60 s: o Apps Script do cadastro leva de 9 a 15 s pra responder, e o
+  // padrão da Vercel em alguns planos é 10 s.
+  adapter: vercel({ maxDuration: 60 }),
   output: "static",
 
   vite: {
@@ -55,6 +57,30 @@ export default defineConfig({
         context: "server",
         access: "secret",
         default: "ecologia2026",
+      }),
+      // Cadastro pelo site (/cadastro). Opcionais pra não travar o build: sem
+      // as duas do script, a página avisa que o cadastro está indisponível.
+      FORMULARIO_SCRIPT_URL: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      FORMULARIO_SCRIPT_TOKEN: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
+      // Anti-spam da Cloudflare. A chave do site vai pro navegador (por isso
+      // é lida no build); a secreta fica só no servidor.
+      TURNSTILE_SITE_KEY: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+      }),
+      TURNSTILE_SECRET_KEY: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
       }),
     },
   },

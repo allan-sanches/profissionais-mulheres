@@ -1,0 +1,240 @@
+{
+  "titulo": "Cadastro na rede Mulheres na Ecologia (exemplo)",
+  "descricao": "Formulário de EXEMPLO: aparece só no ambiente de desenvolvimento e nos testes. No site publicado, as perguntas vêm do Google Forms.\n\nSaiba mais sobre a rede em https://rede.mulheresnaecologia.com.",
+  "confirmacao": "Sua resposta foi registrada. Obrigada por fazer parte da rede!",
+  "aceitandoRespostas": true,
+  "mensagemFechado": "",
+  "itens": [
+    {
+      "id": "1001",
+      "tipo": "TEXT",
+      "titulo": "Nome completo:",
+      "ajuda": "",
+      "obrigatoria": true
+    },
+    {
+      "id": "1002",
+      "tipo": "TEXT",
+      "titulo": "E-mail para contato:",
+      "ajuda": "Não aparece no site.",
+      "obrigatoria": true
+    },
+    {
+      "id": "1003",
+      "tipo": "MULTIPLE_CHOICE",
+      "titulo": "Preferência de divulgação",
+      "ajuda": "",
+      "obrigatoria": true,
+      "outro": false,
+      "opcoes": [
+        { "valor": "Perfil completo no site" },
+        { "valor": "Só nome e áreas de pesquisa" }
+      ]
+    },
+
+    {
+      "id": "2000",
+      "tipo": "PAGE_BREAK",
+      "titulo": "Identidade",
+      "ajuda": "Essas respostas ajudam a mostrar a diversidade da rede.",
+      "aposSecaoAnterior": null
+    },
+    {
+      "id": "2001",
+      "tipo": "MULTIPLE_CHOICE",
+      "titulo": "Gênero:",
+      "ajuda": "",
+      "obrigatoria": true,
+      "outro": false,
+      "opcoes": [
+        { "valor": "Feminino / Cisgênero" },
+        { "valor": "Feminino / Transgênero" },
+        { "valor": "Não-binário" },
+        { "valor": "Prefiro não responder" }
+      ]
+    },
+    {
+      "id": "2002",
+      "tipo": "MULTIPLE_CHOICE",
+      "titulo": "Você se identifica como Pessoa com Deficiência (PCD)?",
+      "ajuda": "",
+      "obrigatoria": true,
+      "outro": true,
+      "opcoes": [
+        { "valor": "Sim" },
+        { "valor": "Não" },
+        { "valor": "Prefiro não responder" }
+      ]
+    },
+    {
+      "id": "2003",
+      "tipo": "LIST",
+      "titulo": "Qual a sua raça/cor?",
+      "ajuda": "",
+      "obrigatoria": true,
+      "outro": false,
+      "opcoes": [
+        { "valor": "Amarela" },
+        { "valor": "Branca" },
+        { "valor": "Indígena" },
+        { "valor": "Parda" },
+        { "valor": "Preta" },
+        { "valor": "Prefiro não responder" }
+      ]
+    },
+    {
+      "id": "2004",
+      "tipo": "CHECKBOX",
+      "titulo": "Você se identifica como pertencente a algum dos grupos abaixo?",
+      "ajuda": "",
+      "obrigatoria": false,
+      "outro": true,
+      "opcoes": [
+        { "valor": "Quilombola" },
+        { "valor": "Indígena" },
+        { "valor": "Caiçara" },
+        { "valor": "Ribeirinho" }
+      ]
+    },
+    {
+      "id": "2005",
+      "tipo": "TEXT",
+      "titulo": "Cidade, Estado e País onde nasceu:",
+      "ajuda": "",
+      "obrigatoria": true
+    },
+    {
+      "id": "2006",
+      "tipo": "TEXT",
+      "titulo": "Cidade, Estado e País que reside atualmente:",
+      "ajuda": "",
+      "obrigatoria": true
+    },
+
+    {
+      "id": "3000",
+      "tipo": "PAGE_BREAK",
+      "titulo": "Formação",
+      "ajuda": "",
+      "aposSecaoAnterior": null
+    },
+    {
+      "id": "3001",
+      "tipo": "TEXT",
+      "titulo": "Curso de graduação",
+      "ajuda": "Ex.: Ciências Biológicas",
+      "obrigatoria": true
+    },
+    {
+      "id": "3002",
+      "tipo": "MULTIPLE_CHOICE",
+      "titulo": "Mestrado",
+      "ajuda": "Quem ainda não começou pula as perguntas de mestrado e doutorado.",
+      "obrigatoria": true,
+      "outro": false,
+      "opcoes": [
+        { "valor": "Concluído", "destino": "4000" },
+        { "valor": "Em andamento", "destino": "4000" },
+        { "valor": "Não iniciado", "destino": "5000" }
+      ]
+    },
+
+    {
+      "id": "4000",
+      "tipo": "PAGE_BREAK",
+      "titulo": "Mestrado",
+      "ajuda": "",
+      "aposSecaoAnterior": null
+    },
+    {
+      "id": "4001",
+      "tipo": "TEXT",
+      "titulo": "Mestrado completo ou em andamento: Em qual programa de Pós-Graduação fez/está fazendo seu mestrado?",
+      "ajuda": "",
+      "obrigatoria": true
+    },
+
+    {
+      "id": "5000",
+      "tipo": "PAGE_BREAK",
+      "titulo": "Atuação e pesquisa",
+      "ajuda": "",
+      "aposSecaoAnterior": null
+    },
+    {
+      "id": "5001",
+      "tipo": "TEXT",
+      "titulo": "Descreva sua pesquisa em uma frase",
+      "ajuda": "",
+      "obrigatoria": true
+    },
+    {
+      "id": "5002",
+      "tipo": "CHECKBOX",
+      "titulo": "Qual(is) a(s) grande(s) área(s) da sua pesquisa?",
+      "ajuda": "",
+      "obrigatoria": true,
+      "outro": true,
+      "opcoes": [
+        { "valor": "Ecologia de populações" },
+        { "valor": "Ecologia de comunidades" },
+        { "valor": "Ecologia de ecossistemas" },
+        { "valor": "Conservação" },
+        { "valor": "Etnoecologia" }
+      ]
+    },
+    {
+      "id": "5003",
+      "tipo": "GRID",
+      "titulo": "Em quais formatos você participaria?",
+      "ajuda": "",
+      "obrigatoria": false,
+      "linhas": ["Palestras", "Minicursos", "Mentorias"],
+      "colunas": ["Presencial", "On-line", "Não participaria"]
+    },
+    {
+      "id": "5004",
+      "tipo": "SCALE",
+      "titulo": "De 1 a 5, quanto você conhece a rede?",
+      "ajuda": "",
+      "obrigatoria": false,
+      "minimo": 1,
+      "maximo": 5,
+      "rotuloMinimo": "Pouco",
+      "rotuloMaximo": "Muito"
+    },
+    {
+      "id": "5005",
+      "tipo": "SECTION_HEADER",
+      "titulo": "Links",
+      "ajuda": "Deixe em branco o que não tiver."
+    },
+    {
+      "id": "5006",
+      "tipo": "TEXT",
+      "titulo": "Link do currículo lattes:",
+      "ajuda": "",
+      "obrigatoria": true
+    },
+    {
+      "id": "5007",
+      "tipo": "TEXT",
+      "titulo": "Instagram:",
+      "ajuda": "",
+      "obrigatoria": false
+    },
+    {
+      "id": "5008",
+      "tipo": "FILE_UPLOAD",
+      "titulo": "Foto de perfil",
+      "ajuda": ""
+    },
+    {
+      "id": "5009",
+      "tipo": "PARAGRAPH_TEXT",
+      "titulo": "Caso queira citar colaborações extras, sugestões ou críticas, use este espaço:",
+      "ajuda": "",
+      "obrigatoria": false
+    }
+  ]
+}
