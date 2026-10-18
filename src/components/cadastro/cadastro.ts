@@ -29,10 +29,13 @@ import {
 import {
   aplicarResposta,
   esc,
+  htmlSeguro,
   lerResposta,
   outroSemTexto,
+  PROSA,
   renderizarItem,
   textoComLinks,
+  textoEmParagrafos,
 } from "./campos";
 import { montarLocalizacao, type CampoLocalizacao } from "./localizacao";
 import { obterToken, prepararTurnstile } from "./turnstile";
@@ -127,8 +130,12 @@ function montar(raiz: HTMLElement, estrutura: Estrutura) {
 
   cabecalho.innerHTML = `
     <h1 class="font-epilogue text-2xl font-bold text-meco-purple-deep sm:text-3xl">${esc(estrutura.titulo)}</h1>
-    ${estrutura.descricao ? `<p class="mt-3 whitespace-pre-line text-gray-700">${textoComLinks(estrutura.descricao)}</p>` : ""}
-    <p class="mt-4 text-sm text-gray-600"><span class="text-red-600" aria-hidden="true">*</span> Indica uma pergunta obrigatória</p>`;
+    ${
+      estrutura.descricaoHtml || estrutura.descricao
+        ? `<div class="${PROSA} mt-4">${estrutura.descricaoHtml ? htmlSeguro(estrutura.descricaoHtml) : textoEmParagrafos(estrutura.descricao)}</div>`
+        : ""
+    }
+    <p class="mt-5 border-t border-gray-100 pt-4 text-sm text-gray-600"><span class="text-red-600" aria-hidden="true">*</span> Indica uma pergunta obrigatória</p>`;
 
   areaSecoes.innerHTML = secoes
     .map(
@@ -136,7 +143,13 @@ function montar(raiz: HTMLElement, estrutura: Estrutura) {
       <section data-secao="${i}" hidden aria-labelledby="titulo-secao-${i}" class="space-y-4">
         <div class="space-y-1">
           <h2 id="titulo-secao-${i}" tabindex="-1" class="font-epilogue text-xl font-bold text-meco-purple-deep focus:outline-none ${i === 0 && !secao.titulo ? "sr-only" : ""}">${esc(secao.titulo || "Primeira parte")}</h2>
-          ${secao.ajuda ? `<p class="whitespace-pre-line text-gray-700">${textoComLinks(secao.ajuda)}</p>` : ""}
+          ${
+            secao.ajudaHtml
+              ? `<div class="${PROSA}">${htmlSeguro(secao.ajudaHtml)}</div>`
+              : secao.ajuda
+                ? `<p class="whitespace-pre-line text-gray-700">${textoComLinks(secao.ajuda)}</p>`
+                : ""
+          }
         </div>
         ${secao.itens.map(renderizarItem).join("")}
       </section>`,

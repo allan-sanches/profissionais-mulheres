@@ -27,6 +27,8 @@ interface Base {
   id: string;
   titulo: string;
   ajuda: string;
+  /** A ajuda com negrito, itálico e listas, quando o servidor consegue ler. */
+  ajudaHtml?: string;
 }
 
 export interface ItemTexto extends Base {
@@ -96,6 +98,12 @@ export type Item = Pergunta | ItemQuebra | ItemInformativo | ItemNaoSuportado;
 export interface Estrutura {
   titulo: string;
   descricao: string;
+  /**
+   * A descrição com a formatação do Forms (negrito, itálico, listas). O Apps
+   * Script só entrega texto puro; esta versão vem da página pública do
+   * formulário (ver formulario-servidor.ts) e pode faltar.
+   */
+  descricaoHtml?: string;
   confirmacao: string;
   aceitandoRespostas: boolean;
   mensagemFechado: string;
@@ -408,6 +416,7 @@ export interface Secao {
   id: string;
   titulo: string;
   ajuda: string;
+  ajudaHtml?: string;
   itens: Item[];
   /** Pra onde ir ao terminar, quando nenhuma resposta decide. */
   aoTerminar: Destino | null;
@@ -424,6 +433,7 @@ export function dividirEmSecoes(itens: Item[]): Secao[] {
         id: item.id,
         titulo: item.titulo,
         ajuda: item.ajuda,
+        ajudaHtml: item.ajudaHtml,
         itens: [],
         aoTerminar: null,
       });

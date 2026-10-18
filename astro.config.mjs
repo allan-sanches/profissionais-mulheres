@@ -70,6 +70,14 @@ export default defineConfig({
         access: "secret",
         optional: true,
       }),
+      // Link público do formulário (o de "Enviar"). Só serve pra trazer o
+      // texto de apresentação com negrito, itálico e listas; sem ele, a página
+      // mostra o texto puro.
+      FORMULARIO_PUBLICO_URL: envField.string({
+        context: "server",
+        access: "secret",
+        optional: true,
+      }),
       // Anti-spam da Cloudflare. A chave do site vai pro navegador (por isso
       // é lida no build); a secreta fica só no servidor.
       TURNSTILE_SITE_KEY: envField.string({

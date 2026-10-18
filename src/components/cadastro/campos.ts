@@ -45,6 +45,115 @@ export function textoComLinks(texto: string): string {
   );
 }
 
+// ── Texto formatado do Forms ────────────────────────────────────────────────
+
+/*
+ * Tipografia do texto corrido (descrição e ajudas). O Forms usa parágrafo
+ * dentro de cada item de lista (<li><p>), daí o ajuste em `li > p`.
+ */
+export const PROSA =
+  "prose max-w-none text-gray-700 prose-p:my-2 prose-a:text-meco-purple-primary prose-strong:text-gray-900 prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5 [&_li>p]:my-0";
+
+const TAGS_PERMITIDAS = new Set([
+  "P",
+  "BR",
+  "B",
+  "STRONG",
+  "I",
+  "EM",
+  "U",
+  "UL",
+  "OL",
+  "LI",
+  "A",
+]);
+const TAGS_DESCARTADAS = new Set([
+  "SCRIPT",
+  "STYLE",
+  "TEMPLATE",
+  "IFRAME",
+  "OBJECT",
+  "EMBED",
+  "SVG",
+  "MATH",
+]);
+
+/*
+ * O HTML do Forms chega pelo servidor, mas quem escreve nele é qualquer pessoa
+ * com acesso de edição ao formulário: antes de ir pra tela, só sobram as tags
+ * de texto acima, sem nenhum atributo (fora o href de link http, https ou
+ * mailto). O resto é desembrulhado, ficando só o texto. O <template> não
+ * executa script nem carrega imagem enquanto o HTML é analisado.
+ */
+export function htmlSeguro(html: string): string {
+  const modelo = document.createElement("template");
+  modelo.innerHTML = html;
+  const saida = document.createElement("div");
+
+  const copiar = (origem: Node, destino: Node) => {
+    for (const no of Array.from(origem.childNodes)) {
+      if (no.nodeType === Node.TEXT_NODE) {
+        destino.appendChild(document.createTextNode(no.textContent ?? ""));
+        continue;
+      }
+      if (no.nodeType !== Node.ELEMENT_NODE) continue;
+      const el = no as Element;
+      if (TAGS_DESCARTADAS.has(el.tagName)) continue;
+      if (!TAGS_PERMITIDAS.has(el.tagName)) {
+        copiar(el, destino);
+        continue;
+      }
+      const limpo = document.createElement(el.tagName.toLowerCase());
+      if (el.tagName === "A") {
+        const href = el.getAttribute("href") ?? "";
+        if (/^(https?:|mailto:)/i.test(href.trim())) {
+          limpo.setAttribute("href", href.trim());
+          limpo.setAttribute("target", "_blank");
+          limpo.setAttribute("rel", "noopener noreferrer");
+        }
+      }
+      copiar(el, limpo);
+      destino.appendChild(limpo);
+    }
+  };
+
+  copiar(modelo.content, saida);
+  return saida.innerHTML;
+}
+
+/*
+ * Plano B quando o HTML do Forms não vem: o texto puro tem uma linha por
+ * parágrafo. Linhas terminadas em ";" viram itens de lista, e a linha logo
+ * depois delas também, porque é o último item da enumeração ("…; E outras.").
+ */
+export function textoEmParagrafos(texto: string): string {
+  const linhas = texto
+    .split(/\n+/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+  let html = "";
+  let lista: string[] = [];
+  const fecharLista = () => {
+    if (!lista.length) return;
+    html += `<ul>${lista.map((i) => `<li>${textoComLinks(i)}</li>`).join("")}</ul>`;
+    lista = [];
+  };
+  linhas.forEach((linha, k) => {
+    const anterior = linhas[k - 1] ?? "";
+    if (
+      linha.endsWith(";") ||
+      (anterior.endsWith(";") && linha.length <= 120)
+    ) {
+      lista.push(linha);
+    } else {
+      fecharLista();
+      html += `<p>${textoComLinks(linha)}</p>`;
+    }
+  });
+  fecharLista();
+  return html;
+}
+
 /** Valor do marcador "Outro" — nunca é enviado: no lugar dele vai o texto digitado. */
 export const OUTRO = "__outro__";
 
@@ -77,6 +186,9 @@ function descritores(item: Pergunta): string {
 }
 
 function ajuda(item: Item): string {
+  if (item.ajudaHtml) {
+    return `<div id="ajuda-${item.id}" class="${PROSA} prose-sm text-gray-600">${htmlSeguro(item.ajudaHtml)}</div>`;
+  }
   return item.ajuda
     ? `<p id="ajuda-${item.id}" class="${AJUDA}">${textoComLinks(item.ajuda)}</p>`
     : "";

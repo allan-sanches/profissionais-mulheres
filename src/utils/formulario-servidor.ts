@@ -9,6 +9,7 @@
  */
 
 import {
+  FORMULARIO_PUBLICO_URL,
   FORMULARIO_SCRIPT_TOKEN,
   FORMULARIO_SCRIPT_URL,
   GOOGLE_SHEET_ID,
@@ -91,9 +92,13 @@ export async function buscarEstrutura(): Promise<Estrutura> {
     return cache.estrutura;
   }
   try {
-    const { estrutura } = (await chamarScript({ acao: "estrutura" })) as {
-      estrutura: Estrutura;
-    };
+    // As duas leituras em paralelo: a página pública responde em ~1 s e o
+    // script em 10 s ou mais, então o texto formatado não atrasa nada.
+    const [resposta, formatados] = await Promise.all([
+      chamarScript({ acao: "estrutura" }) as Promise<{ estrutura: Estrutura }>,
+      textosFormatados(),
+    ]);
+    const estrutura = aplicarFormatacao(resposta.estrutura, formatados);
     avisarConfiguracao(estrutura);
     cache = { estrutura, em: Date.now() };
     return estrutura;
@@ -107,6 +112,90 @@ export async function buscarEstrutura(): Promise<Estrutura> {
     }
     throw e;
   }
+}
+
+// ── Texto formatado ─────────────────────────────────────────────────────────
+
+/*
+ * O Apps Script só entrega a descrição e as ajudas em texto puro: negrito,
+ * itálico e listas se perdem. A versão formatada existe só na página pública
+ * do formulário, embutida nos dados que o próprio Forms usa pra se desenhar
+ * (FB_PUBLIC_LOAD_DATA_). Isso não é API oficial, então tudo aqui é opcional:
+ * se a página mudar ou não responder, o site mostra o texto puro, arrumado em
+ * parágrafos e listas pelo navegador.
+ *
+ * Cada HTML é casado com o texto do Apps Script pelo conteúdo, e não pela
+ * posição no array, que o Google pode reorganizar sem aviso. O HTML passa por
+ * uma lista de tags permitidas no navegador antes de ir pra tela.
+ */
+function chaveDeTexto(texto: string): string {
+  return texto
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/\s+/g, "");
+}
+
+async function textosFormatados(): Promise<Map<string, string>> {
+  const porTexto = new Map<string, string>();
+  if (!FORMULARIO_PUBLICO_URL) return porTexto;
+  try {
+    const url = new URL(FORMULARIO_PUBLICO_URL);
+    if (
+      url.hostname !== "docs.google.com" ||
+      !url.pathname.startsWith("/forms/")
+    ) {
+      throw new Error("FORMULARIO_PUBLICO_URL não é um link do Google Forms");
+    }
+    const res = await fetch(url, {
+      headers: {
+        "Accept-Language": "pt-BR,pt;q=0.9",
+        "User-Agent": "Mozilla/5.0 (compatible; MulheresNaEcologia/1.0)",
+      },
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const pagina = await res.text();
+    const dados = /FB_PUBLIC_LOAD_DATA_ = (\[.*?\]);\s*<\/script>/s.exec(
+      pagina,
+    )?.[1];
+    if (!dados) throw new Error("a página não trouxe os dados do formulário");
+
+    const percorrer = (valor: unknown) => {
+      if (typeof valor === "string") {
+        if (/<\/(p|b|i|u|li|a|span|strong|em)>/i.test(valor)) {
+          porTexto.set(chaveDeTexto(valor), valor);
+        }
+      } else if (Array.isArray(valor)) {
+        valor.forEach(percorrer);
+      }
+    };
+    percorrer(JSON.parse(dados));
+  } catch (e) {
+    console.warn("[cadastro] sem o texto formatado da página pública:", e);
+  }
+  return porTexto;
+}
+
+function aplicarFormatacao(
+  estrutura: Estrutura,
+  porTexto: Map<string, string>,
+): Estrutura {
+  if (!porTexto.size) return estrutura;
+  const formatado = (texto: string) =>
+    texto ? porTexto.get(chaveDeTexto(texto)) : undefined;
+  return {
+    ...estrutura,
+    descricaoHtml: formatado(estrutura.descricao),
+    itens: estrutura.itens.map((item) => {
+      const ajudaHtml = formatado(item.ajuda);
+      return ajudaHtml ? { ...item, ajudaHtml } : item;
+    }),
+  };
 }
 
 /*

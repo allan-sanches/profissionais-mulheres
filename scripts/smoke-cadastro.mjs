@@ -159,7 +159,14 @@ const tecla = (el, key) =>
 
 // ── Preenchimento do zero ───────────────────────────────────────────────────
 
-abrirPagina();
+// Descrição formatada como a página pública do Forms entrega, com o que um
+// editor mal-intencionado do formulário poderia tentar injetar no meio.
+const DESCRICAO_FORMATADA =
+  "<p>Olá! <b>Negrito</b> e <i>itálico</i>.</p><ul><li><p>Primeiro item;</p></li><li><p>Segundo item.</p></li></ul>" +
+  '<script>window.__xss = 1</script><p><img src="x" onerror="window.__xss = 1">' +
+  '<a href="javascript:window.__xss=1">link perigoso</a> <a href="https://exemplo.com" onclick="window.__xss=1">link bom</a></p>';
+
+abrirPagina(null, { ...exemplo, descricaoHtml: DESCRICAO_FORMATADA });
 await esperar(
   () => $("form[data-estado=formulario]") && !$("form").hidden,
   "o formulário aparecer",
@@ -171,6 +178,36 @@ if (!$("[data-cabecalho] h1")?.textContent.includes("exemplo")) {
 }
 if ($('[data-item="5008"]'))
   falhar("o upload de arquivo não deveria aparecer.");
+
+const cabecalho = $("[data-cabecalho]");
+if (
+  !cabecalho.querySelector("b")?.textContent.includes("Negrito") ||
+  !cabecalho.querySelector("i")
+) {
+  falhar("o negrito e o itálico da descrição não foram mantidos.");
+}
+if (cabecalho.querySelectorAll("ul > li").length !== 2) {
+  falhar("a lista da descrição não foi mantida.");
+}
+if (
+  cabecalho.querySelector(
+    "script, img, [onerror], [onclick], a[href^='javascript']",
+  )
+) {
+  falhar("o filtro da descrição deixou passar tag ou atributo perigoso.");
+}
+const linkBom = [...cabecalho.querySelectorAll("a")].find(
+  (a) => a.textContent === "link bom",
+);
+if (
+  linkBom?.getAttribute("href") !== "https://exemplo.com" ||
+  linkBom.target !== "_blank"
+) {
+  falhar(
+    "o link seguro da descrição deveria ter sobrevivido, abrindo em outra aba.",
+  );
+}
+if (window.__xss) falhar("código injetado na descrição foi executado.");
 
 // 1. Avançar sem responder não pode passar.
 avancar();
@@ -302,6 +339,10 @@ await esperar(
   () => !$("[data-rascunho]").hidden,
   "o aviso de rascunho recuperado",
 );
+// Sem o HTML do Forms, a descrição em texto puro vira parágrafos.
+if ($("[data-cabecalho]").querySelectorAll("p").length < 3) {
+  falhar("a descrição em texto puro deveria virar parágrafos separados.");
+}
 if (visivel() !== 1)
   falhar(`o rascunho deveria reabrir na seção 1, abriu na ${visivel()}.`);
 if (item("1001").querySelector("input").value !== "Ciclana") {

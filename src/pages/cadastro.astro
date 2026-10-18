@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SiteNav from "@/components/layout/SiteNav.astro";
 import Footer from "@/components/layout/Footer.astro";
+import banner from "@/assets/cadastro/banner.png";
 
 /*
  * Cadastro na rede pelo próprio site. A página é estática; as perguntas vêm do
@@ -21,6 +23,20 @@ const botao =
     <SiteNav />
 
     <main class="mx-auto w-full max-w-3xl px-4 py-6 md:px-8 md:py-10">
+      {
+        /* O banner do topo do Google Forms. O Apps Script não lê o tema do
+        formulário, então a imagem mora aqui: trocou no Forms, troque este
+        arquivo. Fica fora do #cadastro pra aparecer já no carregamento. */
+      }
+      <Image
+        src={banner}
+        alt="Mulheres na Ecologia — Rede de colaboração"
+        widths={[800, 1600]}
+        sizes="(min-width: 768px) 704px, calc(100vw - 32px)"
+        loading="eager"
+        class="mb-4 h-auto w-full rounded-lg"
+      />
+
       <div id="cadastro" aria-busy="true">
         <div
           data-estado="carregando"
@@ -62,7 +78,7 @@ const botao =
         <form data-estado="formulario" hidden novalidate class="space-y-6">
           <header
             data-cabecalho
-            class="rounded-lg border-t-8 border-meco-purple-primary bg-white p-6 shadow-sm sm:p-8"
+            class="rounded-lg border-t-8 border-meco-green-dark bg-white p-6 shadow-sm sm:p-8"
           >
           </header>
 
