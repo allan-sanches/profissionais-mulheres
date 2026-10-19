@@ -16,6 +16,19 @@ body {
   background: transparent;
 }
 
+/* Sem barra de rolagem. O Wix mostra a página numa caixa de altura fixa, e
+   abrir "Conhecer as convidadas" passa dessa altura. A página continua
+   rolando com a roda do mouse e com o dedo; só a barra some.
+   scrollbar-width: Chrome e Firefox. ::-webkit-scrollbar: Safari. */
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
 /* Tipografia do site: corpo em Poppins Regular 16px, títulos em Epilogue. */
 body {
   font-family:
@@ -580,13 +593,17 @@ b {
   line-height: 1.4;
 }
 
-/* Sinopse: logo abaixo dos nomes, só quando preenchida. Cada parágrafo
-   (\n\n no texto) vira um <p>, com um respiro entre eles. */
+/* Sinopse: logo abaixo dos nomes, só quando preenchida. Mesmo bloco roxo
+   com texto verde-claro da bio das convidadas (.convidada-bio). Cada
+   parágrafo vira um <p>, com um respiro entre eles. */
 .ep-sinopse {
   margin-top: 12px;
+  background: var(--roxo);
+  color: var(--verde-claro);
+  border-radius: 16px;
+  padding: 16px 20px;
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--texto);
 }
 
 .ep-sinopse p {
@@ -785,6 +802,7 @@ b {
   }
 
   .ep-sinopse {
+    padding: 14px 16px;
     font-size: 0.9375rem;
     line-height: 1.55;
   }
@@ -821,6 +839,7 @@ b {
     gap: 8px;
   }
 
+  .ep-sinopse,
   .convidada-bio {
     padding: 12px 14px;
   }
