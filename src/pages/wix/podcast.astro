@@ -1,0 +1,510 @@
+---
+/*
+ * Página do podcast Ecologia por Elas, mostrada dentro do Wix.
+ *
+ * Página avulsa, sem o layout do site: o Wix a mostra por dentro com o
+ * elemento "Incorporar um site" apontando para /wix/podcast. O conteúdo vem
+ * do Keystatic ("Páginas do Wix" → "Página do podcast") e a aparência de
+ * src/styles/wix/podcast.css.
+ *
+ * Quatro faixas, de cima para baixo: apresentação, apresentadoras, episódios
+ * e realização/apoio (com "Apoie e siga a nossa iniciativa").
+ *
+ * Imagens fixas, que não mudam pelo painel, ficam em public/wix/: o fundo das
+ * faixas do meio, o logo de pé do podcast e os ícones de "saiba mais" e PIX.
+ */
+import "@/styles/wix/podcast.css";
+import { juntarNomes, linhas, podcast, textoEmHtml } from "@/config/wix";
+
+const { apresentacao, apresentadoras, episodios, realizacao, apoio, apoie } =
+  podcast;
+
+// Convidada sem foto: imagem transparente, e o fundo lilás do círculo aparece.
+const SEM_FOTO =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
+/** Link do YouTube vira "Assistir"; qualquer outro, "Ouvir". */
+const verboDoLink = (link: string) =>
+  /youtu\.?be/.test(link) ? "Assistir" : "Ouvir";
+
+/** Separa o e-mail no @, para pôr um <wbr> ali: quebra no @, não no meio. */
+const partesDoEmail = (email: string) => {
+  const arroba = email.indexOf("@");
+  return arroba > 0
+    ? [email.slice(0, arroba), email.slice(arroba)]
+    : [email, ""];
+};
+
+const numeros = apoie.numerosDoInstagram ?? {};
+const enderecoDoInstagram = `https://www.instagram.com/${apoie.instagram}/`;
+const [emailAntes, emailDepois] = partesDoEmail(apoie.email);
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Só existe para o Wix mostrar por dentro: fora do Google. -->
+    <meta name="robots" content="noindex" />
+    <title>Ecologia por Elas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <!-- Fora da busca do site (Pagefind): a página só existe para o Wix. -->
+  <body data-pagefind-ignore="all">
+    <main>
+      <!-- ===== FAIXA 1: APRESENTAÇÃO ===== -->
+      <!-- Texto de cima e, embaixo, o segundo texto com o logo ao lado. -->
+      <section class="sec-apresentacao">
+        <div class="apr-pagina">
+          <h2 class="apr-titulo">{apresentacao.titulo}</h2>
+          <div
+            class="apr-texto texto-rico"
+            set:html={textoEmHtml(apresentacao.texto)}
+          />
+          <div class="apr-baixo">
+            <div
+              class="apr-texto texto-rico"
+              set:html={textoEmHtml(apresentacao.textoAoLadoDoLogo)}
+            />
+            <div class="apr-logos">
+              <img
+                src={apresentacao.logo}
+                alt={apresentacao.descricaoDoLogo ?? ""}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== FAIXA 2: APRESENTADORAS ===== -->
+      <!-- Elas se alternam: a 1ª (ap--esq) com etiqueta | foto | bio, a 2ª
+           (ap--dir) espelhada e com o logo de pé no canto. A posição de cada
+           parte vem do grid no CSS, não da ordem aqui. -->
+      <section class="sec-apresentadoras">
+        <div class="ap-pagina">
+          <h2 class="ap-titulo">{apresentadoras.titulo}</h2>
+
+          {
+            apresentadoras.pessoas.map((pessoa, i) => (
+              <section class:list={["ap", i % 2 === 0 ? "ap--esq" : "ap--dir"]}>
+                <img
+                  class="ap-foto"
+                  src={pessoa.foto ?? SEM_FOTO}
+                  alt={pessoa.nome}
+                />
+                <div class="ap-etiqueta">
+                  <h3 class="ap-nome">{pessoa.nome}</h3>
+                  {pessoa.email && <span class="ap-email">{pessoa.email}</span>}
+                </div>
+                <div
+                  class="ap-bio texto-rico"
+                  set:html={textoEmHtml(pessoa.bio)}
+                />
+                {i === 1 && (
+                  <div class="logo-vertical">
+                    <img
+                      src="/wix/podcast-logo-vertical.webp"
+                      alt="Ecologia por Elas"
+                    />
+                  </div>
+                )}
+              </section>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ===== FAIXA 3: EPISÓDIOS ===== -->
+      <!-- Um cartão por episódio: topo (selo + botão ou "Em breve"), título,
+           rostos e nomes, sinopse e as bios em "Conhecer as convidadas". -->
+      <section class="sec-episodios">
+        <h2 class="sec-titulo">{episodios.titulo}</h2>
+        <ul class="episodios">
+          {
+            episodios.lista.map((ep) => (
+              <li class="ep">
+                <div class="ep-topo">
+                  <span class="ep-selo">Episódio {ep.numero}</span>
+                  {ep.link ? (
+                    <a
+                      class="ep-acao"
+                      href={ep.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${verboDoLink(ep.link)} o episódio ${ep.numero}: ${ep.titulo}`}
+                    >
+                      <svg viewBox="0 0 12 12" aria-hidden="true">
+                        <path d="M2 1l9 5-9 5z" />
+                      </svg>
+                      {verboDoLink(ep.link)}
+                    </a>
+                  ) : (
+                    <span class="ep-breve">Em breve</span>
+                  )}
+                </div>
+
+                <h3 class="ep-titulo">{ep.titulo}</h3>
+
+                <div class="ep-elenco">
+                  <div class="ep-rostos">
+                    {ep.convidadas.map((c) => (
+                      <img src={c.foto ?? SEM_FOTO} alt="" loading="lazy" />
+                    ))}
+                  </div>
+                  <p class="ep-nomes">
+                    Com {juntarNomes(ep.convidadas.map((c) => c.nome))}
+                  </p>
+                </div>
+
+                {ep.sinopse?.trim() && (
+                  <div class="ep-sinopse" set:html={textoEmHtml(ep.sinopse)} />
+                )}
+
+                {/* name="convidadas": abrir um episódio fecha o outro. */}
+                <details class="ep-detalhes" name="convidadas">
+                  <summary>
+                    <span class="rotulo-abrir">Conhecer as convidadas</span>
+                    <span class="rotulo-fechar">Fechar</span>
+                    <svg viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M3 6l5 5 5-5" />
+                    </svg>
+                  </summary>
+                  <div class="convidadas">
+                    {ep.convidadas.map((c) => {
+                      const [antes, depois] = partesDoEmail(c.email ?? "");
+                      return (
+                        <div class="convidada">
+                          <figure class="convidada-foto">
+                            <img
+                              src={c.foto ?? SEM_FOTO}
+                              alt=""
+                              loading="lazy"
+                            />
+                            <figcaption class="convidada-legenda">
+                              <span class="convidada-nome">{c.nome}</span>
+                              {c.email && (
+                                <span class="convidada-email">
+                                  {antes}
+                                  <wbr />
+                                  {depois}
+                                </span>
+                              )}
+                            </figcaption>
+                          </figure>
+                          <div
+                            class="convidada-bio"
+                            set:html={textoEmHtml(c.bio)}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </details>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- ===== FAIXA 4: REALIZAÇÃO E APOIO ===== -->
+      <!-- Em cima: logos de Realização | Apoio. Embaixo: "Apoie e siga a
+           nossa iniciativa", com QR code, contatos, chave PIX e o cartão do
+           Instagram. -->
+      <section class="sec-apoio">
+        <div class="apoio-pagina">
+          <div class="parceiros">
+            {
+              [realizacao, apoio].map((coluna, i) => (
+                <>
+                  {i > 0 && <div class="divisoria" aria-hidden="true" />}
+                  <section>
+                    <h2 class="titulo-sec">{coluna.titulo}</h2>
+                    <ul class="logos">
+                      {coluna.logos.map((logo) => (
+                        <li>
+                          <img
+                            src={logo.imagem}
+                            alt={logo.nome}
+                            style={`width: ${logo.largura}px`}
+                          />
+                          {logo.legenda && (
+                            <span class="logo-legenda">{logo.legenda}</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                </>
+              ))
+            }
+          </div>
+
+          <div class="apoie">
+            <div>
+              <h2 class="titulo-grande">
+                {
+                  linhas(apoie.titulo).map((linha, i) => (
+                    <>
+                      {i > 0 && <br />}
+                      {linha}
+                    </>
+                  ))
+                }
+              </h2>
+
+              <div class="pix-contatos">
+                <img
+                  class="qr"
+                  src={apoie.qrCode}
+                  alt="QR code do PIX para apoiar a iniciativa"
+                />
+                <div class="contatos">
+                  <p class="saiba">
+                    <img src="/wix/icone-saiba-mais.png" alt="" />SAIBA MAIS
+                  </p>
+                  <p>
+                    <strong>Instagram:</strong><br />
+                    <a
+                      href={enderecoDoInstagram}
+                      target="_blank"
+                      rel="noopener noreferrer">@{apoie.instagram}</a
+                    >
+                  </p>
+                  <p>
+                    <strong>E-mail para contato:</strong><br />
+                    <a href={`mailto:${apoie.email}`}
+                      >{emailAntes}<wbr />{emailDepois}</a
+                    >
+                  </p>
+                  <p>
+                    <!-- {" "}: o Astro descarta o espaço que fica numa
+                         quebra de linha entre duas tags. -->
+                    <strong>Conheça a iniciativa:</strong>{" "}
+                    <a
+                      class="sublinhado"
+                      href={apoie.site}
+                      target="_blank"
+                      rel="noopener noreferrer">Acesse o site aqui</a
+                    >
+                  </p>
+                </div>
+              </div>
+
+              {
+                apoie.chamada?.trim() && (
+                  <div
+                    class="chamada texto-rico"
+                    set:html={textoEmHtml(apoie.chamada)}
+                  />
+                )
+              }
+
+              <!-- O botão copia exatamente o texto de #chave-pix (script no
+                   fim da página). -->
+              <p class="pix">
+                <img src="/wix/icone-pix.png" alt="PIX" />
+                <span class="pix-chave" id="chave-pix">{apoie.chavePix}</span>
+                <button type="button" class="copiar" id="copiar-pix">
+                  Copiar chave PIX
+                </button>
+                <span class="so-leitor" role="status" id="aviso-pix"></span>
+              </p>
+            </div>
+
+            <!-- Cartão "segue a gente": desenho de um perfil do Instagram,
+                 todo em código. Leva ao Instagram. -->
+            <a
+              class="insta"
+              href={enderecoDoInstagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Seguir @${apoie.instagram} no Instagram`}
+            >
+              <div class="insta-moldura" aria-hidden="true">
+                <div class="insta-topo">
+                  <span class="insta-avatar"></span>
+                  <span class="insta-titulo">segue a gente</span>
+                  <span class="insta-pontos"><i></i><i></i><i></i></span>
+                </div>
+                <div class="insta-tela">
+                  <p class="insta-user">{apoie.instagram}</p>
+                  <p>Mulheres na ecologia</p>
+                  <p class="insta-numeros">
+                    <b>{numeros.posts}</b> posts &nbsp;{" "}
+                    <b>{numeros.seguidores}</b> seguidores &nbsp;{" "}
+                    <b>{numeros.seguindo}</b> seguindo
+                  </p>
+                  <p class="insta-cat">Cientista</p>
+                  <p>
+                    <span class="ponto" style="background: #8e5bd6"
+                    ></span>Iniciativa pela valorização e fortalecimento de
+                    mulheres que trabalham com ecologia
+                  </p>
+                  <p>
+                    <span class="ponto" style="background: #3cc46b"
+                    ></span>Mulheres que pensam, fazem e...{" "}
+                    <span class="insta-mais">mais</span>
+                  </p>
+                  <p class="insta-links">
+                    <span class="insta-azul"
+                      >linktr.ee/mulheres_na_ecologia</span
+                    >
+                    <span>@ {apoie.instagram}</span>
+                  </p>
+                </div>
+                <div class="insta-base">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                    ></path>
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+                    ></path>
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M22 2 11 13"></path>
+                    <path d="M22 2 15 22l-4-9-9-4 20-7z"></path>
+                  </svg>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Corações flutuando sobre o cartão, como no PDF. -->
+              <svg class="coracoes" viewBox="0 0 170 230" aria-hidden="true">
+                <defs>
+                  <g id="bolha">
+                    <path
+                      d="M-14-20H14A6 6 0 0 1 20-14V10A6 6 0 0 1 14 16H6L0 23-6 16H-14A6 6 0 0 1-20 10V-14A6 6 0 0 1-14-20Z"
+                    ></path>
+                    <path
+                      fill="#fff"
+                      fill-opacity="0.85"
+                      transform="translate(-10.2 -12.4) scale(0.85)"
+                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                    ></path>
+                  </g>
+                </defs>
+                <g fill="#7d1cd4">
+                  <use
+                    href="#bolha"
+                    opacity="0.5"
+                    transform="translate(67.5 9) rotate(15) scale(0.45)"></use>
+                  <use
+                    href="#bolha"
+                    opacity="0.55"
+                    transform="translate(120 19) rotate(15) scale(0.6)"></use>
+                  <use
+                    href="#bolha"
+                    opacity="0.55"
+                    transform="translate(32.5 52) rotate(-20) scale(0.4)"></use>
+                  <use
+                    href="#bolha"
+                    opacity="0.65"
+                    transform="translate(77.5 51) rotate(15) scale(1)"></use>
+                  <use
+                    href="#bolha"
+                    opacity="0.5"
+                    transform="translate(130 56) rotate(10) scale(0.55)"></use>
+                  <use
+                    href="#bolha"
+                    opacity="0.5"
+                    transform="translate(157 88) rotate(0) scale(0.45)"></use>
+                  <use
+                    href="#bolha"
+                    opacity="0.8"
+                    transform="translate(38 112) rotate(-40) scale(1.35)"></use>
+                  <use
+                    href="#bolha"
+                    opacity="0.65"
+                    transform="translate(109 106) rotate(20) scale(1)"></use>
+                  <use
+                    href="#bolha"
+                    opacity="0.75"
+                    transform="translate(152 140) rotate(-15) scale(0.65)"
+                  ></use>
+                  <use
+                    href="#bolha"
+                    opacity="1"
+                    transform="translate(95 178) scale(1.6)"></use>
+                </g>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Botão "Copiar chave PIX": tenta a área de transferência; se o Wix
+         bloquear, usa o método antigo; se nada funcionar, deixa a chave
+         selecionada para a pessoa copiar com Ctrl+C. -->
+    <script is:inline>
+      (function () {
+        var botao = document.getElementById("copiar-pix");
+        var chave = document.getElementById("chave-pix");
+        var aviso = document.getElementById("aviso-pix");
+        // Guarda o texto original do botão para voltar depois.
+        var rotulo = botao.textContent;
+
+        // Deu certo: o botão mostra "Chave copiada!" por 2 segundos e volta.
+        function copiou() {
+          botao.textContent = "Chave copiada!";
+          aviso.textContent = "Chave PIX copiada.";
+          setTimeout(function () {
+            botao.textContent = rotulo;
+            aviso.textContent = "";
+          }, 2000);
+        }
+
+        // Último recurso: deixa a chave selecionada (azul) na tela.
+        function selecionar() {
+          var faixa = document.createRange();
+          faixa.selectNodeContents(chave);
+          var selecao = window.getSelection();
+          selecao.removeAllRanges();
+          selecao.addRange(faixa);
+        }
+
+        // Método antigo: põe a chave num campo invisível, seleciona e manda
+        // copiar. Funciona em alguns casos em que o iframe do Wix bloqueia o
+        // método novo.
+        function metodoAntigo() {
+          var campo = document.createElement("textarea");
+          campo.value = chave.textContent;
+          campo.setAttribute("readonly", "");
+          campo.style.position = "fixed";
+          campo.style.opacity = "0";
+          document.body.appendChild(campo);
+          campo.select();
+          var deu = false;
+          try {
+            deu = document.execCommand("copy");
+          } catch (e) {}
+          document.body.removeChild(campo);
+          if (deu) copiou();
+          else selecionar();
+        }
+
+        botao.addEventListener("click", function () {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard
+              .writeText(chave.textContent)
+              .then(copiou, metodoAntigo);
+          } else {
+            metodoAntigo();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

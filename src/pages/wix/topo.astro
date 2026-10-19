@@ -1,0 +1,65 @@
+---
+/*
+ * Topo da página inicial do Wix: logo, título, texto, botão para "Quem somos"
+ * e foto de fundo.
+ *
+ * Página avulsa, sem o layout do site: o Wix a mostra por dentro com o
+ * elemento "Incorporar um site" apontando para /wix/topo. O conteúdo vem do
+ * Keystatic ("Páginas do Wix" → "Topo da página inicial") e a aparência de
+ * src/styles/wix/topo.css.
+ */
+import "@/styles/wix/topo.css";
+import { linhas, textoEmHtml, topo } from "@/config/wix";
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Só existe para o Wix mostrar por dentro: fora do Google. -->
+    <meta name="robots" content="noindex" />
+    <title>Mulheres na Ecologia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <!-- Fora da busca do site (Pagefind): a página só existe para o Wix. -->
+  <body data-pagefind-ignore="all">
+    <!-- A foto de fundo vem do Keystatic; o CSS a usa pela variável --foto. -->
+    <section class="hero" style={`--foto: url("${topo.imagemDeFundo}")`}>
+      <div class="hero-conteudo">
+        <img
+          class="hero-logo"
+          src={topo.logo}
+          alt="Mulheres na Ecologia"
+          width="1240"
+          height="860"
+        />
+        <div class="hero-bloco">
+          <h1 class="hero-titulo">
+            {
+              linhas(topo.titulo).map((linha, i) => (
+                <>
+                  {i > 0 && <br />}
+                  {linha}
+                </>
+              ))
+            }
+          </h1>
+          <div class="hero-texto" set:html={textoEmHtml(topo.texto)} />
+        </div>
+      </div>
+      <!-- target="_top" abre a página na mesma aba, fora do iframe do Wix. -->
+      <a class="hero-botao" href={topo.botao.endereco} target="_top">
+        {topo.botao.rotulo}
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M2 8h12M9.5 3.5 14 8l-4.5 4.5"></path>
+        </svg>
+      </a>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,279 @@
+/*
+ * Aparência do topo da página inicial (src/pages/wix/topo.astro), que o Wix
+ * mostra por dentro. Textos e imagens vêm do Keystatic; aqui ficam só cores,
+ * tamanhos e as versões de cada largura de tela.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+}
+
+/* Tipografia do site: corpo em Poppins, títulos em Epilogue. */
+body {
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Cores da marca (tints de verde do brandbook). O roxo do fundo é o
+   da própria foto, para a emenda com a imagem não aparecer. */
+.hero {
+  --fundo: #1a0e4e;
+  --branco: #fff;
+  --verde: #297552;
+  --verde-escuro: #1f5c40;
+  --verde-claro: #d1ebd1;
+  /* --foto vem do style da seção (imagem escolhida no Keystatic). */
+
+  /* Medidas de 761px a 1279px. Os breakpoints mais abaixo trocam
+     estes valores para telas maiores. */
+  --respiro-y: 40px;
+  --respiro-x: 40px;
+  --logo: clamp(200px, 31vw, 360px);
+  --vao: clamp(40px, 7vw, 96px);
+  --titulo: clamp(2.5rem, 6.2vw, 3.75rem);
+  --texto: clamp(1rem, 1.2vw, 1.0625rem);
+  --botao: 0.9375rem;
+
+  /* Hierarquia dos espaços: título e texto são uma unidade e ficam
+     próximos; o botão é outro grupo e fica pelo menos 1,75 vez mais
+     longe. Os dois acompanham o tamanho do título. */
+  --gap-texto: calc(var(--titulo) * 0.4);
+  --gap-botao: clamp(
+    calc(var(--gap-texto) * 1.75),
+    10vh,
+    calc(var(--titulo) * 1.1)
+  );
+
+  /* 100vh dentro do embed = altura da caixa no editor do Wix. */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* A altura da caixa no Wix é fixa: os min(..., vh) encolhem
+     respiros, logo e o vão do botão quando ela é baixa, em vez de cortar o botão. */
+  padding: min(var(--respiro-y), 6vh) var(--respiro-x);
+  /* A metade de baixo escurece um pouco: as folhas claras ficam atrás do texto. */
+  background:
+    linear-gradient(rgb(26 14 78 / 0) 35%, rgb(26 14 78 / 0.7)) right center /
+      cover no-repeat,
+    var(--fundo) var(--foto) right center / cover no-repeat;
+  color: var(--verde-claro);
+}
+
+/* Logo grande à esquerda, um vão largo e o bloco de título e texto.
+   O conjunto fica centralizado e a logo, no meio da altura do bloco. */
+.hero-conteudo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--vao);
+}
+
+/* Se faltar largura, é a logo que encolhe, nunca o título. */
+.hero-logo {
+  flex: 0 1 auto;
+  min-width: 0;
+  display: block;
+  width: min(var(--logo), 80vh);
+  height: auto;
+}
+
+/* O bloco tem a largura do título; o texto acompanha essa largura. */
+.hero-bloco {
+  flex: none;
+  width: fit-content;
+}
+
+.hero-titulo {
+  margin: 0;
+  color: var(--branco);
+  font-family:
+    "Epilogue",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-size: var(--titulo);
+  font-weight: 400;
+  line-height: 1.12;
+  text-transform: uppercase;
+}
+
+/* width: 0 + min-width: 100% faz o texto ocupar a largura do bloco
+   sem alargá-lo: quem manda na largura é o título. */
+.hero-texto {
+  width: 0;
+  min-width: 100%;
+  margin: var(--gap-texto) 0 0;
+  font-size: var(--texto);
+  line-height: 1.5;
+  text-align: justify;
+  text-shadow: 0 1px 10px rgb(26 14 78 / 0.9);
+}
+
+/* O texto vem do editor do Keystatic: cada parágrafo é um <p>. */
+.hero-texto p {
+  margin: 0;
+}
+
+.hero-texto p + p {
+  margin-top: 0.75em;
+}
+
+.hero-texto strong {
+  font-weight: 600;
+}
+
+.hero-texto a {
+  color: inherit;
+  text-underline-offset: 2px;
+}
+
+/* Padrão de botão do site: verde sólido, texto branco e seta.
+   Medidas em em, para crescer junto com --botao. */
+.hero-botao {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8em;
+  margin-top: var(--gap-botao);
+  padding: 0.93em 2.4em;
+  border-radius: 4px;
+  background: var(--verde);
+  color: var(--branco);
+  font-size: var(--botao);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+
+.hero-botao svg {
+  width: 1.07em;
+  height: 1.07em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero-botao:hover {
+  background: var(--verde-escuro);
+}
+
+.hero-botao:focus-visible {
+  outline: 2px solid var(--verde-claro);
+  outline-offset: 3px;
+}
+
+/* Notebook (1280px ou mais). */
+@media (min-width: 1280px) {
+  .hero {
+    --respiro-y: 48px;
+    --respiro-x: 64px;
+    --logo: 420px;
+    --vao: 112px;
+    --titulo: 4rem;
+    --texto: 1.125rem;
+    --botao: 1rem;
+  }
+}
+
+/* Monitor (1536px ou mais). */
+@media (min-width: 1536px) {
+  .hero {
+    --respiro-y: 56px;
+    --respiro-x: 80px;
+    --logo: 500px;
+    --vao: 128px;
+    --titulo: 4.5rem;
+    --texto: 1.25rem;
+    --botao: 1.0625rem;
+  }
+}
+
+/* Full HD (1920px ou mais). */
+@media (min-width: 1920px) {
+  .hero {
+    --respiro-y: 72px;
+    --respiro-x: 96px;
+    --logo: 600px;
+    --vao: 160px;
+    --titulo: 5.25rem;
+    --texto: 1.375rem;
+    --botao: 1.125rem;
+  }
+}
+
+/* 2K e 4K (2560px ou mais). */
+@media (min-width: 2560px) {
+  .hero {
+    --respiro-y: 96px;
+    --respiro-x: 128px;
+    --logo: 800px;
+    --vao: 208px;
+    --titulo: 7rem;
+    --texto: 1.75rem;
+    --botao: 1.375rem;
+  }
+}
+
+/* Celular: logo em cima, depois título e texto, tudo alinhado à
+   esquerda e na largura da tela. Coluna estreita não justifica bem,
+   então o texto volta a alinhar à esquerda. A foto fica atrás do
+   texto, então escurece um pouco. */
+@media (max-width: 760px) {
+  .hero {
+    --respiro-y: 36px;
+    --respiro-x: 16px;
+    --logo: clamp(150px, 44vw, 210px);
+    --vao: 28px;
+    --titulo: clamp(1.625rem, 7.5vw, 2.25rem);
+    --texto: 1rem;
+    --gap-texto: 16px;
+    --gap-botao: 40px;
+    background-image:
+      linear-gradient(rgb(26 14 78 / 0.6), rgb(26 14 78 / 0.6)), var(--foto);
+  }
+
+  .hero-conteudo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-logo {
+    flex: none;
+    width: var(--logo);
+  }
+
+  .hero-bloco {
+    width: auto;
+  }
+
+  .hero-texto {
+    width: auto;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .hero-botao {
+    align-self: flex-start;
+  }
+}

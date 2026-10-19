@@ -30,7 +30,14 @@ export default defineConfig({
     },
   },
 
-  integrations: [mdx(), icon(), sitemap(), react(), keystatic()],
+  integrations: [
+    mdx(),
+    icon(),
+    // As páginas em /wix/ só existem para o Wix mostrar por dentro.
+    sitemap({ filter: (pagina) => !pagina.includes("/wix/") }),
+    react(),
+    keystatic(),
+  ],
 
   env: {
     schema: {

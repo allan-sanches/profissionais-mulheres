@@ -5,6 +5,7 @@ import {
   paginaDePesquisadoras,
   rodape,
 } from "./src/keystatic/secoes";
+import { paginaDoPodcast, topoDaPaginaInicial } from "./src/keystatic/wix";
 
 /*
  * Onde o painel grava.
@@ -43,6 +44,7 @@ export default config({
         "rodape",
       ],
       Conteúdo: ["researchers"],
+      "Páginas do Wix": ["topoDaPaginaInicial", "paginaDoPodcast"],
       Ajuda: ["documentacao"],
     },
   },
@@ -52,6 +54,10 @@ export default config({
     navegacao,
     paginaDePesquisadoras,
     rodape,
+
+    // Páginas que o Wix mostra por dentro — gravam em src/content/wix/.
+    topoDaPaginaInicial,
+    paginaDoPodcast,
 
     documentacao: singleton({
       label: "Documentação do Admin",

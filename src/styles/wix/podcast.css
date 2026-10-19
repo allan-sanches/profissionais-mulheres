@@ -1,0 +1,1325 @@
+/*
+ * Aparência da página do podcast Ecologia por Elas (src/pages/wix/podcast.astro),
+ * que o Wix mostra por dentro. Textos e imagens vêm do Keystatic; aqui ficam
+ * só cores, tamanhos e a versão de celular.
+ */
+
+/* ===================== Geral ===================== */
+* {
+  box-sizing: border-box;
+}
+
+/* Fundo transparente: cada faixa pinta o seu próprio fundo. */
+html,
+body {
+  margin: 0;
+  background: transparent;
+}
+
+/* Tipografia do site: corpo em Poppins Regular 16px, títulos em Epilogue. */
+body {
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h2,
+h3,
+.ep-selo,
+.convidada-nome,
+.insta-titulo {
+  font-family:
+    "Epilogue",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+}
+
+/* Negrito (<strong> e <b>) um pouco mais leve que o padrão. */
+strong,
+b {
+  font-weight: 600;
+}
+
+/* Quatro faixas, na ordem do Guia: apresentação, apresentadoras,
+   episódios, realização e apoio. Aqui fica o fundo de cada uma. */
+
+/* Apresentação: fundo branco, texto verde. */
+.sec-apresentacao {
+  background: #fff;
+  color: var(--verde);
+}
+
+/* Apresentadoras e Episódios: a foto da capa do Guia bem clarinha
+   (arquivo fixo em public/wix/, fora do Keystatic). */
+.sec-apresentadoras,
+.sec-episodios {
+  background: var(--fundo) url("/wix/podcast-fundo.webp") center / cover
+    no-repeat;
+  color: var(--roxo);
+}
+
+.sec-episodios {
+  color: var(--texto);
+  padding: 40px 24px 48px;
+}
+
+/* Título "EPISÓDIOS". */
+.sec-titulo {
+  max-width: 860px;
+  margin: 0 auto 24px;
+  color: var(--roxo);
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+/* Realização e apoio: fundo lilás (cor definida no bloco de cores da
+   faixa, mais abaixo). */
+.sec-apoio {
+  background: var(--lilas);
+  color: #000;
+}
+
+/* Celular: menos espaço nas bordas e título "EPISÓDIOS" menor. */
+@media (max-width: 680px) {
+  .sec-episodios {
+    padding: 28px 16px 36px;
+  }
+
+  .sec-titulo {
+    text-align: center;
+    font-size: 1.75rem;
+  }
+}
+
+/* ===================== Apresentação ===================== */
+/* Cores da página do Guia (paleta Mulheres na Ecologia).
+   --roxo: título "APRESENTAÇÃO". --verde: texto. */
+.sec-apresentacao {
+  --roxo: #613ba8;
+  --verde: #297552;
+}
+
+/* Miolo da faixa: largura máxima e espaço nas bordas. */
+.apr-pagina {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 48px;
+}
+
+/* Título "APRESENTAÇÃO". */
+.apr-titulo {
+  margin: 0 0 28px;
+  color: var(--roxo);
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+/* Parágrafos da apresentação. */
+.apr-texto {
+  margin: 0;
+  max-width: 640px;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+/* Textos que vêm do editor do Keystatic: cada parágrafo é um <p>, sem
+   margem antes do primeiro e com um respiro entre eles. */
+.texto-rico > p {
+  margin: 0;
+}
+
+.texto-rico > p + p {
+  margin-top: 0.75em;
+}
+
+/* Links escritos nos textos do Keystatic: mesma cor do texto ao redor,
+   sublinhados (classe posta em src/config/wix.ts). */
+.link-texto {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Parte de baixo: segundo parágrafo à esquerda, logo à direita. */
+.apr-baixo {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) auto;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-top: 36px;
+}
+
+/* Logo ao lado do texto. A largura dele é o "width" logo abaixo. */
+.apr-logos {
+  display: grid;
+  gap: 28px;
+  justify-items: start;
+  margin-right: 4%;
+}
+
+.apr-logos img {
+  display: block;
+  width: 340px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Celular: logos embaixo do texto. */
+@media (max-width: 680px) {
+  .apr-pagina {
+    padding: 28px 16px 36px;
+  }
+
+  .apr-titulo {
+    margin: 0 0 22px;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  .apr-texto {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .apr-baixo {
+    grid-template-columns: 1fr;
+    margin-top: 24px;
+  }
+
+  .apr-logos {
+    justify-self: end;
+    margin-right: 0;
+    gap: 20px;
+  }
+
+  .apr-logos img {
+    width: 250px;
+  }
+}
+
+/* ===================== Apresentadoras ===================== */
+/* Cores do Guia das Participantes (paleta Mulheres na Ecologia).
+   --roxo: textos e etiqueta do nome. --verde: etiqueta do e-mail.
+   --fundo: cor por trás da foto de fundo. */
+.sec-apresentadoras {
+  --roxo: #613ba8;
+  --verde: #297552;
+  --fundo: #e3e2ea;
+}
+
+/* Fundo: a foto da capa bem clarinha, como no PDF (regra em "Geral",
+   lá em cima). */
+
+/* Miolo da faixa: largura máxima e espaço nas bordas. */
+.ap-pagina {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 48px;
+}
+
+/* Título "APRESENTADORAS". */
+.ap-titulo {
+  margin: 0 0 36px;
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+/* Cada apresentadora: etiqueta com nome e e-mail ao lado da foto, bio do
+   outro lado. Elas se alternam, como no PDF.
+   .ap--esq = etiqueta | foto | bio (1ª, 3ª...)
+   .ap--dir = bio | foto | etiqueta (2ª, 4ª...); a 2ª leva o logo de pé */
+.ap {
+  display: grid;
+  column-gap: 10px;
+  align-items: start;
+}
+
+.ap + .ap {
+  margin-top: 48px;
+}
+
+.ap--esq {
+  grid-template-columns: auto 200px 1fr;
+  grid-template-areas: "etiqueta foto bio";
+}
+
+.ap--dir {
+  grid-template-columns: 1fr 200px auto;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "bio foto etiqueta"
+    "bio . logo";
+}
+
+/* Foto quadrada da apresentadora (200 x 200 px). */
+.ap-foto {
+  grid-area: foto;
+  display: block;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Etiqueta: nome (faixa roxa) com o e-mail (faixa verde) embaixo. */
+.ap-etiqueta {
+  grid-area: etiqueta;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ap--esq .ap-etiqueta {
+  align-items: flex-end;
+}
+
+.ap--dir .ap-etiqueta {
+  align-items: flex-start;
+}
+
+.ap-nome {
+  margin: 0;
+  padding: 4px 12px;
+  background: var(--roxo);
+  color: #fff;
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.ap-email {
+  padding: 1px 6px;
+  background: var(--verde);
+  color: #fff;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* Minibiografia da apresentadora. */
+.ap-bio {
+  grid-area: bio;
+  margin: -6px 0 0;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.ap--esq .ap-bio {
+  margin-left: 18px;
+}
+
+.ap--dir .ap-bio {
+  margin-right: 18px;
+}
+
+.ap-bio strong {
+  font-weight: 700;
+}
+
+/* Logo "ecologia por elas" de pé no canto, como no PDF. */
+.logo-vertical {
+  grid-area: logo;
+  align-self: end;
+  justify-self: center;
+  position: relative;
+  width: 102px;
+  height: 192px;
+  margin-top: 32px;
+}
+
+.logo-vertical img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 192px;
+  height: auto;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+/* Celular: foto, nome e e-mail em cima, bio embaixo. */
+@media (max-width: 680px) {
+  .ap-pagina {
+    padding: 28px 16px 36px;
+  }
+
+  .ap-titulo {
+    margin: 0 0 28px;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  .ap--esq,
+  .ap--dir {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-template-areas:
+      "foto"
+      "etiqueta"
+      "bio"
+      "logo";
+    justify-items: center;
+  }
+
+  .ap + .ap {
+    margin-top: 40px;
+  }
+
+  .ap-etiqueta,
+  .ap--esq .ap-etiqueta,
+  .ap--dir .ap-etiqueta {
+    align-items: center;
+    margin-top: -20px;
+  }
+
+  .ap-nome {
+    font-size: 1.25rem;
+  }
+
+  .ap-email {
+    font-size: 0.75rem;
+  }
+
+  .ap-bio,
+  .ap--esq .ap-bio,
+  .ap--dir .ap-bio {
+    margin: 16px 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .logo-vertical {
+    width: auto;
+    height: auto;
+    margin-top: 36px;
+  }
+
+  .logo-vertical img {
+    position: static;
+    width: 160px;
+    transform: none;
+  }
+}
+
+/* ===================== Episódios ===================== */
+/* Cores do Guia das Participantes (paleta Mulheres na Ecologia). */
+.sec-episodios {
+  --roxo: #613ba8; /* selo "Episódio N", "Conhecer as convidadas", fundo das bios */
+  --roxo-escuro: #4c2c8a;
+  --lilas: #f0defc; /* etiqueta "Em breve" e círculo de foto vazia */
+  --verde: #297552; /* botão Ouvir/Assistir e etiqueta do e-mail */
+  --verde-escuro: #1f5c40; /* botão Ouvir/Assistir com o mouse em cima */
+  --verde-claro: #d1ebd1; /* texto das bios, sobre o roxo */
+  --ardosia: #45597d; /* título do episódio */
+  --texto: #0a0a0a; /* sinopse */
+  --texto-suave: #4a4458; /* "Com Fulana, Ciclana e Beltrana" */
+  --borda: #e4daf0; /* borda do cartão e linha acima de "Conhecer..." */
+  --fundo: #e3e2ea; /* cor por trás da foto de fundo */
+}
+
+/* Fundo: a mesma foto clarinha das apresentadoras (regra em "Geral",
+   lá em cima). */
+
+/* Um cartão por episódio cadastrado no Keystatic (montados em
+   src/pages/wix/podcast.astro). Cada cartão, de cima para baixo:
+     .ep                   o cartão branco
+       .ep-topo            selo "Episódio N" + botão Ouvir/Assistir
+                           (.ep-acao) ou etiqueta "Em breve" (.ep-breve)
+       .ep-titulo          título do episódio
+       .ep-elenco          fotinhas sobrepostas (.ep-rostos) e
+                           "Com Fulana, Ciclana e Beltrana" (.ep-nomes)
+       .ep-sinopse         sinopse (só aparece se estiver preenchida)
+       .ep-detalhes        "Conhecer as convidadas": abre e fecha
+         .convidadas       uma .convidada por pessoa, com:
+           .convidada-foto   foto, etiqueta roxa do nome
+                             (.convidada-nome) e verde do e-mail
+                             (.convidada-email)
+           .convidada-bio    bio no bloco roxo */
+
+/* A lista inteira: um cartão embaixo do outro. */
+.episodios {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 860px;
+  display: grid;
+  gap: 16px;
+}
+
+/* O cartão branco de cada episódio. */
+.ep {
+  background: #fff;
+  border: 1px solid var(--borda);
+  border-radius: 20px;
+  padding: 20px 24px;
+}
+
+/* Linha de cima: selo à esquerda, botão ou "Em breve" à direita. */
+.ep-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Selo roxo "Episódio N". */
+.ep-selo {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: var(--roxo);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Título do episódio. */
+.ep-titulo {
+  margin: 14px 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ardosia);
+}
+
+/* Botão verde "Ouvir" / "Assistir" (só aparece quando o episódio tem
+   link no Keystatic). */
+.ep-acao {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: var(--verde);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+}
+
+.ep-acao:hover {
+  background: var(--verde-escuro);
+}
+
+/* Contorno roxo ao navegar pelo teclado (tecla Tab). */
+.ep-acao:focus-visible,
+.ep-detalhes summary:focus-visible {
+  outline: 2px solid var(--roxo);
+  outline-offset: 3px;
+}
+
+/* Triângulo de "play" dentro do botão. */
+.ep-acao svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+/* Etiqueta lilás "Em breve" (episódio ainda sem link). */
+.ep-breve {
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--lilas);
+  color: var(--roxo);
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Rostos sobrepostos + nomes, sempre visíveis. */
+.ep-elenco {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ep-rostos {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.ep-rostos img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: var(--lilas);
+  object-fit: cover;
+}
+
+/* Margem negativa: cada foto entra um pouco por cima da anterior. */
+.ep-rostos img + img {
+  margin-left: -12px;
+}
+
+/* "Com Fulana, Ciclana e Beltrana". */
+.ep-nomes {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--texto-suave);
+  line-height: 1.4;
+}
+
+/* Sinopse: logo abaixo dos nomes, só quando preenchida. Cada parágrafo
+   (\n\n no texto) vira um <p>, com um respiro entre eles. */
+.ep-sinopse {
+  margin-top: 12px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--texto);
+}
+
+.ep-sinopse p {
+  margin: 0;
+}
+
+.ep-sinopse p + p {
+  margin-top: 0.75em;
+}
+
+/* "Conhecer as convidadas": clicar abre as bios, clicar de novo
+   ("Fechar") fecha. Só um episódio fica aberto por vez (quem faz isso
+   é o atributo name no <details>, colocado pelo código). */
+.ep-detalhes {
+  margin-top: 14px;
+  border-top: 1px solid var(--borda);
+  padding-top: 12px;
+}
+
+.ep-detalhes summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--roxo);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+/* Esconde o triângulo padrão do navegador; usamos a nossa seta. */
+.ep-detalhes summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Seta ao lado de "Conhecer as convidadas": vira para cima quando
+   está aberto. */
+.ep-detalhes summary svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  transition: transform 0.2s;
+}
+
+.ep-detalhes[open] summary svg {
+  transform: rotate(180deg);
+}
+
+/* Fechado mostra "Conhecer as convidadas"; aberto mostra "Fechar". */
+.ep-detalhes .rotulo-fechar,
+.ep-detalhes[open] .rotulo-abrir {
+  display: none;
+}
+
+.ep-detalhes[open] .rotulo-fechar {
+  display: inline;
+}
+
+/* Lista das convidadas aberta: uma embaixo da outra. */
+.convidadas {
+  display: grid;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+/* Como no PDF: foto com o nome na etiqueta roxa, e-mail na etiqueta
+   verde logo abaixo, bio no bloco roxo. Duas colunas: foto (190px) e
+   bio (o resto). */
+.convidada {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.convidada-foto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.convidada-foto img {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background: var(--lilas);
+  object-fit: cover;
+}
+
+/* Etiquetas embaixo da foto. A margem negativa sobe as etiquetas um
+   pouco por cima da foto, como no PDF. */
+.convidada-legenda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: -14px;
+  max-width: 190px;
+  text-align: center;
+}
+
+.convidada-nome {
+  padding: 4px 10px;
+  background: var(--roxo);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  border-radius: 4px;
+  max-width: 160px;
+}
+
+.convidada-email {
+  padding: 2px 6px;
+  background: var(--verde);
+  color: #fff;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  border-radius: 3px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Bio: texto verde-claro sobre bloco roxo. */
+.convidada-bio {
+  background: var(--roxo);
+  color: var(--verde-claro);
+  border-radius: 16px;
+  padding: 16px 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.convidada-bio p {
+  margin: 0;
+}
+
+.convidada-bio p + p {
+  margin-top: 0.75em;
+}
+
+/* Texto invisível na tela, mas lido por leitores de tela (pessoas
+   cegas). */
+.so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Celular: tudo um pouco menor e, nas convidadas, foto em cima e bio
+   embaixo. */
+@media (max-width: 560px) {
+  .ep {
+    padding: 16px;
+  }
+
+  .ep-titulo {
+    margin-top: 12px;
+    font-size: 1.125rem;
+  }
+
+  .ep-selo {
+    padding: 5px 14px;
+    font-size: 0.8125rem;
+  }
+
+  .ep-breve {
+    padding: 5px 12px;
+    font-size: 0.8125rem;
+  }
+
+  .ep-acao {
+    padding: 7px 14px;
+    font-size: 0.875rem;
+  }
+
+  .ep-rostos img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .ep-rostos img + img {
+    margin-left: -10px;
+  }
+
+  .ep-nomes,
+  .ep-detalhes summary {
+    font-size: 0.875rem;
+  }
+
+  .ep-sinopse {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .convidada {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .convidada-nome {
+    font-size: 0.9375rem;
+  }
+
+  .convidada-bio {
+    padding: 14px 16px;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+}
+
+/* Celular estreito (o Wix vai até 320px): nomes embaixo dos rostos. */
+@media (max-width: 380px) {
+  .ep {
+    padding: 14px;
+  }
+
+  .ep-titulo {
+    font-size: 1.0625rem;
+  }
+
+  .ep-elenco {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .convidada-bio {
+    padding: 12px 14px;
+  }
+}
+
+/* ===================== Realização e apoio ===================== */
+/* Cores da página do Guia (paleta Mulheres na Ecologia). Verde e
+   ardósia um pouco mais escuros que no PDF para os títulos ficarem
+   legíveis sobre o lilás. */
+.sec-apoio {
+  --lilas: #ab99d9; /* fundo da faixa */
+  --roxo: #613ba8; /* linha entre Realização e Apoio */
+  --roxo-vivo: #7d1cd4;
+  --roxo-escuro: #4c2c8a; /* fim do degradê de "Apoie e siga..." */
+  --verde: #1f5c40; /* começo dos degradês dos títulos */
+  --ardosia: #34586e; /* fim do degradê de "Realização" e "Apoio" */
+  --cinza: #d3d3d3; /* desenho do cartão do Instagram */
+  --chave: #1c3a41; /* chave PIX e botão "Copiar chave PIX" */
+}
+
+/* Miolo da faixa: largura máxima e espaço nas bordas. */
+.apoio-pagina {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 32px 24px 40px;
+}
+
+.sec-apoio a {
+  color: inherit;
+}
+
+.sec-apoio a:focus-visible,
+.sec-apoio button:focus-visible {
+  outline: 2px solid var(--roxo-escuro);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Realização | Apoio ---------- */
+/* Duas colunas de logos com uma linha fina no meio. */
+.parceiros {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  gap: 40px;
+}
+
+/* A linha fina entre as duas colunas. */
+.divisoria {
+  background: rgb(97 59 168 / 0.55);
+  border-radius: 1px;
+}
+
+/* Títulos "Realização" e "Apoio", com o texto em degradê de verde para
+   ardósia. */
+.titulo-sec {
+  margin: 0;
+  display: inline-block;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--verde), var(--ardosia));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Lista de logos de cada coluna, um embaixo do outro. */
+.logos {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 36px;
+  justify-items: start;
+}
+
+.logos img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* A largura de cada logo vem do Keystatic (campo "Largura"), ajustada a
+   olho para que todos pareçam do mesmo tamanho. */
+
+/* Legenda opcional embaixo do logo (ex.: o nome por extenso do ILPS). */
+.logo-legenda {
+  display: block;
+  margin-top: 10px;
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- Apoie e siga a nossa iniciativa ---------- */
+/* Duas colunas: à esquerda título, QR code, contatos e PIX; à direita
+   o cartão do Instagram (385px). */
+.apoie {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr 385px;
+  gap: 24px;
+  align-items: end;
+}
+
+/* "Apoie e siga a nossa iniciativa", com degradê de cima para baixo. */
+.titulo-grande {
+  margin: 0;
+  display: inline-block;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.05;
+  background: linear-gradient(
+    180deg,
+    var(--verde) 0%,
+    #22604d 55%,
+    var(--roxo-escuro) 88%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* QR code do PIX à esquerda, contatos à direita. */
+.pix-contatos {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-top: 28px;
+}
+
+/* QR code. "pixelated" deixa os quadradinhos nítidos ao ampliar. */
+.qr {
+  display: block;
+  width: 140px;
+  height: 140px;
+  image-rendering: pixelated;
+}
+
+/* Instagram, e-mail e site. */
+.contatos {
+  font-size: 1rem;
+  line-height: 1.3;
+  min-width: 0;
+}
+
+.contatos p {
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+
+.contatos p:last-child {
+  margin-bottom: 0;
+}
+
+.contatos a {
+  text-decoration: none;
+}
+
+.contatos a:hover,
+.contatos a.sublinhado {
+  text-decoration: underline;
+}
+
+/* "SAIBA MAIS", com a setinha. */
+.saiba {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.saiba img {
+  width: 26px;
+  height: auto;
+}
+
+/* "Nos ajude a levar a ciência mais longe...". */
+.chamada {
+  margin: 24px 0 0;
+  font-size: 1.125rem;
+  line-height: 1.35;
+}
+
+/* Linha do PIX: ícone, chave e botão "Copiar chave PIX". */
+.pix {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 22px 0 0;
+}
+
+.pix img {
+  width: 30px;
+  height: auto;
+}
+
+.pix-chave {
+  color: var(--chave);
+  font-size: 1.125rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.copiar {
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border: 1.5px solid var(--chave);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--chave);
+  cursor: pointer;
+}
+
+.copiar:hover {
+  background: rgb(255 255 255 / 0.25);
+}
+
+/* ---------- Cartão "segue a gente" (leva ao Instagram) ---------- */
+/* É um desenho de perfil do Instagram feito com código (não é uma
+   imagem nem um print), copiado do PDF. O cartão inteiro é um link
+   para o Instagram. Os números (posts, seguidores) são texto fixo,
+   escrito no <body>, e não se atualizam sozinhos.
+   Faixa da esquerda (27,8%) é onde os corações sobram para fora do cartão. */
+.insta {
+  position: relative;
+  display: grid;
+  grid-template-columns: 27.8% 72.2%;
+  width: 100%;
+  max-width: 385px;
+  text-decoration: none;
+  color: #1a1a1a;
+}
+
+/* Moldura do "celular", com sombra cinza deslocada. */
+.insta-moldura {
+  grid-column: 2;
+  position: relative;
+  aspect-ratio: 278 / 316;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--cinza);
+  border-radius: 18px;
+  box-shadow: 8px 8px 0 var(--cinza);
+  padding: 10px 12px 10px;
+}
+
+/* Topo: bolinha de avatar, "segue a gente" e três pontinhos. */
+.insta-topo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.insta-avatar {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--cinza);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.insta-titulo {
+  flex: 1;
+  color: var(--cinza);
+  font-size: 1.1875rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.insta-pontos {
+  display: flex;
+  gap: 4px;
+}
+
+.insta-pontos i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--cinza);
+}
+
+/* "Tela" com os dados do perfil (nome, números, descrição, links). */
+.insta-tela {
+  flex: 1;
+  margin-top: 10px;
+  border: 2px solid var(--cinza);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px;
+  font-size: 0.625rem;
+  line-height: 1.35;
+}
+
+.insta-tela p {
+  margin: 0;
+}
+
+.insta-user {
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.insta-numeros {
+  margin-top: 4px !important;
+}
+
+.insta-cat {
+  margin-top: 6px !important;
+  color: #5a5468;
+}
+
+/* Bolinhas coloridas antes das linhas da descrição do perfil (a cor
+   de cada uma está no próprio <span>, no <body>). */
+.ponto {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: 0;
+}
+
+.insta-mais {
+  color: #5a5468;
+}
+
+.insta-links {
+  margin-top: 3px !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+}
+
+.insta-azul {
+  color: #2c3fb8;
+}
+
+/* Base: ícones de curtir, comentar, enviar e salvar. */
+.insta-base {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.insta-base svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--cinza);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.insta-base svg:last-child {
+  margin-left: auto;
+}
+
+/* Corações roxos flutuando no canto de baixo, à esquerda do cartão. */
+.coracoes {
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 44.2%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Com o mouse em cima, a moldura fica branca. */
+.insta:hover .insta-moldura {
+  border-color: #fff;
+}
+
+/* Aviso "Chave PIX copiada." só para leitores de tela. */
+.sec-apoio .so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Celular: tudo em uma coluna ---------- */
+@media (max-width: 680px) {
+  .apoio-pagina {
+    padding: 24px 16px 32px;
+  }
+
+  .parceiros {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .divisoria {
+    height: 2px;
+  }
+
+  /* minmax(0, 1fr): a coluna nunca passa da largura da tela. */
+  .apoie {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+    margin-top: 40px;
+  }
+
+  /* Corações ocupam menos espaço à esquerda para o cartão ficar maior. */
+  .insta {
+    justify-self: center;
+    grid-template-columns: 20% 80%;
+  }
+
+  .coracoes {
+    width: 31.8%;
+  }
+
+  .insta-titulo {
+    font-size: 1rem;
+  }
+
+  .insta-pontos i {
+    width: 9px;
+    height: 9px;
+  }
+
+  .titulo-sec,
+  .titulo-grande {
+    font-size: 1.75rem;
+  }
+
+  .contatos {
+    font-size: 0.9375rem;
+  }
+
+  .chamada {
+    font-size: 1rem;
+  }
+}
+
+/* Celular estreito (o Wix vai até 320px): QR em cima dos contatos para
+   o @ do Instagram e os e-mails caberem inteiros na linha. */
+@media (max-width: 400px) {
+  .pix-contatos {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .qr {
+    width: 128px;
+    height: 128px;
+  }
+
+  .pix {
+    gap: 8px 10px;
+  }
+
+  .pix img {
+    width: 26px;
+  }
+
+  .pix-chave {
+    font-size: 0.9375rem;
+  }
+
+  .insta-topo {
+    gap: 6px;
+  }
+
+  .insta-avatar {
+    width: 22px;
+    height: 22px;
+  }
+
+  .insta-titulo {
+    font-size: 0.875rem;
+  }
+
+  .insta-pontos i {
+    width: 7px;
+    height: 7px;
+  }
+}
+
+/* ===================== Celular estreito (Wix: mínimo 320px) ===================== */
+/* Todos os títulos grandes da página encolhem para caber na linha. */
+@media (max-width: 380px) {
+  .apr-titulo,
+  .ap-titulo,
+  .sec-titulo,
+  .titulo-sec,
+  .titulo-grande {
+    font-size: 1.5rem;
+  }
+}

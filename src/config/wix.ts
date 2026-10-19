@@ -1,0 +1,132 @@
+/*
+ * Leitura das páginas do Wix editáveis pelo Keystatic (ver src/keystatic/wix.ts).
+ *
+ * Mesmo esquema de src/config/aparencia.ts: os JSON de src/content/wix/ entram
+ * por `import` estático e ganham tipo aqui, e o site reflete a edição no build
+ * seguinte. Os textos com editor (bio, sinopse...) vêm em Markdoc dentro do
+ * próprio JSON e viram HTML por `textoEmHtml`.
+ */
+
+import Markdoc, { type Config } from "@markdoc/markdoc";
+import topoJson from "@/content/wix/topo.json";
+import podcastJson from "@/content/wix/podcast.json";
+
+// O pacote resolve para CommonJS no Node, que não expõe exports nomeados.
+const { Tag } = Markdoc;
+
+/*
+ * Campo opcional deixado vazio no painel pode sumir do JSON ou vir como null,
+ * por isso os opcionais aceitam os dois.
+ */
+
+export interface Pessoa {
+  nome: string;
+  email?: string;
+  /** Caminho público da foto, ex.: /imagens/wix/podcast/.../foto.webp */
+  foto?: string | null;
+  /** Markdoc. */
+  bio?: string;
+}
+
+export interface Logo {
+  imagem: string;
+  nome: string;
+  largura: number;
+  legenda?: string;
+}
+
+export const topo = topoJson as {
+  /** Uma linha do título por linha do texto. */
+  titulo: string;
+  /** Markdoc. */
+  texto?: string;
+  botao: { rotulo: string; endereco: string };
+  logo: string;
+  imagemDeFundo: string;
+};
+
+export const podcast = podcastJson as {
+  apresentacao: {
+    titulo: string;
+    texto?: string;
+    textoAoLadoDoLogo?: string;
+    logo: string;
+    descricaoDoLogo?: string;
+  };
+  apresentadoras: { titulo: string; pessoas: Pessoa[] };
+  episodios: {
+    titulo: string;
+    lista: {
+      numero: number;
+      titulo: string;
+      link?: string | null;
+      sinopse?: string;
+      convidadas: Pessoa[];
+    }[];
+  };
+  realizacao: { titulo: string; logos: Logo[] };
+  apoio: { titulo: string; logos: Logo[] };
+  apoie: {
+    titulo: string;
+    qrCode: string;
+    chavePix: string;
+    instagram: string;
+    email: string;
+    site: string;
+    chamada?: string;
+    numerosDoInstagram?: {
+      posts?: string;
+      seguidores?: string;
+      seguindo?: string;
+    };
+  };
+};
+
+const configDoTexto: Config = {
+  nodes: {
+    // Por padrão o documento vira <article>; aqui só os parágrafos interessam.
+    document: {
+      transform: (no, config) => no.transformChildren(config),
+    },
+    // As páginas aparecem dentro do Wix (num iframe): link abre em outra aba.
+    link: {
+      attributes: { href: { type: String } },
+      transform: (no, config) =>
+        new Tag(
+          "a",
+          {
+            href: no.attributes.href,
+            class: "link-texto",
+            target: "_blank",
+            rel: "noopener noreferrer",
+          },
+          no.transformChildren(config),
+        ),
+    },
+  },
+};
+
+/**
+ * Markdoc gravado pelo editor do Keystatic → HTML (um <p> por parágrafo).
+ * O renderer do Markdoc escapa o texto, então dá para usar em `set:html`.
+ */
+export function textoEmHtml(markdoc: string | undefined): string {
+  if (!markdoc?.trim()) return "";
+  return Markdoc.renderers.html(
+    Markdoc.transform(Markdoc.parse(markdoc), configDoTexto),
+  );
+}
+
+/** Quebra o título nas linhas do campo, sem linhas vazias. */
+export function linhas(texto: string): string[] {
+  return texto
+    .split(/\r?\n/)
+    .map((linha) => linha.trim())
+    .filter(Boolean);
+}
+
+/** "A", "A e B", "A, B e C". */
+export function juntarNomes(nomes: string[]): string {
+  if (nomes.length < 2) return nomes.join("");
+  return `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}`;
+}

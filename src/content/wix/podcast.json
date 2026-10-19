@@ -1,0 +1,385 @@
+{
+  "apresentacao": {
+    "titulo": "APRESENTAÇÃO",
+    "texto": "**“Dar visibilidade e voz às Ecólogas brasileiras”,** esse é o nosso lema. E é a partir dele que nasce o **podcast “Ecologia por Elas”,** um espaço criado para ampliar narrativas, compartilhar trajetórias e fortalecer o protagonismo das mulheres que fazem a Ecologia no Brasil acontecer. Aqui, celebramos a diversidade de olhares, histórias e pesquisas conduzidas por ecólogas de diferentes regiões, contextos e gerações. Queremos inspirar, questionar, aprender e construir pontes entre a ciência, a sociedade e o futuro que desejamos.",
+    "textoAoLadoDoLogo": "Para a execução desse projeto contamos com o apoio da Sociedade Ecológica Britânica (British Ecological Society - BES), uma comunidade global de cientistas que destaca a complexidade e o valor do nosso mundo natural, fornecendo evidências para melhores decisões.",
+    "logo": "/imagens/wix/podcast/apresentacao/logo.webp",
+    "descricaoDoLogo": "meco"
+  },
+  "apresentadoras": {
+    "titulo": "APRESENTADORAS",
+    "pessoas": [
+      {
+        "nome": "Júlia Angeli",
+        "email": "juliaangeli34@gmail.com",
+        "foto": "/imagens/wix/podcast/apresentadoras/pessoas/0/foto.webp",
+        "bio": "Bióloga, mestre e doutoranda pela UESC. Sua pesquisa se concentra na **macroecologia** e nos **efeitos das mudanças climáticas nos padrões de diversidade** de palmeiras. Integrante do Mulheres na Ecologia, combina sua atuação científica com a paixão por yoga, leitura, gastronomia e natureza."
+      },
+      {
+        "nome": "Myrna Elis",
+        "email": "myrnaelis.bio@gmail.com",
+        "foto": "/imagens/wix/podcast/apresentadoras/pessoas/1/foto.webp",
+        "bio": "Bióloga, mestre e doutoranda pela UFAL. Sua pesquisa se concentra em **redes de interações ecológicas e na aplicação de abordagens interdisciplinares em macroecologia**. Além da iniciativa Mulheres na Ecologia, também integra as iniciativas Liga das Mulheres Pelo Oceano e a Black Women in Ecology, Evolution, and Marine Science (BWEEMS)."
+      }
+    ]
+  },
+  "episodios": {
+    "titulo": "EPISÓDIOS",
+    "lista": [
+      {
+        "numero": 1,
+        "titulo": "Ecologia Por Elas",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Elvira D'Bastiani",
+            "email": "elviradbastiani@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/0/convidadas/0/foto.webp",
+            "bio": "Ecóloga de doenças, com foco na ecologia e evolução de doenças infecciosas. Atualmente, realiza seu pós-doutorado no laboratório da professora Ana Bento, no Departamento de Saúde Pública e Ecossistêmica da Cornell University, em Nova York, EUA. Investiga como as interações entre patógenos e hospedeiros moldam e são moldadas por mecanismos e processos ecológicos e evolutivos em diferentes ambientes e escalas. Em seu trabalho, adota uma abordagem transdisciplinar para integrar dados empíricos a elementos de ecologia, história evolutiva, epidemiologia, fatores socioeconômicos, modelagem matemática e computacional, a fim de desvendar os processos que fundamentam essas interações complexas."
+          },
+          {
+            "nome": "Fernanda Souza",
+            "email": "fesouzasjdr@hotmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/0/convidadas/1/foto.webp",
+            "bio": "Ecóloga, com atuação em ecologia funcional, ecologia de comunidades, interações animal-planta e macroecologia. Atualmente, realiza seu pós-doutorado em Ecologia na Universidade Federal do Pará. Investiga a recuperação funcional de estratégias de dispersão de sementes em comunidades arbóreas amazônicas após distúrbios por fogo e durante a sucessão secundária. Sua pesquisa integra abordagens quantitativas e espaciais para compreender como fatores ambientais e antrópicos moldam a diversidade e o funcionamento das comunidades vegetais. Possui experiência docente no ensino básico, técnico e tecnológico, com ênfase em educação ambiental e comunicação científica."
+          },
+          {
+            "nome": "Laryssa Negri",
+            "email": "laryssa.negrip@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/0/convidadas/2/foto.webp",
+            "bio": "Bióloga formada pela Universidade Estadual de Maringá (UEM), com mestrado em Ecologia e Conservação pela Universidade Federal do Paraná (UFPR). Sua trajetória profissional foi construída na interface entre pesquisa científica, gestão e monitoramento de projetos ambientais e educação ambiental, sempre voltada à conservação da biodiversidade e ao trabalho colaborativo com comunidades locais. Atuou em instituições como o Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio), o Instituto Água e Terra (IAT) e o Instituto de Conservação de Animais Silvestres (ICAS), no manejo de fauna, em programas de conservação e na mediação de conflitos socioambientais. Uma cientista que ama estar em meio à natureza, contemplando os detalhes da vida e sempre acompanhada de um bom livro."
+          }
+        ]
+      },
+      {
+        "numero": 2,
+        "titulo": "Quem está construindo respostas para a crise climática?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Adayse Bossolani",
+            "email": "agbossolani2@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/1/convidadas/0/foto.webp",
+            "bio": "Bacharela em Direito e graduanda em Gestão Pública, atua na formulação e implementação de políticas públicas para a pesca artesanal e a governança costeira e marinha. É Coordenadora-Geral de Gestão Participativa Costeira e Marinha na Secretaria Nacional de Pesca Artesanal do Ministério da Pesca e Aquicultura, com atuação em ordenamento pesqueiro, gestão compartilhada e participação social. Possui experiência na articulação entre sociedade civil e poder público, tendo sido secretária-executiva do PainelMar e fundadora do GT Mar da Frente Parlamentar Ambientalista. Sua trajetória é marcada pela defesa da participação social, da justiça socioambiental e dos direitos dos povos e comunidades tradicionais da pesca."
+          },
+          {
+            "nome": "Luisa Latorre",
+            "email": "luisafer.lievano@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/1/convidadas/1/foto.webp",
+            "bio": "Bióloga pela Universidad Nacional de Colombia, mestre em Ecologia e Conservação pela UFPR e doutora em Ecologia e Evolução pela UFG. Atua com planejamento sistemático da conservação e restauração, Soluções baseadas na Natureza e estratégias de adaptação e mitigação às mudanças ambientais globais. Atualmente, é analista de sustentabilidade no Instituto Internacional para Sustentabilidade (IIS-Rio) e fellow da avaliação de Planejamento Espacial e Conectividade da IPBES. Sua atuação busca aproximar a pesquisa científica da tomada de decisão em escala local e regional."
+          },
+          {
+            "nome": "Nathália Carvalho",
+            "email": "nathalia.bioufla@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/1/convidadas/2/foto.webp",
+            "bio": "Bióloga formada pela Universidade Federal de Lavras (UFLA), é mestre em Engenharia Florestal pela mesma instituição e doutora em Sensoriamento Remoto pelo Instituto Nacional de Pesquisas Espaciais (INPE). Atua em pesquisas que investigam como o fogo, desmatamento e extremos climáticos impactam a floresta amazônica. A pesquisadora também já trabalhou com políticas públicas e plataformas de dados geoespaciais, conectando ciência e tomada de decisão. Atualmente, ela segue aprofundando sua trajetória como pesquisadora de pós-doutorado na Universidade de Lancaster, no Reino Unido, investigando os impactos dos extremos climáticos na Amazônia. Uma cientista engajada em transformar sua curiosidade por mapas e análises espaciais em conhecimento que apoie a conservação e a proteção das florestas."
+          }
+        ]
+      },
+      {
+        "numero": 3,
+        "titulo": "O que não vemos também adoece o planeta?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Aléxia A. Lessa",
+            "email": "alexialessa@ufrj.br",
+            "foto": "/imagens/wix/podcast/episodios/lista/2/convidadas/0/foto.webp",
+            "bio": "Bióloga marinha formada pela Universidade Federal Fluminense, é mestre em Biotecnologia Marinha pelo Instituto de Estudos do Mar Almirante Paulo Moreira. Atua em pesquisas sobre a ecologia acústica de peixes marinhos e ambientes recifais no Atlântico Sudoeste, investigando como os sons estruturam a ecologia desses sistemas e como o ruído antropogênico pode afetá-los. Integra o Laboratório de Ecologia e Conservação de Ambientes Recifais (LECAR-UFF). Atualmente, é doutoranda no PPG em Ecologia da UFRJ, desenvolvendo uma tese que inclui a caracterização do comportamento acústico de uma espécie endêmica de peixe-donzela, além de estudos de padrões espaciais e temporais na atividade acústica de peixes."
+          },
+          {
+            "nome": "Fernanda Simon",
+            "email": "feh.simon@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/2/convidadas/1/foto.webp",
+            "bio": "Está à frente como diretora executiva do Instituto Fashion Revolution Brasil e é editora contribuinte de sustentabilidade da Vogue Brasil. Fez parte da diretoria não executiva do Fashion Revolution Global e integra o Comitê Conselheiro da Conscious Fashion and Lifestyle Network, uma iniciativa em parceria com o Escritório de Parcerias das Nações Unidas (ONU). Como uma das pioneiras no debate sobre sustentabilidade na moda, também levanta a bandeira do cânhamo têxtil, pois acredita que ele representa uma oportunidade ímpar para promover o desenvolvimento sustentável. Tem sido uma força motriz na transformação sustentável da moda no Brasil, impulsionando mudanças que conectam moda, clima, natureza e equidade de gênero."
+          },
+          {
+            "nome": "Raqueline Monteiro",
+            "email": "raqmonteiro.oc@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/2/convidadas/2/foto.webp",
+            "bio": "Oceanógrafa pela Universidade Federal do Pará (UFPA), Mestre em Oceanografia pela Universidade Federal de Pernambuco (UFPE) e Doutora em Ecologia Aquática e Pesca pela UFPA, atua há mais de uma década com poluição plástica e comunicação científica. Foi Jovem Embaixadora do Oceano Atlântico (2020–2022), pelo Brasil na All-Atlantic Ocean Research Alliance (AANCHOR), e é IVLP Alumna pelo International Visitor Leadership Program, dos Estados Unidos. Atualmente, é pesquisadora na UDESC (SC) e no projeto OLAMAR (AP). É membro do Comitê Nacional da Década do Oceano (GAM Norte), além de integrar a BWEEMS e a Liga das Mulheres pelo Oceano. Acredita que proteger o oceano também é proteger a Amazônia e seus maretórios, e que a ciência pode conectar conhecimentos e transformar realidades."
+          }
+        ]
+      },
+      {
+        "numero": 4,
+        "titulo": "Quando a natureza adoece, quem adoece com ela?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Ana Paula Lula",
+            "email": "anapaulalula@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/3/convidadas/0/foto.webp",
+            "bio": "Bióloga licenciada pela Universidade Estadual de Maringá (UEM), mestre e doutora em Ecologia e Conservação pela Universidade Federal do Paraná (UFPR). Atualmente atua como pesquisadora de pós-doutorado na Fundação Oswaldo Cruz (PROCC/FIOCRUZ), onde investiga a influência das mudanças climáticas e da paisagem natural na dinâmica das interações entre parasitos e seus hospedeiros. Seu principal interesse é entender como os aspectos sociais, econômicos e ecológicos têm moldado o complexo sistema de doenças infecciosas de origem zoonótica em humanos e em animais silvestres. Ana Paula também atua como coordenadora de conteúdo na iniciativa Mulheres na Ecologia e como embaixadora da Rede Brasileira de Reprodutibilidade."
+          },
+          {
+            "nome": "Daniela Dutra",
+            "email": "danideangeli@live.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/3/convidadas/1/foto.webp",
+            "bio": "Professora da Universidade de Bangor, Reino Unido, Daniela é bióloga formada e mestre em ecologia pela Universidade Federal de Minas Gerais e doutora em zoologia pela Universidade de Otago, Nova Zelândia, com foco em ecologia de parasitos. Foi pesquisadora na Universidade de Stanford, investigando a relação entre garimpo e malária. Atualmente, sua pesquisa investiga a transmissão de parasitos em animais silvestres e doenças transmitidas por vetores de importância médica, um tema fundamental para entendermos como as mudanças globais podem afetar o impacto de doenças infecciosas. Também já foi voluntária em eventos de divulgação científica, conectando ciência e educação de forma acessível."
+          },
+          {
+            "nome": "Paula Prist",
+            "email": "pprist@hotmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/3/convidadas/2/foto.webp",
+            "bio": "Bióloga formada pela Universidade Mackenzie, é mestre e doutora em Ecologia de Paisagens pela Universidade de São Paulo, com foco em epidemiologia da paisagem e saúde única. Atualmente trabalha no time global de Florestas e Savanas da IUCN, e atua em implementação de projetos de restauração e conservação, e em pesquisa relacionada à Saúde Única, tentando entender como a conservação e o planejamento de paisagens podem contribuir para manutenção da saúde humana. Dr. Prist foi cientista principal de Conservação e Saúde na EcoHealth Alliance por quatro anos, Coordinating-Lead Author do IPBES Nexus Assessment, lidera o grupo de Saúde Humana da IUCN Commission on Ecosystem Management e é membro do Health Kan da Future Earth e do STAR-IDAZ & GloPID-R - One Health Working Group."
+          }
+        ]
+      },
+      {
+        "numero": 5,
+        "titulo": "Quem ocupa os espaços de decisão?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Eduarda Nascimento",
+            "email": "Adv.eduardanascimento@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/4/convidadas/0/foto.webp",
+            "bio": "Filha e neta de pescadores artesanais, advogada socioambiental e coordenadora de projetos na Diretoria de Conservação Marinha e Costeira da Conservação Internacional Brasil (CI-Brasil). Atua na Plataforma Colaborativa do PainelMar, contribuindo para a incidência e formulação de políticas públicas voltadas ao uso sustentável da zona costeira e marinha. É membro da Liga das Mulheres pelo Oceano, da Rede Bweems e da Rede LaClima. Possui experiência em articulação territorial, mobilização de comunidades tradicionais e fortalecimento de iniciativas socioambientais."
+          },
+          {
+            "nome": "Jemilli Viaggi",
+            "email": "jemillicviaggi@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/4/convidadas/1/foto.webp",
+            "bio": "Bióloga marinha formada pela Universidade Federal do Rio de Janeiro (UFRJ) e doutora em Ecologia, com atuação dedicada à conservação marinha e às políticas públicas para a sustentabilidade do oceano, com forte atuação em conservação marinha, advocacy ambiental e formulação de políticas públicas. Sua pesquisa e prática profissional se concentram nos impactos do lixo marinho nos serviços ecossistêmicos e na orientação de decisões estratégicas para a gestão costeira e oceânica. Integra o Conselho da Liga das Mulheres pelo Oceano e colabora com iniciativas como a Rede Oceano Limpo RJ, ampliando o alcance de pautas urgentes de proteção marinha."
+          },
+          {
+            "nome": "Jessilane Alves",
+            "email": "jessilane.a.souza@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/4/convidadas/2/foto.webp",
+            "bio": "Comunicadora socioambiental, professora e bióloga, conhecida por sua participação no Big Brother Brasil 22, onde se destacou em debates sobre questões sociais, ambientais, raciais e educacionais. Possui mestrado em Biologia, é pós-graduada em Libras e MBA em ESG. Hoje é embaixadora do WWF Brasil e agente verificada da ONU contra a desinformação climática, se destacando como voz ativa em pautas socioambientais.\n\nGosta de viajar e descobrir histórias de lugares diferentes, de correr e se desafiar, de nadar e superar aos poucos o medo, de criar conteúdos leves explicando o mundo do jeito que ela o vê, porque aprender é uma das coisas que mais a move."
+          }
+        ]
+      },
+      {
+        "numero": 6,
+        "titulo": "O oceano não é só cenário",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Barbara Pinheiro",
+            "email": "barbara.pinheiro@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/5/convidadas/0/foto.webp",
+            "bio": "Bióloga, Mestre e Doutora em Oceanografia pela UFPE. Pesquisadora do PACTOMAR | UNIFESP | Maré de Ciências. Membro da Secretaria Executiva da Liga das Mulheres pelo Oceano e Coordenadora Nacional da Black Women in Ecology Evolution and Marine Science. Ou só Sereia Cientista e JEDI ;)"
+          },
+          {
+            "nome": "Lays Pereira",
+            "email": "laysnascimento.engpesca@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/5/convidadas/1/foto.webp",
+            "bio": "Engenheira de pesca formada pela UFAL, com atuação em educação ambiental, extensão pesqueira e valorização dos saberes tradicionais. Filha de pescadores e nascida em uma comunidade tradicional da pesca artesanal em Alagoas, conecta ciência e cultura para fortalecer a conservação marinha e costeira. Atualmente, desenvolve projetos e formações em cultura oceânica e turismo responsável, promovendo práticas sustentáveis em escolas, comunidades e empreendimentos turísticos, além de atuar como consultora ambiental no Instituto do Meio Ambiente do Estado de Alagoas."
+          },
+          {
+            "nome": "Karina Massei",
+            "email": "karina.massei@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/5/convidadas/2/foto.webp",
+            "bio": "Bióloga Marinha e Educadora Ambiental. Coordena o Subprograma de Restauração de Ecossistemas de Corais (SUPER) do Programa Estratégico de Estruturas Artificiais Marinhas da Paraíba (PREAMAR-PB). É Vice-coordenadora na Paraíba do Planejamento Espacial Marinho do Nordeste (PEM-NE) e Secretária Adjunta do Grupo de Apoio da Mobilização da Década do Oceano na região nordeste do Brasil. É Facilitadora do Programa Político Pedagógico da Zona Costeira e Marinha (PPPZCM) na Paraíba. Foi uma das sócias-fundadoras do INPACT - Instituto de Pesquisa e Ação, sediado no Seixas em João Pessoa, e atua com turismo ecopedagógico e regenerativo. Trabalhou muitos anos em parques oceanográficos no exterior, seja com treinamento e bem-estar animal, como também com resgate e reabilitação de animais marinhos."
+          }
+        ]
+      },
+      {
+        "numero": 7,
+        "titulo": "É possível reconstruir uma paisagem?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Amanda Narcizo",
+            "email": "amandanrcz@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/6/convidadas/0/foto.webp",
+            "bio": "Bióloga formada e licenciada pela Universidade Federal Fluminense e mestre em Botânica pela Escola Nacional de Botânica Tropical, do Jardim Botânico do Rio de Janeiro, com foco em Ecologia de Ecossistemas Neotropicais. Durante o doutorado, realizou um período sanduíche no King's College London (KCL). Além da carreira acadêmica, Amanda atuou como analista ambiental em órgãos ambientais, contribuindo para a gestão de unidades de conservação, unindo o conhecimento teórico à prática e tomada de decisões. Cientista apaixonada pela natureza, pela pesquisa e pela construção de soluções socioambientais, segue comprometida em gerar conhecimento que apoie a conservação e o futuro dos ecossistemas tropicais."
+          },
+          {
+            "nome": "Barbara Tupinikim",
+            "email": "barbarafavalessa@hotmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/6/convidadas/1/foto.webp",
+            "bio": "Bárbara Tupinikim é uma mulher indígena, líder do povo Tupinikim, e integrante da Aldeia Pau-Brasil em Aracruz (ES). Bárbara possui formação em engenharia florestal pela Universidade Federal do Espírito Santo (UFES) e atua com etnobotânica, restauração ecológica e manejo tradicional da paisagem, articulando saberes indígenas e ciência para promover o uso sustentável das plantas nativas e fortalecer a autonomia alimentar das comunidades. É idealizadora do projeto Florestas de Comida, que busca recuperar áreas degradadas por meio de agroflorestas, e integra a Associação Indígena Tupinikim e Guarani e é Coordenadora do projeto de Recuperação e Reflorestamento de nascentes no Município de Aracruz."
+          },
+          {
+            "nome": "Juliana Almeida Rocha",
+            "email": "almeidarocha.jm@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/6/convidadas/2/foto.webp",
+            "bio": "Bióloga e Mestre em Ecologia pela Universidade Federal do Rio de Janeiro (UFRJ), Doutora em Ecologia e Conservação da Biodiversidade pela Universidade Estadual de Santa Cruz (UESC). Ao longo da trajetória acadêmica, dedicou-se a investigar os impactos da degradação antrópica dos habitats sobre a biodiversidade e suas implicações para a conservação de espécies (especialmente primatas) e ecossistemas. Há 7 anos atua no terceiro setor com foco na promoção de Soluções Baseadas na Natureza — especialmente a restauração de ecossistemas — para subsidiar a tomada de decisão nas agendas de conservação e clima, influenciando na elaboração e implementação de políticas públicas ambientais. Atualmente, é coordenadora de restauração para o Cerrado na The Nature Conservancy (TNC) Brasil."
+          }
+        ]
+      },
+      {
+        "numero": 8,
+        "titulo": "Cidades verdes para quem?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Ana Sanches",
+            "email": "anasanchesb@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/7/convidadas/0/foto.webp",
+            "bio": "Mulher negra, com origens periféricas, nascida e criada nos interiores do Vale do Paraíba e do Litoral Norte de São Paulo, em meio aos rios, ruas e mares do bioma de Mata Atlântica. Território de Quilombolas, povos Guaranis e Tupinambás. Uma Intelectual-Ativista, atuante no movimento negro e em movimentos ambientalistas periféricos brasileiros paulistas. É Doutora em Ciências, com foco em Mudança Social e Participação Política na Escola de Artes, Ciências e Humanidades da Universidade de São Paulo - EACH/USP-LESTE e consultora para Equidade no Ministério da Saúde, no departamento de Vigilância em Saúde Ambiental e Saúde do Trabalhador. É Mestra em Ciências pela Faculdade de Saúde Pública da Universidade de São Paulo - FSP/USP (2017) e Turismóloga pelo Centro Universitário Módulo (2008)."
+          },
+          {
+            "nome": "Anna Colina Aguiar",
+            "email": "annacfaguiar@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/7/convidadas/1/foto.webp",
+            "bio": "Pesquisadora do Museu do Amanhã e da Cátedra UNESCO de Alfabetização em Futuros, além de professora do Mestrado em Ciência da Sustentabilidade na PUC-Rio. Se dedica atualmente à pesquisa de temas ligados a futuros, como transição energética e ecossistemas. Tem experiência em consultoria na área de mineração, com foco em impactos e restauração, e mais recentemente, em projetos de cultura. Bacharel em Ciências Biológicas, mestre em Bioengenharia de Ecossistemas pela Universidade Federal de São João del Rei. Doutora em Ecologia pela Universidade Federal de Minas Gerais."
+          },
+          {
+            "nome": "Rafaella Santos",
+            "email": "arafaella.santana@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/7/convidadas/2/foto.webp",
+            "bio": "Ecóloga, doutora em Ecologia e Conservação pela Universidade Federal de Sergipe (UFS), com mais de dez anos de experiência em pesquisa aplicada, gestão ambiental e projetos socioambientais. Trabalha com ecologia de comunidades, interações ecológicas, biodiversidade urbana, serviços ecossistêmicos e restauração de áreas degradadas, com foco especial em artrópodes como organismos bioindicadores. Une ciência, educação e conservação para compreender como os ecossistemas respondem às mudanças ambientais, e como esse conhecimento pode ser aplicado de forma prática. Hoje, atua em projetos socioambientais que integram conservação, manejo sustentável e ciência aplicada, contribuindo para soluções efetivas em ambientes naturais e urbanos."
+          }
+        ]
+      },
+      {
+        "numero": 9,
+        "titulo": "O que a ecologia tem a ver com o nosso prato?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Amanda Leão",
+            "email": "leaoamanda988@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/8/convidadas/0/foto.webp",
+            "bio": "Cientista de Alimentos formada pela Universidade Federal de Ouro Preto (UFOP), é mestre em Ecologia de Biomas Tropicais pela mesma instituição. Desenvolve seu trabalho a partir da agroecologia, com ênfase em processos de transição agroecológica fundamentados em abordagens horizontais e participativas, como a Pesquisa-Ação-Participativa e a Metodologia Camponês a Camponês (CaC). Atualmente, é doutoranda em Saúde e Nutrição na UFOP, investigando como processos coletivos de transição agroecológica, baseados na Metodologia CaC, contribuem para o fortalecimento da soberania e segurança alimentar e nutricional em seis Regionais do Movimento dos Trabalhadores Rurais Sem Terra (MST) no estado de Minas Gerais."
+          },
+          {
+            "nome": "Emanuelle Brito",
+            "email": "emanuelle.biologa@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/8/convidadas/1/foto.webp",
+            "bio": "Bióloga formada pela Universidade Federal de Campina Grande, mestre em Ecologia e Evolução pela Universidade Estadual de Feira de Santana e doutora em Ecologia e Evolução pela Universidade Federal de Goiás, com período de doutorado sanduíche na University of Oregon, EUA. Ao longo de sua trajetória, desenvolveu pesquisas em Florestas Tropicais, como a Caatinga, a Mata Atlântica e paisagens convertidas para a agricultura. Atualmente, sua pesquisa concentra-se nas interações mutualistas entre insetos e plantas, com ênfase nas redes ecológicas e nos processos que sustentam serviços ecossistêmicos essenciais, como a polinização."
+          },
+          {
+            "nome": "Patrícia Medeiros",
+            "email": "patricia.muniz@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/8/convidadas/2/foto.webp",
+            "bio": "Professora adjunta da Universidade Federal de Alagoas e uma das coordenadoras do Laboratório de Ecologia, Conservação e Evolução Biocultural (LECEB). É membro do corpo permanente de professores dos Programas de Pós-Graduação em Etnobiologia e Conservação da Natureza (UFRPE) e Diversidade Biológica e Conservação nos Trópicos (UFAL). Foi vencedora do prêmio Internacional Rising Talents da L'Oréal-UNESCO for Women in Science de 2020 e do prêmio L'Oréal-UNESCO-ABC Para Mulheres na Ciência de 2019. Foi eleita membro afiliada da Academia Brasileira de Ciências (2021-2025). Atua nas áreas de Etnobotânica, Ecologia humana e Etnoecologia. Interessa-se pelo estudo dos aspectos ecológicos e evolutivos que permeiam a relação pessoas - recursos naturais. É mãe da Luna e da Flora."
+          }
+        ]
+      },
+      {
+        "numero": 10,
+        "titulo": "Quem tem direito à natureza?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Dandara Dorneles",
+            "email": "dandararodrigues.d@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/9/convidadas/0/foto.webp",
+            "bio": "Bióloga e Doutora em Educação pelo Programa de Pós-Graduação em Educação da Universidade Federal do Rio Grande do Sul (PPGEDU/UFRGS), com foco em comunidades tradicionais de matriz africana, racismo ambiental e saberes ancestrais. Atua em pesquisas referentes à Educação e Relações Socioambientais de Povos e Comunidades Tradicionais e Periféricas; Educação para as relações étnico-raciais; Relações Raciais e Educação em Ciências da Natureza e Diálogos entre raça, gênero e ciências. Atualmente, ela segue aprofundando sua trajetória como pesquisadora, professora e técnica, estreitando os debates ambientais e sociais no âmbito da Educação. Além disso, é membro do Grupo de Trabalho de Mulheres Negras na Liga das Mulheres pelo Oceano e membro da Organização Black Women in Ecology, Evolution, and Marine Science (BWEEMS)."
+          },
+          {
+            "nome": "Maíra Silva",
+            "email": "mai17.silva@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/9/convidadas/1/foto.webp",
+            "bio": "Bióloga de formação. Mestre e Doutoranda no Programa de Geociências (IG/UNICAMP), na área de política e gestão de recursos naturais. Participa de pesquisas nacionais e internacionais sobre clima, resiliência, desastres e povos tradicionais. Possui experiência de carreira como pesquisadora e consultora. Nos últimos anos tem desenvolvido seus trabalhos na área da pesquisa, educação e incidência política com as temáticas de racismo ambiental, mudanças climáticas, levantamento de impactos ambientais, territórios. É quilombola e ativista socioambiental."
+          }
+        ]
+      },
+      {
+        "numero": 11,
+        "titulo": "E se a comunidade também fizesse ciência?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Ellen Caroline dos Santos",
+            "email": "ellencarolline1@hotmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/10/convidadas/0/foto.webp",
+            "bio": "Bióloga formada pela Universidade Federal da Bahia e mestranda em Biodiversidade e Evolução (UFBA), atua nas áreas de Sistemática e Biogeografia de peixes marinhos e de água doce. Desenvolve pesquisas em filogeografia, mapeamento genético e bioinvasão de peixes, investigando como espécies exóticas influenciam e transformam os ecossistemas aquáticos. Com experiência como educadora ambiental, Ellen também integra projetos de divulgação científica que valorizam e ampliam a presença de mulheres na ciência. É uma cientista apaixonada pela biodiversidade, pela evolução e pelo compromisso de aproximar o conhecimento científico da sociedade."
+          },
+          {
+            "nome": "Leiza Serafim",
+            "email": "leiza.serafim@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/10/convidadas/1/foto.webp",
+            "bio": "Licenciada em Biologia pela Universidade Estadual de Santa Cruz (UESC), onde também concluiu o mestrado e o doutorado em Ecologia e Conservação da Biodiversidade, além de possuir especialização em Gestão Escolar pela Esalq. Desenvolve pesquisas na área de ecologia de florestas tropicais, com foco nos impactos antrópicos sobre padrões taxonômicos, genéticos e sobre os processos ecológicos que influenciam especialmente as comunidades de palmeiras da Mata Atlântica. Paralelamente à pesquisa, atua em ações de popularização da ciência e educação ambiental como integrante da equipe de coordenação da Sala Verde da UESC, projeto que busca aproximar temas ambientais do público escolar e da comunidade em geral."
+          },
+          {
+            "nome": "Marina Nascimento",
+            "email": "marinacn@id.uff.br",
+            "foto": "/imagens/wix/podcast/episodios/lista/10/convidadas/2/foto.webp",
+            "bio": "Bióloga bacharel e licenciada pela Universidade Federal Fluminense, é mestre em Ecologia pelo Programa de Pós-graduação em Ecologia, da Universidade Federal do Rio de Janeiro. Atua em pesquisas relacionadas à pesca e ao conhecimento das comunidades pesqueiras, temas fundamentais para entendermos a dinâmica e importância dos peixes ao longo do tempo. A pesquisadora também já trabalhou com Educação Ambiental e tem experiência com educação em espaços não-formais, contribuindo para a democratização da ciência. Atualmente, ela segue na carreira acadêmica como Supervisora de Pesquisa no Projeto Meros do Brasil (RJ), levantando informações sobre o mero, Epinephelus itajara, a maior garoupa do Oceano Atlântico, que se encontra Criticamente Ameaçada de Extinção."
+          }
+        ]
+      },
+      {
+        "numero": 12,
+        "titulo": "Que ecologia estamos construindo agora?",
+        "sinopse": "",
+        "convidadas": [
+          {
+            "nome": "Katia Ribeiro",
+            "email": "katia.ribeiro@icmbio.gov.br",
+            "foto": "/imagens/wix/podcast/episodios/lista/11/convidadas/0/foto.webp",
+            "bio": "Atualmente diretora de ações socioambientais e consolidação territorial do Instituto Chico Mendes da Biodiversidade - ICMBio, e docente do Programa de Pós Graduação Profissional Biodiversidade em UCs, junto ao Jardim Botânico do Rio de Janeiro, é bióloga, doutora em Ecologia pela UFRJ e mestre em Ecologia, Conservação, montanhista, mãe de quatro seres originais. Atua em diversas vertentes que têm relação com planejamento e manejo adaptativo de áreas protegidas e gestão participativa, em atuações que reconhecem e valorizam a diversidade biológica e social do país, no campo da complexidade e da construção de propósitos comuns, buscando clareza nas decisões, diálogos de saberes, direitos sociais, proteção da natureza com as pessoas e inserção das áreas protegidas no dia a dia e demandas da sociedade."
+          },
+          {
+            "nome": "Mariana Vale",
+            "email": "mvale.eco@gmail.com",
+            "foto": "/imagens/wix/podcast/episodios/lista/11/convidadas/1/foto.webp",
+            "bio": "Bióloga formada pela UFRJ, com mestrado em biologia da conservação e doutorado em ecologia pela Columbia University e pela Duke University (EUA). Sua pesquisa se concentra na interface entre mudanças climáticas, biodiversidade e serviços ecossistêmicos. Desde 2010, é professora na UFRJ, atuando também no assessoramento científico ao governo brasileiro e em iniciativas internacionais como o IPCC e o IPBES."
+          },
+          {
+            "nome": "Rosy Isaias",
+            "email": "rosy-isaias@icb.ufmg.br",
+            "foto": "/imagens/wix/podcast/episodios/lista/11/convidadas/2/foto.webp",
+            "bio": "Bióloga formada e licenciada pela Universidade Santa Úrsula, RJ, é mestre e doutora em Ciências (área Botânica) pelo Museu Nacional da UFRJ e USP, respectivamente, com foco em Galhas Neotropicais: anatomia, fisiologia e química. Atua em pesquisa do desenvolvimento anatômico frente ao estresse biótico imposto pelos indutores de galhas, buscando responder os mecanismos que modulam a variedade das formas e estratégias envolvidas neste tipo de interação planta-animal-fungo. A pesquisadora também já trabalha em estratégias de interpretação ambiental e ensino de botânica."
+          }
+        ]
+      }
+    ]
+  },
+  "realizacao": {
+    "titulo": "Realização",
+    "logos": [
+      {
+        "imagem": "/imagens/wix/podcast/realizacao/logos/0/imagem.webp",
+        "nome": "meco",
+        "largura": 190,
+        "legenda": ""
+      },
+      {
+        "imagem": "/imagens/wix/podcast/realizacao/logos/1/imagem.webp",
+        "nome": "British Ecological Society",
+        "largura": 240,
+        "legenda": ""
+      },
+      {
+        "imagem": "/imagens/wix/podcast/realizacao/logos/2/imagem.webp",
+        "nome": "ILPS — Instituto Luísa Pinho Sartori",
+        "largura": 230,
+        "legenda": "INSTITUTO LUÍSA PINHO SARTORI"
+      }
+    ]
+  },
+  "apoio": {
+    "titulo": "Apoio",
+    "logos": [
+      {
+        "imagem": "/imagens/wix/podcast/apoio/logos/0/imagem.webp",
+        "nome": "ESA — Ecological Society of America",
+        "largura": 190,
+        "legenda": ""
+      },
+      {
+        "imagem": "/imagens/wix/podcast/apoio/logos/1/imagem.webp",
+        "nome": "Flumen — consultoria em águas continentais",
+        "largura": 250,
+        "legenda": ""
+      },
+      {
+        "imagem": "/imagens/wix/podcast/apoio/logos/2/imagem.webp",
+        "nome": "Igapó — pesquisa, conservação, educação",
+        "largura": 215,
+        "legenda": ""
+      }
+    ]
+  },
+  "apoie": {
+    "titulo": "Apoie e siga\na nossa\niniciativa",
+    "qrCode": "/imagens/wix/podcast/apoie/qrCode.png",
+    "chavePix": "mulheresecologas@gmail.com",
+    "instagram": "mulheres_na_ecologia",
+    "email": "mulheresnaecologia@gmail.com",
+    "site": "https://www.mulheresnaecologia.com/",
+    "chamada": "Nos ajude a levar a ciência mais longe, com mais **equidade**, mais **cuidado** e mais **vozes femininas**.",
+    "numerosDoInstagram": {
+      "posts": "734",
+      "seguidores": "15,9 mil",
+      "seguindo": "614"
+    }
+  }
+}
