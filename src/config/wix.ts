@@ -53,7 +53,12 @@ export const podcast = podcastJson as {
     logo: string;
     descricaoDoLogo?: string;
   };
-  apresentadoras: { titulo: string; pessoas: Pessoa[] };
+  apresentadoras: {
+    titulo: string;
+    pessoas: Pessoa[];
+    /** Logo do podcast deitado; a página o mostra girado, de pé. */
+    logoDoPodcast: string;
+  };
   episodios: {
     titulo: string;
     lista: {
@@ -74,12 +79,19 @@ export const podcast = podcastJson as {
     email: string;
     site: string;
     chamada?: string;
-    numerosDoInstagram?: {
+    cartaoDoInstagram?: {
+      nome?: string;
+      categoria?: string;
+      primeiraLinha?: string;
+      segundaLinha?: string;
+      link?: string;
       posts?: string;
       seguidores?: string;
       seguindo?: string;
     };
   };
+  /** Fundo das faixas Apresentadoras e Episódios. */
+  imagemDeFundo: string;
 };
 
 const configDoTexto: Config = {

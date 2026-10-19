@@ -161,6 +161,8 @@ const logos = (label: string) =>
     }),
     {
       label,
+      description:
+        "Clique no nome de um logo para trocar a imagem, a largura ou a legenda. Arraste pelos pontinhos para mudar a ordem.",
       itemLabel: (props) => props.fields.nome.value || "Novo logo",
     },
   );
@@ -211,13 +213,17 @@ export const paginaDoPodcast = singleton({
           {
             label: "Apresentadoras",
             description:
-              "Elas se alternam: a 1ª com a foto à esquerda da bio, a 2ª à direita (com o logo do podcast de pé embaixo), e assim por diante.",
+              "Clique no nome para trocar a foto, o e-mail ou a bio. Elas se alternam: a 1ª com a foto à esquerda da bio, a 2ª à direita (com o logo do podcast de pé embaixo), e assim por diante.",
             itemLabel: (props) =>
               props.fields.nome.value || "Nova apresentadora",
           },
         ),
+        logoDoPodcast: imagemDoPodcast(
+          "Logo do podcast (de pé)",
+          "O logo Ecologia por Elas que fica girado, de pé, embaixo da 2ª apresentadora. Envie o logo deitado (na horizontal): a página gira sozinha.",
+        ),
       },
-      { label: "2. Apresentadoras" },
+      { label: "2. Apresentadoras (fotos e bios)" },
     ),
 
     episodios: fields.object(
@@ -263,7 +269,7 @@ export const paginaDoPodcast = singleton({
               {
                 label: "Convidadas",
                 description:
-                  'Na ordem em que aparecem em "Com Fulana, Ciclana e Beltrana".',
+                  'Clique no nome para trocar a foto, o e-mail ou a bio. Na ordem em que aparecem em "Com Fulana, Ciclana e Beltrana".',
                 itemLabel: (props) =>
                   props.fields.nome.value || "Nova convidada",
               },
@@ -271,13 +277,14 @@ export const paginaDoPodcast = singleton({
           }),
           {
             label: "Episódios",
-            description: "Na ordem em que aparecem na página.",
+            description:
+              "Clique num episódio para editar título, link e sinopse. As convidadas (foto, e-mail e bio) ficam dentro de cada episódio. Na ordem em que aparecem na página.",
             itemLabel: (props) =>
               `Episódio ${props.fields.numero.value ?? "?"}: ${props.fields.titulo.value || "sem título"}`,
           },
         ),
       },
-      { label: "3. Episódios" },
+      { label: "3. Episódios e convidadas" },
     ),
 
     realizacao: fields.object(
@@ -328,8 +335,30 @@ export const paginaDoPodcast = singleton({
           "Chamada",
           "A frase embaixo dos contatos. Use negrito para destacar palavras.",
         ),
-        numerosDoInstagram: fields.object(
+        cartaoDoInstagram: fields.object(
           {
+            nome: fields.text({
+              label: "Nome do perfil",
+              description: "Aparece embaixo do nome de usuário.",
+            }),
+            categoria: fields.text({
+              label: "Categoria",
+              description: 'Em cinza, como no Instagram. Ex.: "Cientista".',
+            }),
+            primeiraLinha: fields.text({
+              label: "1ª linha da descrição",
+              description: "Com a bolinha roxa.",
+            }),
+            segundaLinha: fields.text({
+              label: "2ª linha da descrição",
+              description:
+                'Com a bolinha verde. Termina com "mais", como o Instagram faz quando a bio é comprida.',
+            }),
+            link: fields.text({
+              label: "Link da bio",
+              description:
+                "Aparece em azul, só como texto (o cartão inteiro já leva ao Instagram). Ex.: linktr.ee/mulheres_na_ecologia",
+            }),
             posts: fields.text({ label: "Posts" }),
             seguidores: fields.text({
               label: "Seguidores",
@@ -338,13 +367,18 @@ export const paginaDoPodcast = singleton({
             seguindo: fields.text({ label: "Seguindo" }),
           },
           {
-            label: "Números do cartão do Instagram",
+            label: "Cartão do Instagram",
             description:
-              "O cartão à direita imita o perfil do Instagram. Atualize de vez em quando, copiando os números do perfil.",
+              "O cartão à direita imita o perfil do Instagram. Atualize de vez em quando, copiando do perfil.",
           },
         ),
       },
       { label: "6. Apoie e siga a nossa iniciativa" },
+    ),
+
+    imagemDeFundo: imagemDoPodcast(
+      "7. Imagem de fundo",
+      "Fica atrás das faixas Apresentadoras e Episódios, preenchendo a largura toda. Use uma foto bem clarinha, para os textos continuarem legíveis.",
     ),
   },
 });

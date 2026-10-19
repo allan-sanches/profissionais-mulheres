@@ -10,8 +10,8 @@
  * Quatro faixas, de cima para baixo: apresentação, apresentadoras, episódios
  * e realização/apoio (com "Apoie e siga a nossa iniciativa").
  *
- * Imagens fixas, que não mudam pelo painel, ficam em public/wix/: o fundo das
- * faixas do meio, o logo de pé do podcast e os ícones de "saiba mais" e PIX.
+ * Só os ícones de "saiba mais" e PIX são fixos (public/wix/); todas as outras
+ * imagens vêm do painel.
  */
 import "@/styles/wix/podcast.css";
 import { juntarNomes, linhas, podcast, textoEmHtml } from "@/config/wix";
@@ -35,7 +35,7 @@ const partesDoEmail = (email: string) => {
     : [email, ""];
 };
 
-const numeros = apoie.numerosDoInstagram ?? {};
+const cartao = apoie.cartaoDoInstagram ?? {};
 const enderecoDoInstagram = `https://www.instagram.com/${apoie.instagram}/`;
 const [emailAntes, emailDepois] = partesDoEmail(apoie.email);
 ---
@@ -57,7 +57,9 @@ const [emailAntes, emailDepois] = partesDoEmail(apoie.email);
   </head>
   <!-- Fora da busca do site (Pagefind): a página só existe para o Wix. -->
   <body data-pagefind-ignore="all">
-    <main>
+    <!-- O fundo das faixas Apresentadoras e Episódios vem do painel; o CSS o
+         usa pela variável --imagem-de-fundo. -->
+    <main style={`--imagem-de-fundo: url("${podcast.imagemDeFundo}")`}>
       <!-- ===== FAIXA 1: APRESENTAÇÃO ===== -->
       <!-- Texto de cima e, embaixo, o segundo texto com o logo ao lado. -->
       <section class="sec-apresentacao">
@@ -109,7 +111,7 @@ const [emailAntes, emailDepois] = partesDoEmail(apoie.email);
                 {i === 1 && (
                   <div class="logo-vertical">
                     <img
-                      src="/wix/podcast-logo-vertical.webp"
+                      src={apresentadoras.logoDoPodcast}
                       alt="Ecologia por Elas"
                     />
                   </div>
@@ -334,27 +336,26 @@ const [emailAntes, emailDepois] = partesDoEmail(apoie.email);
                 </div>
                 <div class="insta-tela">
                   <p class="insta-user">{apoie.instagram}</p>
-                  <p>Mulheres na ecologia</p>
+                  <p>{cartao.nome}</p>
                   <p class="insta-numeros">
-                    <b>{numeros.posts}</b> posts &nbsp;{" "}
-                    <b>{numeros.seguidores}</b> seguidores &nbsp;{" "}
-                    <b>{numeros.seguindo}</b> seguindo
+                    <b>{cartao.posts}</b> posts &nbsp;{" "}
+                    <b>{cartao.seguidores}</b> seguidores &nbsp;{" "}
+                    <b>{cartao.seguindo}</b> seguindo
                   </p>
-                  <p class="insta-cat">Cientista</p>
+                  <p class="insta-cat">{cartao.categoria}</p>
                   <p>
-                    <span class="ponto" style="background: #8e5bd6"
-                    ></span>Iniciativa pela valorização e fortalecimento de
-                    mulheres que trabalham com ecologia
+                    <span class="ponto" style="background: #8e5bd6"></span>{
+                      cartao.primeiraLinha
+                    }
                   </p>
                   <p>
-                    <span class="ponto" style="background: #3cc46b"
-                    ></span>Mulheres que pensam, fazem e...{" "}
+                    <span class="ponto" style="background: #3cc46b"></span>{
+                      cartao.segundaLinha
+                    }{" "}
                     <span class="insta-mais">mais</span>
                   </p>
                   <p class="insta-links">
-                    <span class="insta-azul"
-                      >linktr.ee/mulheres_na_ecologia</span
-                    >
+                    <span class="insta-azul">{cartao.link}</span>
                     <span>@ {apoie.instagram}</span>
                   </p>
                 </div>

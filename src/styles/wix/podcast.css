@@ -58,12 +58,12 @@ b {
   color: var(--verde);
 }
 
-/* Apresentadoras e Episódios: a foto da capa do Guia bem clarinha
-   (arquivo fixo em public/wix/, fora do Keystatic). */
+/* Apresentadoras e Episódios: a foto da capa do Guia bem clarinha. A
+   imagem vem do Keystatic, pela variável --imagem-de-fundo posta no
+   <main> da página. */
 .sec-apresentadoras,
 .sec-episodios {
-  background: var(--fundo) url("/wix/podcast-fundo.webp") center / cover
-    no-repeat;
+  background: var(--fundo) var(--imagem-de-fundo) center / cover no-repeat;
   color: var(--roxo);
 }
 

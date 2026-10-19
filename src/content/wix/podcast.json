@@ -21,7 +21,8 @@
         "foto": "/imagens/wix/podcast/apresentadoras/pessoas/1/foto.webp",
         "bio": "Bióloga, mestre e doutoranda pela UFAL. Sua pesquisa se concentra em **redes de interações ecológicas e na aplicação de abordagens interdisciplinares em macroecologia**. Além da iniciativa Mulheres na Ecologia, também integra as iniciativas Liga das Mulheres Pelo Oceano e a Black Women in Ecology, Evolution, and Marine Science (BWEEMS).\n"
       }
-    ]
+    ],
+    "logoDoPodcast": "/imagens/wix/podcast/apresentadoras/logoDoPodcast.webp"
   },
   "episodios": {
     "titulo": "EPISÓDIOS",
@@ -371,10 +372,16 @@
     "email": "mulheresnaecologia@gmail.com",
     "site": "https://www.mulheresnaecologia.com/",
     "chamada": "Nos ajude a levar a ciência mais longe, com mais **equidade**, mais **cuidado** e mais **vozes femininas**.\n",
-    "numerosDoInstagram": {
+    "cartaoDoInstagram": {
+      "nome": "Mulheres na ecologia",
+      "categoria": "Cientista",
+      "primeiraLinha": "Iniciativa pela valorização e fortalecimento de mulheres que trabalham com ecologia",
+      "segundaLinha": "Mulheres que pensam, fazem e...",
+      "link": "linktr.ee/mulheres_na_ecologia",
       "posts": "734",
       "seguidores": "15,9 mil",
       "seguindo": "614"
     }
-  }
+  },
+  "imagemDeFundo": "/imagens/wix/podcast/imagemDeFundo.webp"
 }
