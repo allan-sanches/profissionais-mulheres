@@ -1,0 +1,34 @@
+{
+  "itens": [
+    {
+      "titulo": "Biografias",
+      "link": "https://www.mulheresnaecologia.com/linhaseditorias-biografias"
+    },
+    {
+      "titulo": "Ecologia",
+      "link": "https://www.mulheresnaecologia.com/linhaseditorias-ecologia"
+    },
+    {
+      "titulo": "Representatividade",
+      "link": "https://www.mulheresnaecologia.com/linhaseditorias-representatividade"
+    },
+    {
+      "titulo": "Ecologia em pauta",
+      "link": "https://www.mulheresnaecologia.com/linhaseditorias-ecologiaempauta"
+    },
+    {
+      "titulo": "Ecologia para crianças",
+      "link": "https://www.mulheresnaecologia.com/linhaseditorias-ecologiaparacrian%C3%A7as"
+    },
+    {
+      "titulo": "Newsletter",
+      "link": "https://www.mulheresnaecologia.com/linhaseditorias-newsletter"
+    },
+    {
+      "titulo": "Datas Especiais",
+      "link": "https://www.mulheresnaecologia.com/linhaseditorias-datasespeciais"
+    }
+  ],
+  "textoDoBotao": "Saiba mais",
+  "segundosPorTroca": 4
+}

@@ -1,0 +1,261 @@
+/*
+ * Aparência do carrossel de linhas editoriais (src/pages/wix/linhas-editoriais.astro),
+ * que o Wix mostra por dentro. Títulos, links e ilustrações vêm do Keystatic;
+ * aqui ficam cores, tamanhos e quantos cartões cabem em cada largura de tela.
+ */
+
+* {
+  box-sizing: border-box;
+}
+
+/* Fundo transparente: aparece o fundo da faixa do Wix. A altura toda da caixa
+   do Wix, com o carrossel centralizado nela. */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Sem barra de rolagem: se a caixa do Wix for mais baixa que o carrossel,
+   ela não aparece. scrollbar-width: Chrome e Firefox. ::-webkit-scrollbar:
+   Safari. */
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Cores da paleta Mulheres na Ecologia, as mesmas da página do podcast.
+   --visiveis: quantos cartões aparecem de uma vez (o script lê daqui). */
+.carrossel {
+  --roxo: #613ba8;
+  --roxo-escuro: #4c2c8a;
+  --verde: #297552;
+  --verde-escuro: #1f5c40;
+  --verde-claro: #d1ebd1;
+  --visiveis: 3;
+
+  position: relative;
+  width: 920px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Tablet: dois cartões. Celular: um. */
+@media (max-width: 760px) {
+  .carrossel {
+    --visiveis: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .carrossel {
+    --visiveis: 1;
+  }
+}
+
+/* A "janela" mostra só os cartões visíveis; o trilho com todos desliza por
+   trás dela. clip (e não só hidden) impede o navegador de rolar a janela
+   sozinho quando um cartão escondido recebe o foco pelo Tab. */
+.janela {
+  overflow: hidden;
+  overflow: clip;
+}
+
+.trilho {
+  display: flex;
+  transition: transform 0.6s ease;
+  /* Arrastar para o lado é do carrossel; para cima e para baixo, da página. */
+  touch-action: pan-y;
+}
+
+/* Cada cartão ocupa 1/3 (ou 1/2, ou tudo) da janela. O respiro em volta
+   deixa espaço para o cartão crescer com o mouse em cima. */
+.item {
+  flex: 0 0 calc(100% / var(--visiveis));
+  padding: 20px;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.item:hover {
+  transform: scale(1.05);
+}
+
+.item:focus-visible {
+  outline: none;
+}
+
+.item:focus-visible .cartao {
+  outline: 3px solid var(--verde);
+  outline-offset: 3px;
+}
+
+/* O cartão: fundo roxo, título branco e o botão verde, tudo no centro. */
+.cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  aspect-ratio: 4 / 3;
+  padding: 24px 16px;
+  border-radius: 16px;
+  background: var(--roxo);
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 6px 16px rgb(76 44 138 / 0.25);
+  /* O título se mede pela largura do cartão (unidade cqi, abaixo). */
+  container-type: inline-size;
+}
+
+/* Ilustração (opcional), em cima do título. */
+.cartao-arte {
+  display: block;
+  max-width: 70%;
+  max-height: 110px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.cartao-titulo {
+  font-family:
+    "Epilogue",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  /* Acompanha a largura do cartão para "Representatividade" caber inteira
+     numa linha: 9.5cqi = 9,5% da largura do cartão, entre 18 e 24px. */
+  font-size: clamp(1.125rem, 9.5cqi, 1.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: break-word;
+}
+
+/* Botão "Saiba mais": o mesmo verde dos botões da página do podcast. */
+.cartao-botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: var(--verde);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+}
+
+.item:hover .cartao-botao {
+  background: var(--verde-escuro);
+}
+
+.cartao-botao svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Setas: círculo branco com a seta roxa; com o mouse em cima, inverte. */
+.nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--roxo);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+
+.nav:hover {
+  background: var(--roxo);
+  color: #fff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.nav:focus-visible {
+  outline: 3px solid var(--verde);
+  outline-offset: 2px;
+}
+
+/* Quando todos os cartões cabem na tela, o script esconde as setas. */
+.nav[hidden] {
+  display: none;
+}
+
+.nav svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav--anterior {
+  left: 10px;
+}
+
+.nav--proximo {
+  right: 10px;
+}
+
+/* Celular estreito (o Wix vai até 320px). */
+@media (max-width: 380px) {
+  .item {
+    padding: 16px 12px;
+  }
+}
+
+/* Quem pediu menos movimento no sistema: sem deslizar nem crescer. */
+@media (prefers-reduced-motion: reduce) {
+  .trilho,
+  .item,
+  .nav {
+    transition: none;
+  }
+
+  .item:hover {
+    transform: none;
+  }
+}

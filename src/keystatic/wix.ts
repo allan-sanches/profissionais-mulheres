@@ -3,11 +3,12 @@ import { fields, singleton } from "@keystatic/core";
 /*
  * Páginas do Wix.
  *
- * O site oficial (mulheresnaecologia.com) é feito no Wix, mas duas partes dele
- * são páginas deste projeto que o Wix mostra por dentro, pelo elemento
- * "Incorporar um site": o topo da página inicial e a página do podcast
- * Ecologia por Elas. Cada uma é uma seção aqui, grava um JSON em
- * src/content/wix/ e é desenhada por src/pages/wix/<nome>.astro.
+ * O site oficial (mulheresnaecologia.com) é feito no Wix, mas algumas partes
+ * dele são páginas deste projeto que o Wix mostra por dentro, pelo elemento
+ * "Incorporar um site": o topo da página inicial, a página do podcast
+ * Ecologia por Elas e o carrossel de linhas editoriais. Cada uma é uma seção
+ * aqui, grava um JSON em src/content/wix/ e é desenhada por
+ * src/pages/wix/<nome>.astro.
  *
  * Como o Wix carrega a página pelo endereço, cada "Save" entra no ar sozinho
  * depois do build da Vercel (alguns minutos). Não há código para colar no Wix.
@@ -380,5 +381,59 @@ export const paginaDoPodcast = singleton({
       "7. Imagem de fundo",
       "Fica atrás das faixas Apresentadoras e Episódios, preenchendo a largura toda. Use uma foto bem clarinha, para os textos continuarem legíveis.",
     ),
+  },
+});
+
+// ---------------------------------------------------------------------------
+// Carrossel de linhas editoriais
+// ---------------------------------------------------------------------------
+
+export const linhasEditoriais = singleton({
+  label: "Carrossel de linhas editoriais",
+  path: "src/content/wix/linhas-editoriais",
+  format: "json",
+  previewUrl: "/wix/linhas-editoriais",
+  schema: {
+    itens: fields.array(
+      fields.object({
+        titulo: fields.text({
+          label: "Título",
+          description: "O nome da linha editorial, em destaque no cartão.",
+          validation: { isRequired: true },
+        }),
+        link: fields.url({
+          label: "Link",
+          description:
+            "Página que o cartão abre, na mesma aba (normalmente uma página do próprio Wix).",
+          validation: { isRequired: true },
+        }),
+        ilustracao: fields.image({
+          label: "Ilustração",
+          description:
+            "Opcional. Aparece em cima do título, sobre o fundo roxo. Use PNG, WebP ou SVG com fundo transparente.",
+          directory: "public/imagens/wix/linhas-editoriais",
+          publicPath: "/imagens/wix/linhas-editoriais/",
+        }),
+      }),
+      {
+        label: "Cartões",
+        description:
+          "Clique num cartão para editar título, link e ilustração. Arraste pelos pontinhos para mudar a ordem: é a ordem do carrossel.",
+        itemLabel: (props) => props.fields.titulo.value || "Novo cartão",
+      },
+    ),
+    textoDoBotao: fields.text({
+      label: "Texto do botão",
+      description: "O mesmo em todos os cartões.",
+      defaultValue: "Saiba mais",
+      validation: { isRequired: true },
+    }),
+    segundosPorTroca: fields.integer({
+      label: "Troca automática (segundos)",
+      description:
+        "De quantos em quantos segundos o carrossel anda sozinho. 0 desliga. Ele para quando a pessoa passa o mouse ou toca nele.",
+      defaultValue: 4,
+      validation: { isRequired: true, min: 0, max: 30 },
+    }),
   },
 });

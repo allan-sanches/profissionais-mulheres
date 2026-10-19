@@ -1,0 +1,192 @@
+---
+/*
+ * Carrossel de linhas editoriais, mostrado dentro do Wix.
+ *
+ * Página avulsa, sem o layout do site: o Wix a mostra por dentro com o
+ * elemento "Incorporar um site" apontando para /wix/linhas-editoriais. Os
+ * cartões vêm do Keystatic ("Páginas do Wix" → "Carrossel de linhas
+ * editoriais") e a aparência de src/styles/wix/linhas-editoriais.css.
+ */
+import "@/styles/wix/linhas-editoriais.css";
+import { linhasEditoriais } from "@/config/wix";
+
+const { itens, textoDoBotao, segundosPorTroca } = linhasEditoriais;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Só existe para o Wix mostrar por dentro: fora do Google. -->
+    <meta name="robots" content="noindex" />
+    <title>Linhas editoriais</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <!-- Fora da busca do site (Pagefind): a página só existe para o Wix. -->
+  <body data-pagefind-ignore="all">
+    <!-- data-segundos: troca automática, lida pelo script no fim da página. -->
+    <section
+      class="carrossel"
+      aria-roledescription="carrossel"
+      aria-label="Linhas editoriais"
+      data-segundos={segundosPorTroca}
+    >
+      <button type="button" class="nav nav--anterior" aria-label="Anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="janela">
+        <div class="trilho">
+          {
+            itens.map((item) => (
+              <a class="item" href={item.link} target="_top">
+                <span class="cartao">
+                  {item.ilustracao && (
+                    <img class="cartao-arte" src={item.ilustracao} alt="" />
+                  )}
+                  <span class="cartao-titulo">{item.titulo}</span>
+                  <span class="cartao-botao">
+                    {textoDoBotao}
+                    <svg viewBox="0 0 16 16" aria-hidden="true">
+                      <path d="M2 8h12M9.5 3.5 14 8l-4.5 4.5" />
+                    </svg>
+                  </span>
+                </span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <button type="button" class="nav nav--proximo" aria-label="Próximo">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </section>
+
+    <!-- Movimento do carrossel: setas, troca automática, arrastar com o dedo
+         e Tab. Os links abrem com target="_top", na mesma aba, fora do iframe
+         do Wix. -->
+    <script is:inline>
+      (function () {
+        var carrossel = document.querySelector(".carrossel");
+        var trilho = carrossel.querySelector(".trilho");
+        var itens = trilho.querySelectorAll(".item");
+        var anterior = carrossel.querySelector(".nav--anterior");
+        var proximo = carrossel.querySelector(".nav--proximo");
+        var segundos = Number(carrossel.dataset.segundos) || 0;
+        var poucoMovimento = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        var indice = 0; // primeiro cartão visível
+        var relogio = null;
+
+        if (!itens.length) return;
+
+        // Quantos cabem de uma vez vem do CSS (--visiveis), que muda com a
+        // largura da tela.
+        function visiveis() {
+          var n = parseInt(
+            getComputedStyle(carrossel).getPropertyValue("--visiveis"),
+            10,
+          );
+          return n > 0 ? n : 1;
+        }
+
+        function ultimo() {
+          return Math.max(0, itens.length - visiveis());
+        }
+
+        function mostrar() {
+          if (indice > ultimo()) indice = ultimo();
+          var largura = itens[0].getBoundingClientRect().width;
+          trilho.style.transform = "translateX(" + -indice * largura + "px)";
+          // Se todos cabem na tela, não há para onde andar.
+          var cabemTodos = ultimo() === 0;
+          anterior.hidden = cabemTodos;
+          proximo.hidden = cabemTodos;
+        }
+
+        // Do último volta ao primeiro, e vice-versa.
+        function avancar() {
+          indice = indice >= ultimo() ? 0 : indice + 1;
+          mostrar();
+        }
+
+        function voltar() {
+          indice = indice <= 0 ? ultimo() : indice - 1;
+          mostrar();
+        }
+
+        function iniciar() {
+          if (segundos > 0 && !poucoMovimento && !relogio) {
+            relogio = setInterval(avancar, segundos * 1000);
+          }
+        }
+
+        function parar() {
+          clearInterval(relogio);
+          relogio = null;
+        }
+
+        // Clicar numa seta é a pessoa assumindo: a troca automática para.
+        proximo.addEventListener("click", function () {
+          parar();
+          avancar();
+        });
+        anterior.addEventListener("click", function () {
+          parar();
+          voltar();
+        });
+
+        // Mouse em cima pausa; saindo, volta a andar.
+        carrossel.addEventListener("mouseenter", parar);
+        carrossel.addEventListener("mouseleave", iniciar);
+
+        // Arrastar com o dedo para o lado troca de cartão.
+        var inicioX = null;
+        trilho.addEventListener(
+          "touchstart",
+          function (e) {
+            parar();
+            inicioX = e.touches[0].clientX;
+          },
+          { passive: true },
+        );
+        trilho.addEventListener("touchend", function (e) {
+          if (inicioX === null) return;
+          var deslocamento = e.changedTouches[0].clientX - inicioX;
+          inicioX = null;
+          if (deslocamento < -40) avancar();
+          else if (deslocamento > 40) voltar();
+        });
+
+        // Tab num cartão escondido traz o cartão para a tela.
+        trilho.addEventListener("focusin", function (e) {
+          parar();
+          var i = Array.prototype.indexOf.call(
+            itens,
+            e.target.closest(".item"),
+          );
+          if (i < 0) return;
+          if (i < indice) indice = i;
+          else if (i >= indice + visiveis()) indice = i - visiveis() + 1;
+          mostrar();
+        });
+
+        window.addEventListener("resize", mostrar);
+        mostrar();
+        iniciar();
+      })();
+    </script>
+  </body>
+</html>

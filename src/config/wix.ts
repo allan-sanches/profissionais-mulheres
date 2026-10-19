@@ -10,6 +10,7 @@
 import Markdoc, { type Config } from "@markdoc/markdoc";
 import topoJson from "@/content/wix/topo.json";
 import podcastJson from "@/content/wix/podcast.json";
+import linhasJson from "@/content/wix/linhas-editoriais.json";
 
 // O pacote resolve para CommonJS no Node, que não expõe exports nomeados.
 const { Tag } = Markdoc;
@@ -92,6 +93,18 @@ export const podcast = podcastJson as {
   };
   /** Fundo das faixas Apresentadoras e Episódios. */
   imagemDeFundo: string;
+};
+
+export const linhasEditoriais = linhasJson as {
+  itens: {
+    titulo: string;
+    link: string;
+    /** Caminho público da ilustração; sem ela, o cartão fica só com texto. */
+    ilustracao?: string | null;
+  }[];
+  textoDoBotao: string;
+  /** 0 desliga a troca automática. */
+  segundosPorTroca: number;
 };
 
 const configDoTexto: Config = {
