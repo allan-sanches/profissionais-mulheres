@@ -124,7 +124,7 @@ export const navegacao = singleton({
 });
 
 export const paginaDePesquisadoras = singleton({
-  label: "3. Página de pesquisadoras",
+  label: "3. Página da Rede de colaboração",
   path: "src/content/site/pesquisadoras",
   format: "json",
   schema: {

@@ -84,7 +84,7 @@ export default config({
   },
   collections: {
     researchers: collection({
-      label: "Pesquisadoras",
+      label: "Rede de colaboração",
       slugField: "nome",
       path: "src/content/researchers/*",
       format: "json",
