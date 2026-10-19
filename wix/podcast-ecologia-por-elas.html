@@ -2,15 +2,103 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <!-- Página do podcast Ecologia por Elas: apresentação, apresentadoras, episódios e realização/apoio. -->
+    <!--
+      ====================================================================
+      PÁGINA DO PODCAST "ECOLOGIA POR ELAS": LEIA ANTES DE EDITAR
+      ====================================================================
+
+      O QUE É ESTE ARQUIVO
+        É a página inteira do podcast, num arquivo só. Ela fica dentro do
+        site Mulheres na Ecologia, no Wix, num bloco de código HTML
+        incorporado (o Wix mostra este arquivo numa "moldura" dentro da
+        página). Textos, cores, fotos e logos estão todos aqui dentro, e
+        não existe nenhum outro arquivo.
+
+        As fotos e os logos estão "embutidos" como texto: são as linhas
+        enormes que começam com data:image/...;base64, seguidas de letras
+        aleatórias. Cada uma dessas linhas É uma imagem. Se uma delas for
+        cortada ou alterada, a imagem some.
+
+      COMO PUBLICAR UMA ALTERAÇÃO
+        1. Edite este arquivo (num editor de texto, não no Word).
+        2. Abra o arquivo no navegador (duplo clique) e confira o
+           resultado. Estreite a janela para ver como fica no celular.
+        3. No editor do Wix, abra o bloco de código HTML da página do
+           podcast, apague o código antigo, cole este arquivo INTEIRO e
+           publique o site.
+        4. Guarde uma cópia da versão publicada (é a cópia que fica em
+           wix/podcast-ecologia-por-elas.html, no repositório do site).
+
+      MAPA DO ARQUIVO (de cima para baixo; use Ctrl+F com o nome entre aspas)
+        1. "var links"       Links dos episódios. É o que mais muda.
+        2. "var episodios"   Título, sinopse e convidadas de cada episódio.
+        3. "<style>"         Aparência: cores, tamanhos, versão celular.
+        4. "<body>"          As quatro faixas da página, nesta ordem:
+                             APRESENTAÇÃO, APRESENTADORAS, EPISÓDIOS e
+                             REALIZAÇÃO E APOIO (com PIX e Instagram).
+        5. "var fotos"       Fotos das convidadas (imagens embutidas).
+        6. "MONTA A LISTA"   Código que desenha os cartões dos episódios.
+        7. "COPIAR CHAVE"    Código do botão "Copiar chave PIX".
+
+      ONDE MEXER PARA...
+        - Publicar um episódio que saiu: cole o link em "var links".
+        - Trocar título, sinopse, bio ou e-mail: "var episodios".
+        - Trocar ou incluir a foto de uma convidada: "var fotos" (lá
+          explica como).
+        - Incluir uma convidada ou um episódio novo: "var episodios"
+          (lá tem um modelo para copiar).
+        - Mudar o texto da Apresentação, das apresentadoras ou dos
+          contatos: no "<body>", na faixa correspondente.
+        - Trocar a chave PIX: no "<body>", faixa REALIZAÇÃO E APOIO. Atenção:
+          o QR code é uma imagem com a chave antiga dentro. Se a chave mudar,
+          é preciso gerar um QR code novo também.
+        - Mudar cores: no "<style>". Cada faixa tem seu bloco de cores no
+          começo da sua parte (--roxo, --verde...).
+
+      SE FOR PEDIR A ALTERAÇÃO PARA UMA IA (ChatGPT, Claude, Gemini...)
+        - O arquivo é grande demais (cerca de 660 KB, quase tudo imagem)
+          para colar inteiro numa conversa. A IA corta o arquivo ou
+          "resume" as imagens, e a página quebra. Cole só o trecho que
+          precisa mudar (por exemplo, o episódio 3 inteiro, de { até },)
+          e peça de volta só esse trecho alterado. Depois troque o trecho
+          aqui no arquivo.
+        - Junte ao pedido as regras abaixo:
+            * Altere só o que foi pedido. Não reorganize, não renomeie e
+              não "melhore" o resto.
+            * Nunca encurte, resuma nem troque as linhas
+              data:image/...;base64 (são as imagens).
+            * Mantenha tudo neste arquivo, sem bibliotecas nem arquivos
+              externos: o Wix só recebe este código. A única coisa de fora
+              são as fontes do Google Fonts.
+            * Mantenha a sintaxe do JavaScript: textos entre aspas duplas
+              e numa linha só (parágrafo = \n\n), vírgula no fim de cada
+              campo, \" para aspas retas dentro do texto.
+            * Confira no celular: o Wix chega a mostrar a página com só
+              320px de largura.
+            * Se mudar como alguma coisa funciona, atualize o comentário
+              que explica aquela parte.
+            * Textos e comentários em português do Brasil.
+      ====================================================================
+    -->
 
     <!--
       ============================================================
-      LINKS DOS EPISÓDIOS — NORMALMENTE SÓ ISTO MUDA
+      1. LINKS DOS EPISÓDIOS: NORMALMENTE SÓ ISTO MUDA
       ============================================================
-      Enquanto o link estiver vazio (""), o episódio aparece como
-      "Em breve". Quando sair, cole o endereço entre as aspas e o
-      botão "Ouvir" aparece sozinho (link do YouTube vira "Assistir").
+      O número à esquerda é o número do episódio (o mesmo de "numero" em
+      "var episodios", logo abaixo). Enquanto o link estiver vazio (""),
+      o episódio aparece como "Em breve". Quando sair, cole o endereço
+      entre as aspas e o botão aparece sozinho:
+        - link do YouTube (youtube.com ou youtu.be) vira "Assistir";
+        - qualquer outro (Spotify, Deezer...) vira "Ouvir".
+      O link abre em outra aba.
+
+      Exemplo de episódio publicado:
+        3: "https://open.spotify.com/episode/abc123",
+
+      Não apague as aspas nem a vírgula do fim da linha. Episódio novo
+      (13, 14...) precisa de uma linha nova aqui E do episódio em
+      "var episodios".
     -->
     <script>
       var links = {
@@ -30,15 +118,70 @@
     </script>
 
     <!--
-      Conteúdo dos episódios, do "Guia das Participantes" (setembro de 2026).
-      Para trocar um texto, edite entre as aspas. Dentro do texto, use \"
-      para aspas. Uma linha em branco na bio (\n\n) vira um novo parágrafo.
+      ============================================================
+      2. CONTEÚDO DOS EPISÓDIOS
+      ============================================================
+      Veio do "Guia das Participantes" (setembro de 2026). Os episódios
+      aparecem na página na mesma ordem desta lista, e as convidadas na
+      ordem em que estão dentro de cada episódio.
+
+      Campos de cada episódio:
+        numero      Número do selo "Episódio N". Liga o episódio ao seu
+                    link em "var links".
+        titulo      Título do episódio.
+        sinopse     Texto que aparece logo abaixo dos nomes das
+                    convidadas, sempre visível. Vazia ("") = não aparece.
+        convidadas  Lista das convidadas. Cada uma tem:
+          nome      Nome, como deve aparecer na página.
+          email     E-mail mostrado na etiqueta verde, embaixo do nome.
+                    Vazio ("") = a etiqueta não aparece.
+          foto      Apelido da foto em "var fotos" (minúsculas, sem
+                    acento, com hífens: "ana-sanches"). Tem que ser
+                    exatamente igual ao apelido de lá. Se não existir,
+                    aparece um círculo lilás no lugar da foto.
+          bio       Minibiografia, mostrada ao clicar em "Conhecer as
+                    convidadas".
+
+      Regras de escrita (se alguma for quebrada, a lista INTEIRA de
+      episódios some da página. Se isso acontecer, confira estas regras
+      no trecho que você mexeu):
+        - Todo texto fica entre aspas duplas: "assim".
+        - Cada texto fica numa linha só, mesmo que seja comprido. Não
+          aperte Enter no meio dele. Cuidado ao colar do Word ou do Google
+          Docs, que trazem quebras de linha junto: junte tudo numa linha.
+        - Para começar um novo parágrafo na bio ou na sinopse, escreva
+          \n\n no ponto da quebra (ex.: "Primeiro parágrafo.\n\nSegundo.").
+        - Aspas retas dentro do texto: use \" (ex.: "o projeto \"Ecologia
+          por Elas\""). Aspas curvas (“ ”) e apóstrofo (D'Bastiani) podem
+          ser usados normalmente.
+        - Cada campo termina com vírgula, e cada { } também.
+
+      Modelo para copiar e colar um episódio novo (cole antes do "];" do
+      fim da lista e crie também a linha do link em "var links"):
+
+        {
+          numero: 13,
+          titulo: "",
+          sinopse: "",
+          convidadas: [
+            {
+              nome: "",
+              email: "",
+              foto: "",
+              bio: "",
+            },
+          ],
+        },
+
+      Para mais uma convidada num episódio, copie um bloco { nome ... },
+      inteiro e cole logo depois de outro, dentro do mesmo "convidadas".
     -->
     <script>
       var episodios = [
         {
           numero: 1,
           titulo: "Ecologia Por Elas",
+          sinopse: "",
           convidadas: [
             {
               nome: "Elvira D'Bastiani",
@@ -63,6 +206,7 @@
         {
           numero: 2,
           titulo: "Quem está construindo respostas para a crise climática?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Adayse Bossolani",
@@ -87,6 +231,7 @@
         {
           numero: 3,
           titulo: "O que não vemos também adoece o planeta?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Aléxia A. Lessa",
@@ -111,12 +256,13 @@
         {
           numero: 4,
           titulo: "Quando a natureza adoece, quem adoece com ela?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Ana Paula Lula",
               email: "anapaulalula@gmail.com",
               foto: "ana-paula-lula",
-              bio: "Bióloga licenciada pela Universidade Estadual de Maringá (UEM), mestre e doutora em Ecologia e Conservação pela Universidade Federal do Paraná (UFPR). Atualmente atua como pesquisadora de pós-doutorado na Fundação Oswaldo Cruz (PROCC/FIOCRUZ), onde investiga a influência das mudanças climáticas e da paisagem natural na dinâmica das interações entre parasitos e seus hospedeiros. Seu principal interesse é entender como os aspectos sociais, econômicos e ecológicos têm moldado o complexo sistema de doenças infecciosas de origem zoonótica em humanos e em animais silvestres. Ana Paula também atua como coordenadora de conteúdo no projeto Mulheres na Ecologia e como embaixadora da Rede Brasileira de Reprodutibilidade.",
+              bio: "Bióloga licenciada pela Universidade Estadual de Maringá (UEM), mestre e doutora em Ecologia e Conservação pela Universidade Federal do Paraná (UFPR). Atualmente atua como pesquisadora de pós-doutorado na Fundação Oswaldo Cruz (PROCC/FIOCRUZ), onde investiga a influência das mudanças climáticas e da paisagem natural na dinâmica das interações entre parasitos e seus hospedeiros. Seu principal interesse é entender como os aspectos sociais, econômicos e ecológicos têm moldado o complexo sistema de doenças infecciosas de origem zoonótica em humanos e em animais silvestres. Ana Paula também atua como coordenadora de conteúdo na iniciativa Mulheres na Ecologia e como embaixadora da Rede Brasileira de Reprodutibilidade.",
             },
             {
               nome: "Daniela Dutra",
@@ -135,6 +281,7 @@
         {
           numero: 5,
           titulo: "Quem ocupa os espaços de decisão?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Eduarda Nascimento",
@@ -159,6 +306,7 @@
         {
           numero: 6,
           titulo: "O oceano não é só cenário",
+          sinopse: "",
           convidadas: [
             {
               nome: "Barbara Pinheiro",
@@ -183,6 +331,7 @@
         {
           numero: 7,
           titulo: "É possível reconstruir uma paisagem?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Amanda Narcizo",
@@ -207,6 +356,7 @@
         {
           numero: 8,
           titulo: "Cidades verdes para quem?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Ana Sanches",
@@ -231,6 +381,7 @@
         {
           numero: 9,
           titulo: "O que a ecologia tem a ver com o nosso prato?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Amanda Leão",
@@ -255,6 +406,7 @@
         {
           numero: 10,
           titulo: "Quem tem direito à natureza?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Dandara Dorneles",
@@ -273,6 +425,7 @@
         {
           numero: 11,
           titulo: "E se a comunidade também fizesse ciência?",
+          sinopse: "",
           convidadas: [
             {
               nome: "Ellen Caroline dos Santos",
@@ -297,6 +450,7 @@
         {
           numero: 12,
           titulo: "Que ecologia estamos construindo agora?",
+          sinopse: "",
           // No PDF as três bios deste episódio estão trocadas entre as
           // convidadas; aqui cada uma está com a sua (conferido pelo e-mail
           // institucional e pela foto de cada uma).
@@ -323,21 +477,54 @@
         },
       ];
     </script>
-    <!-- ============ FIM DO CONTEÚDO EDITÁVEL ============ -->
+    <!--
+      ============ FIM DOS DADOS DOS EPISÓDIOS ============
+      Daqui para baixo ficam a aparência (<style>) e a estrutura da página
+      (<body>). Os textos fixos (Apresentação, apresentadoras, contatos e
+      PIX) estão escritos direto no <body>.
+    -->
 
+    <!-- Faz a página se ajustar à largura do celular. Não mexer. -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ecologia por Elas</title>
+    <!-- Fontes do site, vindas do Google Fonts: Poppins (textos) e
+         Epilogue (títulos). É a única coisa carregada de fora. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <!--
+      ============================================================
+      3. APARÊNCIA (CSS)
+      ============================================================
+      Organização, na mesma ordem das faixas da página:
+        - Geral: fontes e fundo de cada faixa.
+        - Apresentação, Apresentadoras, Episódios, Realização e apoio:
+          cada parte começa com o seu bloco de cores e termina com os
+          ajustes para celular.
+
+      Cores: cada faixa define a sua paleta em variáveis (--roxo,
+      --verde, --lilas...), e o resto usa var(--roxo) etc. Para mudar uma
+      cor numa faixa, troque o valor no bloco de cores dela. Para mudar em
+      todas, troque em todos os blocos (o roxo #613ba8 se repete em
+      cada um).
+
+      Celular: os trechos "@media (max-width: ...)" só valem em telas
+      estreitas.
+        680px  celular e tablet pequeno: tudo vira uma coluna.
+        560px  ajustes dos cartões de episódio no celular.
+        400px  ajustes da faixa de apoio em celular estreito.
+        380px  celular bem estreito (o Wix chega a 320px).
+    -->
     <style>
+      /* ===================== Geral ===================== */
       * {
         box-sizing: border-box;
       }
 
+      /* Fundo transparente: cada faixa pinta o seu próprio fundo. */
       html,
       body {
         margin: 0;
@@ -371,18 +558,24 @@
           sans-serif;
       }
 
+      /* Negrito (<strong> e <b>) um pouco mais leve que o padrão. */
       strong,
       b {
         font-weight: 600;
       }
 
       /* Quatro faixas, na ordem do Guia: apresentação, apresentadoras,
-         episódios, realização e apoio. */
+         episódios, realização e apoio. Aqui fica o fundo de cada uma. */
+
+      /* Apresentação: fundo branco, texto verde. */
       .sec-apresentacao {
         background: #fff;
         color: var(--verde);
       }
 
+      /* Apresentadoras e Episódios: a foto da capa do Guia bem clarinha,
+         embutida na linha longa logo abaixo (a imagem é o texto entre
+         url(" e ")). */
       .sec-apresentadoras,
       .sec-episodios {
         background: var(--fundo)
@@ -396,6 +589,7 @@
         padding: 40px 24px 48px;
       }
 
+      /* Título "EPISÓDIOS". */
       .sec-titulo {
         max-width: 860px;
         margin: 0 auto 24px;
@@ -406,11 +600,14 @@
         letter-spacing: 0.02em;
       }
 
+      /* Realização e apoio: fundo lilás (cor definida no bloco de cores da
+         faixa, mais abaixo). */
       .sec-apoio {
         background: var(--lilas);
         color: #000;
       }
 
+      /* Celular: menos espaço nas bordas e título "EPISÓDIOS" menor. */
       @media (max-width: 680px) {
         .sec-episodios {
           padding: 28px 16px 36px;
@@ -423,18 +620,21 @@
       }
 
       /* ===================== Apresentação ===================== */
-      /* Cores da página do Guia (paleta Mulheres na Ecologia). */
+      /* Cores da página do Guia (paleta Mulheres na Ecologia).
+         --roxo: título "APRESENTAÇÃO". --verde: texto. */
       .sec-apresentacao {
         --roxo: #613ba8;
         --verde: #297552;
       }
 
+      /* Miolo da faixa: largura máxima e espaço nas bordas. */
       .apr-pagina {
         max-width: 880px;
         margin: 0 auto;
         padding: 40px 24px 48px;
       }
 
+      /* Título "APRESENTAÇÃO". */
       .apr-titulo {
         margin: 0 0 28px;
         color: var(--roxo);
@@ -444,6 +644,7 @@
         letter-spacing: 0.02em;
       }
 
+      /* Parágrafos da apresentação. */
       .apr-texto {
         margin: 0;
         max-width: 640px;
@@ -451,6 +652,7 @@
         line-height: 1.75;
       }
 
+      /* Parte de baixo: segundo parágrafo à esquerda, logo à direita. */
       .apr-baixo {
         display: grid;
         grid-template-columns: minmax(0, 380px) auto;
@@ -460,6 +662,7 @@
         margin-top: 36px;
       }
 
+      /* Logo ao lado do texto. A largura dele é o "width" logo abaixo. */
       .apr-logos {
         display: grid;
         gap: 28px;
@@ -508,21 +711,26 @@
       }
 
       /* ===================== Apresentadoras ===================== */
-      /* Cores do Guia das Participantes (paleta Mulheres na Ecologia). */
+      /* Cores do Guia das Participantes (paleta Mulheres na Ecologia).
+         --roxo: textos e etiqueta do nome. --verde: etiqueta do e-mail.
+         --fundo: cor por trás da foto de fundo. */
       .sec-apresentadoras {
         --roxo: #613ba8;
         --verde: #297552;
         --fundo: #e3e2ea;
       }
 
-      /* Fundo: a foto da capa bem clarinha, como no PDF. */
+      /* Fundo: a foto da capa bem clarinha, como no PDF (regra em "Geral",
+         lá em cima). */
 
+      /* Miolo da faixa: largura máxima e espaço nas bordas. */
       .ap-pagina {
         max-width: 880px;
         margin: 0 auto;
         padding: 40px 24px 48px;
       }
 
+      /* Título "APRESENTADORAS". */
       .ap-titulo {
         margin: 0 0 36px;
         font-size: 2.25rem;
@@ -532,7 +740,9 @@
       }
 
       /* Cada apresentadora: etiqueta com nome e e-mail ao lado da foto, bio do
-         outro lado. A segunda vem espelhada, como no PDF. */
+         outro lado. A segunda vem espelhada, como no PDF.
+         .ap--esq = etiqueta | foto | bio (primeira apresentadora)
+         .ap--dir = bio | foto | etiqueta, com o logo de pé embaixo (segunda) */
       .ap {
         display: grid;
         column-gap: 10px;
@@ -553,6 +763,7 @@
           "bio . logo";
       }
 
+      /* Foto quadrada da apresentadora (200 x 200 px). */
       .ap-foto {
         grid-area: foto;
         display: block;
@@ -561,6 +772,7 @@
         object-fit: cover;
       }
 
+      /* Etiqueta: nome (faixa roxa) com o e-mail (faixa verde) embaixo. */
       .ap-etiqueta {
         grid-area: etiqueta;
         align-self: center;
@@ -597,6 +809,7 @@
         overflow-wrap: anywhere;
       }
 
+      /* Minibiografia da apresentadora. */
       .ap-bio {
         grid-area: bio;
         margin: -6px 0 0;
@@ -703,22 +916,40 @@
       /* ===================== Episódios ===================== */
       /* Cores do Guia das Participantes (paleta Mulheres na Ecologia). */
       .sec-episodios {
-        --roxo: #613ba8;
+        --roxo: #613ba8; /* selo "Episódio N", "Conhecer as convidadas", fundo das bios */
         --roxo-escuro: #4c2c8a;
-        --lilas: #f0defc;
-        --verde: #297552;
-        --verde-escuro: #1f5c40;
-        --verde-claro: #d1ebd1;
-        --ardosia: #45597d;
-        --texto: #0a0a0a;
-        --texto-suave: #4a4458;
-        --borda: #e4daf0;
-        --fundo: #e3e2ea;
+        --lilas: #f0defc; /* etiqueta "Em breve" e círculo de foto vazia */
+        --verde: #297552; /* botão Ouvir/Assistir e etiqueta do e-mail */
+        --verde-escuro: #1f5c40; /* botão Ouvir/Assistir com o mouse em cima */
+        --verde-claro: #d1ebd1; /* texto das bios, sobre o roxo */
+        --ardosia: #45597d; /* título do episódio */
+        --texto: #0a0a0a; /* sinopse */
+        --texto-suave: #4a4458; /* "Com Fulana, Ciclana e Beltrana" */
+        --borda: #e4daf0; /* borda do cartão e linha acima de "Conhecer..." */
+        --fundo: #e3e2ea; /* cor por trás da foto de fundo */
       }
 
-      /* Fundo: a mesma foto clarinha das apresentadoras (regra junto da
-         .sec-apresentadoras, lá em cima). */
+      /* Fundo: a mesma foto clarinha das apresentadoras (regra em "Geral",
+         lá em cima). */
 
+      /* Os cartões são montados pelo código "MONTA A LISTA", no fim do
+         arquivo, a partir de "var episodios". Cada cartão, de cima para
+         baixo:
+           .ep                   o cartão branco
+             .ep-topo            selo "Episódio N" + botão Ouvir/Assistir
+                                 (.ep-acao) ou etiqueta "Em breve" (.ep-breve)
+             .ep-titulo          título do episódio
+             .ep-elenco          fotinhas sobrepostas (.ep-rostos) e
+                                 "Com Fulana, Ciclana e Beltrana" (.ep-nomes)
+             .ep-sinopse         sinopse (só aparece se estiver preenchida)
+             .ep-detalhes        "Conhecer as convidadas": abre e fecha
+               .convidadas       uma .convidada por pessoa, com:
+                 .convidada-foto   foto, etiqueta roxa do nome
+                                   (.convidada-nome) e verde do e-mail
+                                   (.convidada-email)
+                 .convidada-bio    bio no bloco roxo */
+
+      /* A lista inteira: um cartão embaixo do outro. */
       .episodios {
         list-style: none;
         margin: 0 auto;
@@ -728,6 +959,7 @@
         gap: 16px;
       }
 
+      /* O cartão branco de cada episódio. */
       .ep {
         background: #fff;
         border: 1px solid var(--borda);
@@ -735,6 +967,7 @@
         padding: 20px 24px;
       }
 
+      /* Linha de cima: selo à esquerda, botão ou "Em breve" à direita. */
       .ep-topo {
         display: flex;
         align-items: center;
@@ -742,6 +975,7 @@
         gap: 12px;
       }
 
+      /* Selo roxo "Episódio N". */
       .ep-selo {
         display: inline-block;
         padding: 6px 18px;
@@ -753,6 +987,7 @@
         white-space: nowrap;
       }
 
+      /* Título do episódio. */
       .ep-titulo {
         margin: 14px 0 0;
         font-size: 1.5rem;
@@ -761,6 +996,8 @@
         color: var(--ardosia);
       }
 
+      /* Botão verde "Ouvir" / "Assistir" (só aparece quando o episódio tem
+         link em "var links"). */
       .ep-acao {
         display: inline-flex;
         align-items: center;
@@ -780,18 +1017,21 @@
         background: var(--verde-escuro);
       }
 
+      /* Contorno roxo ao navegar pelo teclado (tecla Tab). */
       .ep-acao:focus-visible,
       .ep-detalhes summary:focus-visible {
         outline: 2px solid var(--roxo);
         outline-offset: 3px;
       }
 
+      /* Triângulo de "play" dentro do botão. */
       .ep-acao svg {
         width: 12px;
         height: 12px;
         fill: currentColor;
       }
 
+      /* Etiqueta lilás "Em breve" (episódio ainda sem link). */
       .ep-breve {
         padding: 7px 14px;
         border-radius: 999px;
@@ -824,10 +1064,12 @@
         object-fit: cover;
       }
 
+      /* Margem negativa: cada foto entra um pouco por cima da anterior. */
       .ep-rostos img + img {
         margin-left: -12px;
       }
 
+      /* "Com Fulana, Ciclana e Beltrana". */
       .ep-nomes {
         margin: 0;
         font-size: 1rem;
@@ -835,7 +1077,26 @@
         line-height: 1.4;
       }
 
-      /* Bios: abrem uma de cada vez (atributo name no <details>). */
+      /* Sinopse: logo abaixo dos nomes, só quando preenchida. Cada parágrafo
+         (\n\n no texto) vira um <p>, com um respiro entre eles. */
+      .ep-sinopse {
+        margin-top: 12px;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--texto);
+      }
+
+      .ep-sinopse p {
+        margin: 0;
+      }
+
+      .ep-sinopse p + p {
+        margin-top: 0.75em;
+      }
+
+      /* "Conhecer as convidadas": clicar abre as bios, clicar de novo
+         ("Fechar") fecha. Só um episódio fica aberto por vez (quem faz isso
+         é o atributo name no <details>, colocado pelo código). */
       .ep-detalhes {
         margin-top: 14px;
         border-top: 1px solid var(--borda);
@@ -854,10 +1115,13 @@
         border-radius: 6px;
       }
 
+      /* Esconde o triângulo padrão do navegador; usamos a nossa seta. */
       .ep-detalhes summary::-webkit-details-marker {
         display: none;
       }
 
+      /* Seta ao lado de "Conhecer as convidadas": vira para cima quando
+         está aberto. */
       .ep-detalhes summary svg {
         width: 14px;
         height: 14px;
@@ -871,6 +1135,7 @@
         transform: rotate(180deg);
       }
 
+      /* Fechado mostra "Conhecer as convidadas"; aberto mostra "Fechar". */
       .ep-detalhes .rotulo-fechar,
       .ep-detalhes[open] .rotulo-abrir {
         display: none;
@@ -880,6 +1145,7 @@
         display: inline;
       }
 
+      /* Lista das convidadas aberta: uma embaixo da outra. */
       .convidadas {
         display: grid;
         gap: 20px;
@@ -887,7 +1153,8 @@
       }
 
       /* Como no PDF: foto com o nome na etiqueta roxa, e-mail na etiqueta
-         verde logo abaixo, bio no bloco roxo. */
+         verde logo abaixo, bio no bloco roxo. Duas colunas: foto (190px) e
+         bio (o resto). */
       .convidada {
         display: grid;
         grid-template-columns: 190px 1fr;
@@ -910,6 +1177,8 @@
         object-fit: cover;
       }
 
+      /* Etiquetas embaixo da foto. A margem negativa sobe as etiquetas um
+         pouco por cima da foto, como no PDF. */
       .convidada-legenda {
         display: flex;
         flex-direction: column;
@@ -942,6 +1211,7 @@
         overflow-wrap: anywhere;
       }
 
+      /* Bio: texto verde-claro sobre bloco roxo. */
       .convidada-bio {
         background: var(--roxo);
         color: var(--verde-claro);
@@ -959,6 +1229,8 @@
         margin-top: 0.75em;
       }
 
+      /* Texto invisível na tela, mas lido por leitores de tela (pessoas
+         cegas). */
       .so-leitor {
         position: absolute;
         width: 1px;
@@ -968,7 +1240,8 @@
         white-space: nowrap;
       }
 
-      /* Celular: foto em cima, bio embaixo. */
+      /* Celular: tudo um pouco menor e, nas convidadas, foto em cima e bio
+         embaixo. */
       @media (max-width: 560px) {
         .ep {
           padding: 16px;
@@ -1006,6 +1279,11 @@
         .ep-nomes,
         .ep-detalhes summary {
           font-size: 0.875rem;
+        }
+
+        .ep-sinopse {
+          font-size: 0.9375rem;
+          line-height: 1.55;
         }
 
         .convidada {
@@ -1050,16 +1328,17 @@
          ardósia um pouco mais escuros que no PDF para os títulos ficarem
          legíveis sobre o lilás. */
       .sec-apoio {
-        --lilas: #ab99d9;
-        --roxo: #613ba8;
+        --lilas: #ab99d9; /* fundo da faixa */
+        --roxo: #613ba8; /* linha entre Realização e Apoio */
         --roxo-vivo: #7d1cd4;
-        --roxo-escuro: #4c2c8a;
-        --verde: #1f5c40;
-        --ardosia: #34586e;
-        --cinza: #d3d3d3;
-        --chave: #1c3a41;
+        --roxo-escuro: #4c2c8a; /* fim do degradê de "Apoie e siga..." */
+        --verde: #1f5c40; /* começo dos degradês dos títulos */
+        --ardosia: #34586e; /* fim do degradê de "Realização" e "Apoio" */
+        --cinza: #d3d3d3; /* desenho do cartão do Instagram */
+        --chave: #1c3a41; /* chave PIX e botão "Copiar chave PIX" */
       }
 
+      /* Miolo da faixa: largura máxima e espaço nas bordas. */
       .apoio-pagina {
         max-width: 880px;
         margin: 0 auto;
@@ -1078,17 +1357,21 @@
       }
 
       /* ---------- Realização | Apoio ---------- */
+      /* Duas colunas de logos com uma linha fina no meio. */
       .parceiros {
         display: grid;
         grid-template-columns: 1fr 2px 1fr;
         gap: 40px;
       }
 
+      /* A linha fina entre as duas colunas. */
       .divisoria {
         background: rgb(97 59 168 / 0.55);
         border-radius: 1px;
       }
 
+      /* Títulos "Realização" e "Apoio", com o texto em degradê de verde para
+         ardósia. */
       .titulo-sec {
         margin: 0;
         display: inline-block;
@@ -1101,6 +1384,7 @@
         color: transparent;
       }
 
+      /* Lista de logos de cada coluna, um embaixo do outro. */
       .logos {
         list-style: none;
         margin: 24px 0 0;
@@ -1116,6 +1400,9 @@
         height: auto;
       }
 
+      /* Largura de cada logo, ajustada a olho para que todos pareçam do
+         mesmo tamanho. Logo novo: crie uma classe igual (.l-nome) e use-a
+         no <img> do logo. */
       .l-meco {
         width: 190px;
       }
@@ -1135,6 +1422,7 @@
         width: 215px;
       }
 
+      /* Nome por extenso escrito embaixo do logo do ILPS. */
       .ilps-nome {
         display: block;
         margin-top: 10px;
@@ -1144,7 +1432,9 @@
         letter-spacing: 0.01em;
       }
 
-      /* ---------- Apoie e siga o nosso projeto ---------- */
+      /* ---------- Apoie e siga a nossa iniciativa ---------- */
+      /* Duas colunas: à esquerda título, QR code, contatos e PIX; à direita
+         o cartão do Instagram (385px). */
       .apoie {
         margin-top: 56px;
         display: grid;
@@ -1153,6 +1443,7 @@
         align-items: end;
       }
 
+      /* "Apoie e siga a nossa iniciativa", com degradê de cima para baixo. */
       .titulo-grande {
         margin: 0;
         display: inline-block;
@@ -1170,6 +1461,7 @@
         color: transparent;
       }
 
+      /* QR code do PIX à esquerda, contatos à direita. */
       .pix-contatos {
         display: grid;
         grid-template-columns: 140px 1fr;
@@ -1178,6 +1470,7 @@
         margin-top: 28px;
       }
 
+      /* QR code. "pixelated" deixa os quadradinhos nítidos ao ampliar. */
       .qr {
         display: block;
         width: 140px;
@@ -1185,6 +1478,7 @@
         image-rendering: pixelated;
       }
 
+      /* Instagram, e-mail e site. */
       .contatos {
         font-size: 1rem;
         line-height: 1.3;
@@ -1209,6 +1503,7 @@
         text-decoration: underline;
       }
 
+      /* "SAIBA MAIS", com a setinha. */
       .saiba {
         display: flex;
         align-items: center;
@@ -1222,12 +1517,14 @@
         height: auto;
       }
 
+      /* "Nos ajude a levar a ciência mais longe...". */
       .chamada {
         margin: 24px 0 0;
         font-size: 1.125rem;
         line-height: 1.35;
       }
 
+      /* Linha do PIX: ícone, chave e botão "Copiar chave PIX". */
       .pix {
         display: flex;
         flex-wrap: wrap;
@@ -1265,7 +1562,11 @@
       }
 
       /* ---------- Cartão "segue a gente" (leva ao Instagram) ---------- */
-      /* Faixa da esquerda (27,8%) é onde os corações sobram para fora do cartão. */
+      /* É um desenho de perfil do Instagram feito com código (não é uma
+         imagem nem um print), copiado do PDF. O cartão inteiro é um link
+         para o Instagram. Os números (posts, seguidores) são texto fixo,
+         escrito no <body>, e não se atualizam sozinhos.
+         Faixa da esquerda (27,8%) é onde os corações sobram para fora do cartão. */
       .insta {
         position: relative;
         display: grid;
@@ -1276,6 +1577,7 @@
         color: #1a1a1a;
       }
 
+      /* Moldura do "celular", com sombra cinza deslocada. */
       .insta-moldura {
         grid-column: 2;
         position: relative;
@@ -1288,6 +1590,7 @@
         padding: 10px 12px 10px;
       }
 
+      /* Topo: bolinha de avatar, "segue a gente" e três pontinhos. */
       .insta-topo {
         display: flex;
         align-items: center;
@@ -1322,6 +1625,7 @@
         background: var(--cinza);
       }
 
+      /* "Tela" com os dados do perfil (nome, números, descrição, links). */
       .insta-tela {
         flex: 1;
         margin-top: 10px;
@@ -1352,6 +1656,8 @@
         color: #5a5468;
       }
 
+      /* Bolinhas coloridas antes das linhas da descrição do perfil (a cor
+         de cada uma está no próprio <span>, no <body>). */
       .ponto {
         display: inline-block;
         width: 7px;
@@ -1376,6 +1682,7 @@
         color: #2c3fb8;
       }
 
+      /* Base: ícones de curtir, comentar, enviar e salvar. */
       .insta-base {
         display: flex;
         align-items: center;
@@ -1397,6 +1704,7 @@
         margin-left: auto;
       }
 
+      /* Corações roxos flutuando no canto de baixo, à esquerda do cartão. */
       .coracoes {
         position: absolute;
         left: 0;
@@ -1406,10 +1714,12 @@
         pointer-events: none;
       }
 
+      /* Com o mouse em cima, a moldura fica branca. */
       .insta:hover .insta-moldura {
         border-color: #fff;
       }
 
+      /* Aviso "Chave PIX copiada." só para leitores de tela. */
       .sec-apoio .so-leitor {
         position: absolute;
         width: 1px;
@@ -1519,6 +1829,7 @@
       }
 
       /* ===================== Celular estreito (Wix: mínimo 320px) ===================== */
+      /* Todos os títulos grandes da página encolhem para caber na linha. */
       @media (max-width: 380px) {
         .apr-titulo,
         .ap-titulo,
@@ -1530,11 +1841,28 @@
       }
     </style>
   </head>
+  <!--
+    ============================================================
+    4. A PÁGINA (as quatro faixas, de cima para baixo)
+    ============================================================
+    Os textos fixos estão escritos aqui direto. Para mudar um texto, troque
+    só as palavras entre as marcações. As marcações em si (<p>, </p>,
+    <strong>...) ficam como estão.
+      <strong>texto</strong>   deixa o texto em negrito
+      <br />                   quebra a linha
+      <wbr />                  ponto onde uma palavra longa pode quebrar
+                               (usado no e-mail)
+    Imagens (src="data:image/...") são as linhas enormes. Não mexa nelas.
+    O alt="..." de cada imagem é a descrição lida por leitores de tela.
+  -->
   <body>
     <main>
+      <!-- ===== FAIXA 1: APRESENTAÇÃO ===== -->
+      <!-- Dois parágrafos sobre o podcast e o logo ao lado do segundo. -->
       <section class="sec-apresentacao">
         <div class="apr-pagina">
           <h2 class="apr-titulo">APRESENTAÇÃO</h2>
+          <!-- Primeiro parágrafo. -->
           <p class="apr-texto">
             <strong>“Dar visibilidade e voz às Ecólogas brasileiras”,</strong>
             esse é o nosso lema. E é a partir dele que nasce o
@@ -1546,6 +1874,7 @@
             Queremos inspirar, questionar, aprender e construir pontes entre a
             ciência, a sociedade e o futuro que desejamos.
           </p>
+          <!-- Segundo parágrafo (à esquerda) e logo (à direita). -->
           <div class="apr-baixo">
             <p class="apr-texto">
               Para a execução desse projeto contamos com o apoio da Sociedade
@@ -1554,6 +1883,7 @@
               valor do nosso mundo natural, fornecendo evidências para melhores
               decisões.
             </p>
+            <!-- Logo (imagem embutida). -->
             <div class="apr-logos">
               <img
                 src="data:image/webp;base64,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"
@@ -1564,10 +1894,16 @@
         </div>
       </section>
 
+      <!-- ===== FAIXA 2: APRESENTADORAS ===== -->
+      <!-- Cada apresentadora é um bloco <section class="ap ...">, com foto,
+           nome (<h3>), e-mail e bio (<p class="ap-bio">). A primeira
+           (ap--esq) tem a foto no meio e a bio à direita; a segunda
+           (ap--dir) é espelhada e leva o logo de pé no canto. -->
       <section class="sec-apresentadoras">
         <div class="ap-pagina">
           <h2 class="ap-titulo">APRESENTADORAS</h2>
 
+          <!-- Apresentadora 1: Júlia Angeli -->
           <section class="ap ap--esq">
             <img
               class="ap-foto"
@@ -1592,6 +1928,8 @@
             </p>
           </section>
 
+          <!-- Apresentadora 2: Myrna Elis. Aqui a bio vem antes da foto no
+               código porque o bloco é espelhado. -->
           <section class="ap ap--dir">
             <p class="ap-bio">
               Bióloga, mestre e doutoranda pela UFAL. Sua pesquisa se concentra
@@ -1599,7 +1937,7 @@
               <strong
                 >redes de interações ecológicas e na aplicação de abordagens
                 interdisciplinares em macroecologia</strong
-              >. Além do projeto Mulheres na Ecologia, também integra as
+              >. Além da iniciativa Mulheres na Ecologia, também integra as
               iniciativas Liga das Mulheres Pelo Oceano e a Black Women in
               Ecology, Evolution, and Marine Science (BWEEMS).
             </p>
@@ -1612,6 +1950,7 @@
               <h3 class="ap-nome">Myrna Elis</h3>
               <span class="ap-email">myrnaelis.bio@gmail.com</span>
             </div>
+            <!-- Logo "ecologia por elas" de pé (girado pelo estilo). -->
             <div class="logo-vertical">
               <img
                 src="data:image/webp;base64,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"
@@ -1622,13 +1961,25 @@
         </div>
       </section>
 
+      <!-- ===== FAIXA 3: EPISÓDIOS ===== -->
+      <!-- A lista fica vazia aqui de propósito: o código "MONTA A LISTA",
+           no fim do arquivo, preenche com um cartão por episódio a partir
+           de "var episodios" e "var links", lá no topo. Não escreva
+           episódios aqui; edite os dados lá em cima. -->
       <section class="sec-episodios">
         <h2 class="sec-titulo">EPISÓDIOS</h2>
         <ul class="episodios" id="episodios"></ul>
       </section>
 
+      <!-- ===== FAIXA 4: REALIZAÇÃO E APOIO ===== -->
+      <!-- Em cima: logos de Realização | Apoio. Embaixo: "Apoie e siga a
+           nossa iniciativa", com QR code, contatos, chave PIX e o cartão do
+           Instagram. -->
       <section class="sec-apoio">
         <div class="apoio-pagina">
+          <!-- Logos. Para incluir um logo, copie um <li>...</li> inteiro,
+               troque a imagem (src), o alt e a classe de largura (l-...,
+               definida no estilo). -->
           <div class="parceiros">
             <section>
               <h2 class="titulo-sec">Realização</h2>
@@ -1688,18 +2039,26 @@
             </section>
           </div>
 
+          <!-- Apoie e siga a nossa iniciativa -->
           <div class="apoie">
+            <!-- Coluna da esquerda: título, QR code + contatos, chamada e PIX. -->
             <div>
               <h2 class="titulo-grande">
-                Apoie e siga<br />o nosso<br />projeto
+                Apoie e siga<br />a nossa<br />iniciativa
               </h2>
 
               <div class="pix-contatos">
+                <!-- QR code do PIX. É uma imagem com a chave PIX gravada
+                     dentro: se a chave mudar, gere um QR code novo e troque
+                     esta imagem também. -->
                 <img
                   class="qr"
                   src="data:image/png;base64,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"
-                  alt="QR code do PIX para apoiar o projeto"
+                  alt="QR code do PIX para apoiar a iniciativa"
                 />
+                <!-- Contatos. Em cada link, o endereço fica em href="..." e o
+                     texto que aparece fica entre > e </a>. Trocou um,
+                     troque o outro também. -->
                 <div class="contatos">
                   <p class="saiba">
                     <img
@@ -1723,7 +2082,7 @@
                     >
                   </p>
                   <p>
-                    <strong>Conheça o projeto:</strong>
+                    <strong>Conheça a iniciativa:</strong>
                     <a
                       class="sublinhado"
                       href="https://www.mulheresnaecologia.com/"
@@ -1741,6 +2100,11 @@
                 <strong>vozes femininas</strong>.
               </p>
 
+              <!-- Chave PIX. O botão "Copiar chave PIX" copia exatamente o
+                   texto de dentro do <span id="chave-pix">, então para
+                   trocar a chave basta trocar esse texto (e o QR code, lá
+                   em cima). Não mude os id="...": o código do botão
+                   depende deles. -->
               <p class="pix">
                 <img
                   src="data:image/png;base64,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"
@@ -1752,10 +2116,15 @@
                 <button type="button" class="copiar" id="copiar-pix">
                   Copiar chave PIX
                 </button>
+                <!-- Aviso "Chave PIX copiada." para leitores de tela. -->
                 <span class="so-leitor" role="status" id="aviso-pix"></span>
               </p>
             </div>
 
+            <!-- Coluna da direita: cartão "segue a gente", um desenho de
+                 perfil do Instagram. O cartão inteiro é um link para o
+                 perfil. Os números (posts, seguidores, seguindo) são texto
+                 fixo: atualize à mão se quiser. -->
             <a
               class="insta"
               href="https://www.instagram.com/mulheres_na_ecologia/"
@@ -1794,6 +2163,7 @@
                     <span>@ mulheres_na_ecologia</span>
                   </p>
                 </div>
+                <!-- Ícones de curtir, comentar, enviar e salvar (desenhos). -->
                 <div class="insta-base">
                   <svg viewBox="0 0 24 24">
                     <path
@@ -1892,7 +2262,29 @@
     </main>
 
     <script>
-      // Fotos das convidadas, recortadas do Guia das Participantes. Não precisa mexer.
+      // ============================================================
+      // 5. FOTOS DAS CONVIDADAS
+      // ============================================================
+      // Fotos recortadas do Guia das Participantes. Para os episódios
+      // atuais não precisa mexer.
+      //
+      // Cada linha é: "apelido": "imagem",
+      //   - O apelido é o que vai no campo foto de cada convidada em
+      //     "var episodios" (lá em cima). Os dois têm que ser iguais.
+      //   - A imagem é a foto inteira escrita como texto (base64). Por isso
+      //     as linhas são enormes. Nunca corte nem edite essas linhas.
+      //   - Estão em ordem alfabética só para facilitar a busca.
+      //
+      // Para incluir ou trocar uma foto:
+      //   1. Recorte a foto em quadrado, com o rosto no centro (o círculo
+      //      é feito pelo estilo).
+      //   2. Reduza para 192 x 192 pixels e salve em WebP (fica leve; a
+      //      página inteira vai para o Wix de uma vez).
+      //   3. Converta para base64 num conversor "imagem para base64". O
+      //      resultado tem que começar com data:image/webp;base64,
+      //   4. Acrescente uma linha aqui: "apelido-da-pessoa": "data:image/...",
+      //      e use o mesmo apelido no campo foto da convidada.
+      // Se a foto não existir, aparece um círculo lilás vazio no lugar.
       var fotos = {
         "adayse-bossolani":
           "data:image/webp;base64,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",
@@ -1968,15 +2360,34 @@
     </script>
 
     <script>
+      // ============================================================
+      // 6. MONTA A LISTA DE EPISÓDIOS
+      // ============================================================
+      // Lê "var links", "var episodios" e "var fotos" (lá em cima) e desenha
+      // um cartão por episódio dentro da lista vazia da faixa EPISÓDIOS
+      // (<ul id="episodios">). Para mudar conteúdo, edite os dados lá em
+      // cima, não aqui. Mexa aqui só para mudar como o cartão é montado
+      // (por exemplo, trocar a ordem das partes ou um texto fixo como
+      // "Em breve" ou "Conhecer as convidadas").
+      //
+      // A ordem em que as partes são acrescentadas abaixo é a ordem em que
+      // aparecem no cartão: topo, título, elenco, sinopse, convidadas.
+      // A aparência de cada parte está no estilo, na seção "Episódios".
       (function () {
+        // A lista vazia da faixa EPISÓDIOS, onde os cartões entram.
         var lista = document.getElementById("episodios");
+        // Ícones desenhados em SVG: triângulo de "play" do botão e seta
+        // de "Conhecer as convidadas".
         var PLAY =
           '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
         var SETA =
           '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>';
 
+        // Cria um elemento da página: el("p", "ep-nomes", "texto") vira
+        // <p class="ep-nomes">texto</p>.
         // Monta com createElement/textContent para que textos com & ou <
-        // apareçam como texto, sem quebrar o HTML.
+        // apareçam como texto, sem quebrar o HTML. (Não troque por
+        // innerHTML para os textos dos episódios.)
         function el(tag, classe, texto) {
           var no = document.createElement(tag);
           if (classe) no.className = classe;
@@ -1984,6 +2395,10 @@
           return no;
         }
 
+        // Cria a imagem de uma foto a partir do apelido (ver "var fotos").
+        // Foto inexistente fica vazia (círculo lilás). alt="" porque o nome
+        // da convidada já está escrito ao lado. "lazy" só carrega a foto
+        // quando ela chega perto da tela.
         function foto(slug) {
           var img = el("img");
           img.src = fotos[slug] || "";
@@ -1992,6 +2407,7 @@
           return img;
         }
 
+        // ["Ana", "Bia", "Cris"] vira "Ana, Bia e Cris".
         function juntarNomes(nomes) {
           if (nomes.length < 2) return nomes.join("");
           return (
@@ -1999,19 +2415,25 @@
           );
         }
 
+        // Um cartão para cada episódio, na ordem de "var episodios".
         episodios.forEach(function (ep) {
           var item = el("li", "ep");
 
+          // --- Topo: selo "Episódio N" + botão Ouvir/Assistir ou "Em breve"
           var topo = el("div", "ep-topo");
           topo.appendChild(el("span", "ep-selo", "Episódio " + ep.numero));
           var link = links[ep.numero];
           if (link) {
+            // Link com "youtube" ou "youtu.be" vira "Assistir"; os outros,
+            // "Ouvir".
             var verbo = /youtu\.?be/.test(link) ? "Assistir" : "Ouvir";
             var a = el("a", "ep-acao");
             a.href = link;
             // O Wix mostra o embed num iframe: o link abre em outra aba.
             a.target = "_blank";
             a.rel = "noopener noreferrer";
+            // Texto completo do botão para leitores de tela
+            // ("Ouvir o episódio 3: título").
             a.setAttribute(
               "aria-label",
               verbo + " o episódio " + ep.numero + ": " + ep.titulo,
@@ -2020,12 +2442,15 @@
             a.appendChild(document.createTextNode(verbo));
             topo.appendChild(a);
           } else {
+            // Sem link ainda: etiqueta "Em breve".
             topo.appendChild(el("span", "ep-breve", "Em breve"));
           }
           item.appendChild(topo);
 
+          // --- Título
           item.appendChild(el("h3", "ep-titulo", ep.titulo));
 
+          // --- Elenco: fotinhas sobrepostas + "Com Fulana, Ciclana e Beltrana"
           var elenco = el("div", "ep-elenco");
           var rostos = el("div", "ep-rostos");
           ep.convidadas.forEach(function (c) {
@@ -2038,8 +2463,23 @@
           elenco.appendChild(el("p", "ep-nomes", "Com " + juntarNomes(nomes)));
           item.appendChild(elenco);
 
+          // --- Sinopse: só entra se estiver preenchida. Cada parágrafo
+          // (separado por \n\n no texto) vira um <p>.
+          if (ep.sinopse) {
+            var sinopse = el("div", "ep-sinopse");
+            ep.sinopse.split(/\n\s*\n/).forEach(function (paragrafo) {
+              sinopse.appendChild(el("p", "", paragrafo));
+            });
+            item.appendChild(sinopse);
+          }
+
+          // --- "Conhecer as convidadas": bloco que abre e fecha (<details>).
+          // O name igual em todos os episódios faz só um ficar aberto por
+          // vez: abrir um fecha o outro.
           var detalhes = el("details", "ep-detalhes");
           detalhes.setAttribute("name", "convidadas");
+          // Linha clicável: "Conhecer as convidadas" (fechado) ou "Fechar"
+          // (aberto); o estilo mostra um ou outro.
           var resumo = el("summary");
           resumo.appendChild(
             el("span", "rotulo-abrir", "Conhecer as convidadas"),
@@ -2048,13 +2488,16 @@
           resumo.insertAdjacentHTML("beforeend", SETA);
           detalhes.appendChild(resumo);
 
+          // Conteúdo que aparece ao abrir: uma ficha por convidada.
           var grade = el("div", "convidadas");
           ep.convidadas.forEach(function (c) {
             var bloco = el("div", "convidada");
+            // Foto com as etiquetas de nome (roxa) e e-mail (verde) embaixo.
             var fig = el("figure", "convidada-foto");
             fig.appendChild(foto(c.foto));
             var legenda = el("figcaption", "convidada-legenda");
             legenda.appendChild(el("span", "convidada-nome", c.nome));
+            // E-mail só aparece se estiver preenchido.
             if (c.email) {
               // <wbr> antes do @: e-mail longo quebra ali, não no meio da palavra.
               var email = el("span", "convidada-email");
@@ -2074,6 +2517,7 @@
             }
             fig.appendChild(legenda);
             bloco.appendChild(fig);
+            // Bio no bloco roxo; cada parágrafo (\n\n) vira um <p>.
             var bio = el("div", "convidada-bio");
             c.bio.split(/\n\s*\n/).forEach(function (paragrafo) {
               bio.appendChild(el("p", "", paragrafo));
@@ -2084,20 +2528,30 @@
           detalhes.appendChild(grade);
           item.appendChild(detalhes);
 
+          // Cartão pronto: entra no fim da lista.
           lista.appendChild(item);
         });
       })();
     </script>
 
     <script>
-      // "Copiar chave PIX": tenta a área de transferência; se o Wix bloquear,
-      // usa o método antigo; se nada funcionar, deixa a chave selecionada.
+      // ============================================================
+      // 7. BOTÃO "COPIAR CHAVE PIX"
+      // ============================================================
+      // Copia o texto do <span id="chave-pix"> (faixa REALIZAÇÃO E APOIO).
+      // Tenta a área de transferência; se o Wix bloquear, usa o método
+      // antigo; se nada funcionar, deixa a chave selecionada para a pessoa
+      // copiar com Ctrl+C. Para trocar a chave, mude o texto no <body>, não
+      // aqui.
       (function () {
+        // Os três elementos da linha do PIX, achados pelo id do <body>.
         var botao = document.getElementById("copiar-pix");
         var chave = document.getElementById("chave-pix");
         var aviso = document.getElementById("aviso-pix");
+        // Guarda o texto original do botão para voltar depois.
         var rotulo = botao.textContent;
 
+        // Deu certo: o botão mostra "Chave copiada!" por 2 segundos e volta.
         function copiou() {
           botao.textContent = "Chave copiada!";
           aviso.textContent = "Chave PIX copiada.";
@@ -2107,6 +2561,7 @@
           }, 2000);
         }
 
+        // Último recurso: deixa a chave selecionada (azul) na tela.
         function selecionar() {
           var faixa = document.createRange();
           faixa.selectNodeContents(chave);
@@ -2115,6 +2570,9 @@
           selecao.addRange(faixa);
         }
 
+        // Método antigo de copiar: põe a chave num campo invisível,
+        // seleciona e manda copiar. Funciona em navegadores mais antigos e
+        // em alguns casos em que o Wix bloqueia o método novo.
         function metodoAntigo() {
           var campo = document.createElement("textarea");
           campo.value = chave.textContent;
@@ -2132,6 +2590,7 @@
           else selecionar();
         }
 
+        // Clique no botão: tenta o método novo; se falhar, o antigo.
         botao.addEventListener("click", function () {
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard
