@@ -1,0 +1,51 @@
+/*
+ * Recursos do editor dos textos do Wix (src/keystatic/texto-do-wix.ts e
+ * `texto` em src/keystatic/wix.ts), iguais em todas as páginas. As classes
+ * são postas por `textoEmHtml` em src/config/wix.ts; o resto da aparência de
+ * cada texto (cor, tamanho, respiro entre parágrafos) fica no CSS da página.
+ */
+
+/* Alinhamento: o trecho marcado vira um bloco próprio, como no editor.
+   Vale também sobre o alinhamento que a página dá ao texto (o topo, por
+   exemplo, é justificado no computador e à esquerda no celular). */
+.alinhar-esquerda,
+.alinhar-centro,
+.alinhar-direita,
+.alinhar-justificado {
+  display: block;
+}
+
+.alinhar-esquerda {
+  text-align: left;
+}
+
+.alinhar-centro {
+  text-align: center;
+}
+
+.alinhar-direita {
+  text-align: right;
+}
+
+.alinhar-justificado {
+  text-align: justify;
+}
+
+u {
+  text-underline-offset: 2px;
+}
+
+/* Listas: recuo curto e o mesmo respiro dos parágrafos, sem sobrar espaço
+   antes da primeira linha nem depois da última do bloco. */
+.lista-texto {
+  margin: 0.75em 0;
+  padding-left: 1.4em;
+}
+
+.lista-texto:first-child {
+  margin-top: 0;
+}
+
+.lista-texto:last-child {
+  margin-bottom: 0;
+}

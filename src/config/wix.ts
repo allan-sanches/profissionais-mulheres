@@ -7,7 +7,7 @@
  * próprio JSON e viram HTML por `textoEmHtml`.
  */
 
-import Markdoc, { type Config } from "@markdoc/markdoc";
+import Markdoc, { type Config, type Node } from "@markdoc/markdoc";
 import topoJson from "@/content/wix/topo.json";
 import podcastJson from "@/content/wix/podcast.json";
 import linhasJson from "@/content/wix/linhas-editoriais.json";
@@ -107,11 +107,37 @@ export const linhasEditoriais = linhasJson as {
   segundosPorTroca: number;
 };
 
+/**
+ * Marca do editor → elemento com classe. Os nomes das tags são as chaves de
+ * `componentesDoTexto` em src/keystatic/texto-do-wix.ts, e as classes são
+ * desenhadas em src/styles/wix/texto.css.
+ */
+const marca = (elemento: string, classe?: string) => ({
+  transform: (no: Node, config: Config) =>
+    new Tag(
+      elemento,
+      classe ? { class: classe } : {},
+      no.transformChildren(config),
+    ),
+});
+
 const configDoTexto: Config = {
   nodes: {
     // Por padrão o documento vira <article>; aqui só os parágrafos interessam.
     document: {
       transform: (no, config) => no.transformChildren(config),
+    },
+    // Classe para o recuo e o respiro das listas, iguais em todas as páginas.
+    list: {
+      ...Markdoc.nodes.list,
+      transform: (no, config) =>
+        new Tag(
+          no.attributes.ordered ? "ol" : "ul",
+          no.attributes.start === undefined
+            ? { class: "lista-texto" }
+            : { class: "lista-texto", start: no.attributes.start },
+          no.transformChildren(config),
+        ),
     },
     // As páginas aparecem dentro do Wix (num iframe): link abre em outra aba.
     link: {
@@ -128,6 +154,13 @@ const configDoTexto: Config = {
           no.transformChildren(config),
         ),
     },
+  },
+  tags: {
+    alinharEsquerda: marca("span", "alinhar-esquerda"),
+    centralizar: marca("span", "alinhar-centro"),
+    alinharDireita: marca("span", "alinhar-direita"),
+    justificar: marca("span", "alinhar-justificado"),
+    sublinhado: marca("u"),
   },
 };
 

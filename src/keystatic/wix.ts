@@ -1,4 +1,5 @@
 import { fields, singleton } from "@keystatic/core";
+import { componentesDoTexto } from "./texto-do-wix";
 
 /*
  * Páginas do Wix.
@@ -20,10 +21,11 @@ import { fields, singleton } from "@keystatic/core";
  */
 
 /**
- * Texto com o editor do Keystatic (negrito, itálico e link). Fica gravado
- * dentro do próprio JSON, em Markdoc; quem transforma em HTML é
- * `textoEmHtml` em src/config/wix.ts. Uma linha em branco começa outro
- * parágrafo.
+ * Texto com o editor do Keystatic: negrito, itálico, sublinhado, tachado,
+ * link, listas e alinhamento (sublinhado e alinhamento vêm de
+ * texto-do-wix.ts). Fica gravado dentro do próprio JSON, em Markdoc; quem
+ * transforma em HTML é `textoEmHtml` em src/config/wix.ts. Uma linha em
+ * branco começa outro parágrafo.
  */
 const texto = (label: string, description?: string) =>
   fields.markdoc.inline({
@@ -33,17 +35,18 @@ const texto = (label: string, description?: string) =>
       bold: true,
       italic: true,
       link: true,
-      strikethrough: false,
+      strikethrough: true,
       code: false,
       heading: [],
       blockquote: false,
-      orderedList: false,
-      unorderedList: false,
+      orderedList: true,
+      unorderedList: true,
       table: false,
       image: false,
       divider: false,
       codeBlock: false,
     },
+    components: componentesDoTexto,
   });
 
 /** Título que pode ter mais de uma linha: cada linha do campo vira uma linha. */
