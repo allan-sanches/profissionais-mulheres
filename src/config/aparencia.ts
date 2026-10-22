@@ -39,9 +39,15 @@ export const identidade = identidadeJson as {
   imagemDeCompartilhamento: string;
 };
 
+export interface LinkDoMenu extends Link {
+  /** Opcionais: links gravados antes de existirem esses campos não os têm. */
+  cor?: "cinza" | "roxo" | "verde";
+  fonte?: "normal" | "seminegrito" | "negrito";
+}
+
 export const navegacao = navegacaoJson as {
   enderecoDaLogo: string;
-  links: Link[];
+  links: LinkDoMenu[];
 };
 
 export const pesquisadoras = pesquisadorasJson as {

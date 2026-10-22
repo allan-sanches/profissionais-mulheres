@@ -55,7 +55,7 @@ const imagem = (label: string, description: string) =>
     publicPath: "/imagens/",
   });
 
-const link = fields.object({
+const camposDoLink = {
   rotulo: fields.text({
     label: "Texto do link",
     validation: { isRequired: true },
@@ -63,6 +63,38 @@ const link = fields.object({
   endereco: fields.url({
     label: "Endereço",
     validation: { isRequired: true },
+  }),
+};
+
+const link = fields.object(camposDoLink);
+
+/*
+ * Só o menu do topo tem cor e fonte por link; o rodapé fica de fora porque o
+ * fundo dele é roxo. A cor sai da paleta da marca, e não de uma escolha livre,
+ * pelo mesmo motivo das marcas de cor (ver marcas-de-cor.tsx). Quem transforma
+ * cada valor em classe é src/components/layout/SiteNav.astro.
+ */
+const linkDoMenu = fields.object({
+  ...camposDoLink,
+  cor: fields.select({
+    label: "Cor",
+    description:
+      "Cinza é a cor normal do menu: fica verde quando a pessoa está na página do link. Roxo e verde valem em todas as páginas.",
+    options: [
+      { label: "Cinza (padrão)", value: "cinza" },
+      { label: "Roxo", value: "roxo" },
+      { label: "Verde", value: "verde" },
+    ],
+    defaultValue: "cinza",
+  }),
+  fonte: fields.select({
+    label: "Fonte",
+    options: [
+      { label: "Normal (padrão)", value: "normal" },
+      { label: "Seminegrito", value: "seminegrito" },
+      { label: "Negrito", value: "negrito" },
+    ],
+    defaultValue: "normal",
   }),
 });
 
@@ -116,8 +148,10 @@ export const navegacao = singleton({
       label: "Para onde a logo leva",
       description: "Normalmente o site principal.",
     }),
-    links: fields.array(link, {
+    links: fields.array(linkDoMenu, {
       label: "Links do menu",
+      description:
+        "Clique num link para trocar o texto, o endereço, a cor ou a fonte. Arraste pelos pontinhos para mudar a ordem.",
       itemLabel: (props) => props.fields.rotulo.value || "Link sem texto",
     }),
   },

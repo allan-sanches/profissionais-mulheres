@@ -1,15 +1,61 @@
 ---
 import { identidade, navegacao } from "@/config/aparencia";
 
-// O menu espelha o do site principal. O item que aponta pra cá é marcado como
-// página atual — é o equivalente ao destaque verde que o Wix dá à seção aberta.
+// O menu espelha o do site principal. O item que aponta pra esta página é
+// marcado como atual — é o equivalente ao destaque verde que o Wix dá à seção
+// aberta.
 const aqui = new URL(Astro.site ?? "https://rede.mulheresnaecologia.com/")
   .hostname;
+const semBarraNoFim = (caminho: string) => caminho.replace(/\/+$/, "") || "/";
+const paginaAtual = semBarraNoFim(Astro.url.pathname);
 
-const links = navegacao.links.map((link) => ({
-  ...link,
-  atual: new URL(link.endereco).hostname === aqui,
-}));
+// Vale o link deste site de caminho mais longo que contém a página: em
+// /cadastro é o do cadastro, e as demais páginas caem no link da raiz, se o
+// menu tiver um. Comparar só o domínio marcaria todos os links daqui juntos.
+const caminhoDoAtual = navegacao.links
+  .map((link) => new URL(link.endereco))
+  .filter((url) => url.hostname === aqui)
+  .map((url) => semBarraNoFim(url.pathname))
+  .filter(
+    (caminho) =>
+      caminho === "/" ||
+      paginaAtual === caminho ||
+      paginaAtual.startsWith(`${caminho}/`),
+  )
+  .sort((a, b) => b.length - a.length)[0];
+
+// Cor e fonte vêm do painel. As classes ficam escritas por inteiro para o
+// Tailwind achá-las aqui — ele não lê o JSON.
+const cores = {
+  cinza: "text-gray-700 hover:text-meco-green-primary",
+  roxo: "text-meco-purple-primary hover:opacity-75",
+  verde: "text-meco-green-primary hover:opacity-75",
+};
+const fontes = {
+  normal: "font-normal",
+  seminegrito: "font-semibold",
+  negrito: "font-bold",
+};
+
+const links = navegacao.links.map((link) => {
+  const url = new URL(link.endereco);
+  const atual =
+    url.hostname === aqui && semBarraNoFim(url.pathname) === caminhoDoAtual;
+  const cor = link.cor ?? "cinza";
+  const fonte = link.fonte ?? "normal";
+
+  // O destaque de página atual só vale para o cinza: uma cor escolhida no
+  // painel continua a mesma em todas as páginas.
+  const classes =
+    atual && cor === "cinza"
+      ? [
+          "text-meco-green-primary",
+          fonte === "negrito" ? "font-bold" : "font-semibold",
+        ]
+      : [cores[cor], fontes[fonte]];
+
+  return { ...link, atual, classes };
+});
 ---
 
 <nav
@@ -48,12 +94,7 @@ const links = navegacao.links.map((link) => ({
             <a
               href={link.endereco}
               aria-current={link.atual ? "page" : undefined}
-              class:list={[
-                "text-base transition-colors hover:text-meco-green-primary",
-                link.atual
-                  ? "font-semibold text-meco-green-primary"
-                  : "text-gray-700",
-              ]}
+              class:list={["text-base transition", ...link.classes]}
             >
               {link.rotulo}
             </a>
