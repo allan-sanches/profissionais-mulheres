@@ -3,35 +3,59 @@
   "links": [
     {
       "rotulo": "Início",
-      "endereco": "https://www.mulheresnaecologia.com/"
+      "endereco": "https://www.mulheresnaecologia.com/",
+      "formato": "texto",
+      "cor": "cinza",
+      "fonte": "normal"
     },
     {
       "rotulo": "Quem somos?",
-      "endereco": "https://www.mulheresnaecologia.com/quemsomos"
+      "endereco": "https://www.mulheresnaecologia.com/quemsomos",
+      "formato": "texto",
+      "cor": "cinza",
+      "fonte": "normal"
     },
     {
       "rotulo": "Linhas editoriais",
-      "endereco": "https://www.mulheresnaecologia.com/linhaseditoriais"
+      "endereco": "https://www.mulheresnaecologia.com/linhaseditoriais",
+      "formato": "texto",
+      "cor": "cinza",
+      "fonte": "normal"
     },
     {
       "rotulo": "Contribua",
-      "endereco": "https://www.mulheresnaecologia.com/contribua"
+      "endereco": "https://www.mulheresnaecologia.com/contribua",
+      "formato": "texto",
+      "cor": "cinza",
+      "fonte": "normal"
     },
     {
       "rotulo": "Ações",
-      "endereco": "https://www.mulheresnaecologia.com/a%C3%A7%C3%B5es"
+      "endereco": "https://www.mulheresnaecologia.com/a%C3%A7%C3%B5es",
+      "formato": "texto",
+      "cor": "cinza",
+      "fonte": "normal"
     },
     {
       "rotulo": "FAQ",
-      "endereco": "https://www.mulheresnaecologia.com/faq"
+      "endereco": "https://www.mulheresnaecologia.com/faq",
+      "formato": "texto",
+      "cor": "cinza",
+      "fonte": "normal"
     },
     {
       "rotulo": "Contato",
-      "endereco": "https://www.mulheresnaecologia.com/contato"
+      "endereco": "https://www.mulheresnaecologia.com/contato",
+      "formato": "texto",
+      "cor": "cinza",
+      "fonte": "normal"
     },
     {
       "rotulo": "Faça parte!",
-      "endereco": "https://rede.mulheresnaecologia.com/cadastro"
+      "endereco": "https://rede.mulheresnaecologia.com/cadastro",
+      "formato": "botao",
+      "cor": "roxo",
+      "fonte": "normal"
     }
   ]
 }
