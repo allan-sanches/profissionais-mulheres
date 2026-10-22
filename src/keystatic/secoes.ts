@@ -69,17 +69,27 @@ const camposDoLink = {
 const link = fields.object(camposDoLink);
 
 /*
- * Só o menu do topo tem cor e fonte por link; o rodapé fica de fora porque o
- * fundo dele é roxo. A cor sai da paleta da marca, e não de uma escolha livre,
- * pelo mesmo motivo das marcas de cor (ver marcas-de-cor.tsx). Quem transforma
- * cada valor em classe é src/components/layout/SiteNav.astro.
+ * Só o menu do topo tem formato, cor e fonte por link; o rodapé fica de fora
+ * porque o fundo dele é roxo. A cor sai da paleta da marca, e não de uma
+ * escolha livre, pelo mesmo motivo das marcas de cor (ver marcas-de-cor.tsx).
+ * Quem transforma cada valor em classe é src/components/layout/SiteNav.astro.
  */
 const linkDoMenu = fields.object({
   ...camposDoLink,
+  formato: fields.select({
+    label: "Formato",
+    description:
+      "Botão: o link ganha fundo na cor escolhida abaixo, com o texto branco. Bom para chamar atenção, como em um convite.",
+    options: [
+      { label: "Texto (padrão)", value: "texto" },
+      { label: "Botão", value: "botao" },
+    ],
+    defaultValue: "texto",
+  }),
   cor: fields.select({
     label: "Cor",
     description:
-      "Cinza é a cor normal do menu: fica verde quando a pessoa está na página do link. Roxo e verde valem em todas as páginas.",
+      "No formato texto, cinza é a cor normal do menu: fica verde quando a pessoa está na página do link. As outras cores, e os botões, ficam iguais em todas as páginas.",
     options: [
       { label: "Cinza (padrão)", value: "cinza" },
       { label: "Roxo", value: "roxo" },

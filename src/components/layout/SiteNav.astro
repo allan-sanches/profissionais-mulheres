@@ -24,12 +24,20 @@ const caminhoDoAtual = navegacao.links
   )
   .sort((a, b) => b.length - a.length)[0];
 
-// Cor e fonte vêm do painel. As classes ficam escritas por inteiro para o
-// Tailwind achá-las aqui — ele não lê o JSON.
+// Formato, cor e fonte vêm do painel. As classes ficam escritas por inteiro
+// para o Tailwind achá-las aqui — ele não lê o JSON.
 const cores = {
   cinza: "text-gray-700 hover:text-meco-green-primary",
   roxo: "text-meco-purple-primary hover:opacity-75",
   verde: "text-meco-green-primary hover:opacity-75",
+};
+// Mesmo desenho dos botões do resto do site: fundo da marca, texto branco e
+// o tom mais escuro da mesma família no hover.
+const botoes = {
+  cinza: "rounded-lg px-4 py-2 text-white bg-gray-700 hover:bg-gray-900",
+  roxo: "rounded-lg px-4 py-2 text-white bg-meco-purple-primary hover:bg-meco-purple-deep",
+  verde:
+    "rounded-lg px-4 py-2 text-white bg-meco-green-primary hover:bg-meco-green-dark",
 };
 const fontes = {
   normal: "font-normal",
@@ -41,18 +49,19 @@ const links = navegacao.links.map((link) => {
   const url = new URL(link.endereco);
   const atual =
     url.hostname === aqui && semBarraNoFim(url.pathname) === caminhoDoAtual;
+  const botao = link.formato === "botao";
   const cor = link.cor ?? "cinza";
   const fonte = link.fonte ?? "normal";
 
-  // O destaque de página atual só vale para o cinza: uma cor escolhida no
-  // painel continua a mesma em todas as páginas.
+  // O destaque de página atual só vale para o texto cinza: uma cor escolhida
+  // no painel, ou um botão, continua igual em todas as páginas.
   const classes =
-    atual && cor === "cinza"
+    atual && !botao && cor === "cinza"
       ? [
           "text-meco-green-primary",
           fonte === "negrito" ? "font-bold" : "font-semibold",
         ]
-      : [cores[cor], fontes[fonte]];
+      : [botao ? botoes[cor] : cores[cor], fontes[fonte]];
 
   return { ...link, atual, classes };
 });

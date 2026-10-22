@@ -41,6 +41,7 @@ export const identidade = identidadeJson as {
 
 export interface LinkDoMenu extends Link {
   /** Opcionais: links gravados antes de existirem esses campos não os têm. */
+  formato?: "texto" | "botao";
   cor?: "cinza" | "roxo" | "verde";
   fonte?: "normal" | "seminegrito" | "negrito";
 }
