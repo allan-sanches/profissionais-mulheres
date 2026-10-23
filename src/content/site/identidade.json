@@ -1,9 +1,9 @@
 {
   "nomeDoSite": "Mulheres na Ecologia",
-  "logoMenu": "/imagens/logo 1 colorida horizontal.png",
+  "logoMenu": "/imagens/logoMenu.png",
   "alturaLogoMenu": 48,
-  "logoRodape": "/imagens/logo 2 branca.png",
-  "logoPainelDeFiltros": "/imagens/logo abreviada colorida.png",
+  "logoRodape": "/imagens/logoRodape.png",
+  "logoPainelDeFiltros": "/imagens/logoPainelDeFiltros.png",
   "favicon": "/imagens/favicon.png",
-  "imagemDeCompartilhamento": "/imagens/og-image.png"
+  "imagemDeCompartilhamento": "/imagens/imagemDeCompartilhamento.png"
 }
