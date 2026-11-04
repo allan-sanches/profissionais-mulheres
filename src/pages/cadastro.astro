@@ -3,12 +3,15 @@ import { Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SiteNav from "@/components/layout/SiteNav.astro";
 import Footer from "@/components/layout/Footer.astro";
+import { cadastro } from "@/config/aparencia";
 import banner from "@/assets/cadastro/banner.png";
 
 /*
  * Cadastro na rede pelo próprio site. A página é estática; as perguntas vêm do
  * Google Forms em tempo de visita (src/components/cadastro/cadastro.ts), então
- * uma edição no formulário aparece aqui sem novo deploy.
+ * uma edição no formulário aparece aqui sem novo deploy. A exceção é a
+ * mensagem de formulário fechado: vem do Keystatic, e a que estiver configurada
+ * no Forms é ignorada.
  */
 
 const botao =
@@ -65,14 +68,8 @@ const botao =
           class="rounded-lg border border-gray-200/90 bg-white p-6 sm:p-8"
         >
           <h1 class="font-epilogue text-2xl font-bold text-meco-purple-deep">
-            Cadastro encerrado
+            {cadastro.mensagemFormularioFechado}
           </h1>
-          <p
-            class="mt-3 whitespace-pre-line text-gray-700"
-            data-mensagem-fechado
-          >
-            O formulário não está aceitando respostas no momento.
-          </p>
         </div>
 
         <form data-estado="formulario" hidden novalidate class="space-y-6">

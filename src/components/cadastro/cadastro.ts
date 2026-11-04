@@ -101,10 +101,6 @@ async function carregar(raiz: HTMLElement) {
   }
 
   if (!estrutura.aceitandoRespostas) {
-    const mensagem = raiz.querySelector<HTMLElement>("[data-mensagem-fechado]");
-    if (mensagem && estrutura.mensagemFechado) {
-      mensagem.innerHTML = textoComLinks(estrutura.mensagemFechado);
-    }
     mostrarEstado(raiz, "fechado");
     return;
   }

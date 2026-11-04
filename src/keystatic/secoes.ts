@@ -247,6 +247,20 @@ export const paginaDePesquisadoras = singleton({
   },
 });
 
+export const paginaDeCadastro = singleton({
+  label: "5. Página de cadastro",
+  path: "src/content/site/cadastro",
+  format: "json",
+  schema: {
+    mensagemFormularioFechado: fields.text({
+      label: "Mensagem de formulário fechado",
+      description:
+        "Aparece no lugar das perguntas quando o Google Forms não está aceitando respostas.",
+      validation: { isRequired: true },
+    }),
+  },
+});
+
 export const rodape = singleton({
   label: "4. Rodapé",
   path: "src/content/site/rodape",

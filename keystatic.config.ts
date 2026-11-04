@@ -2,6 +2,7 @@ import { config, collection, singleton, fields } from "@keystatic/core";
 import {
   identidadeVisual,
   navegacao,
+  paginaDeCadastro,
   paginaDePesquisadoras,
   rodape,
 } from "./src/keystatic/secoes";
@@ -46,6 +47,7 @@ export default config({
         "navegacao",
         "paginaDePesquisadoras",
         "rodape",
+        "paginaDeCadastro",
       ],
       Conteúdo: ["researchers"],
       "Páginas do Wix": [
@@ -62,6 +64,7 @@ export default config({
     navegacao,
     paginaDePesquisadoras,
     rodape,
+    paginaDeCadastro,
 
     // Páginas que o Wix mostra por dentro — gravam em src/content/wix/.
     topoDaPaginaInicial,

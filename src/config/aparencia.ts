@@ -1,7 +1,7 @@
 /*
  * Ponto único de leitura do que é editável pelo Keystatic.
  *
- * Os quatro JSON de src/content/site/ são escritos pelas seções de "Aparência"
+ * Os JSON de src/content/site/ são escritos pelas seções de "Aparência"
  * do painel (ver src/keystatic/secoes.ts). Os componentes importam daqui, e não
  * dos arquivos soltos, por dois motivos: o caminho fica num lugar só se a
  * estrutura mudar, e é aqui que os valores ganham tipo.
@@ -19,6 +19,7 @@
 import type { Node } from "@markdoc/markdoc";
 import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../keystatic.config";
+import cadastroJson from "@/content/site/cadastro.json";
 import identidadeJson from "@/content/site/identidade.json";
 import navegacaoJson from "@/content/site/navegacao.json";
 import pesquisadorasJson from "@/content/site/pesquisadoras.json";
@@ -74,6 +75,10 @@ export const pesquisadoras = pesquisadorasJson as {
   };
   buscaPlaceholder: string;
   semResultados: { titulo: string; descricao: string };
+};
+
+export const cadastro = cadastroJson as {
+  mensagemFormularioFechado: string;
 };
 
 export const rodape = rodapeJson as {
