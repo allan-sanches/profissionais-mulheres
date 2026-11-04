@@ -1,5 +1,6 @@
 import { fields, singleton } from "@keystatic/core";
 import { marcasDeCor } from "./marcas-de-cor";
+import { marcasDoTexto } from "./marcas-do-texto";
 
 /*
  * Seções de aparência do site.
@@ -252,11 +253,27 @@ export const paginaDeCadastro = singleton({
   path: "src/content/site/cadastro",
   format: "json",
   schema: {
-    mensagemFormularioFechado: fields.text({
+    // Inline: fica dentro do JSON, e não num .mdoc à parte como o `textoRico`.
+    mensagemFormularioFechado: fields.markdoc.inline({
       label: "Mensagem de formulário fechado",
       description:
-        "Aparece no lugar das perguntas quando o Google Forms não está aceitando respostas.",
-      validation: { isRequired: true },
+        "Aparece no lugar das perguntas quando o Google Forms não está aceitando respostas. Selecione um trecho e use os botões da barra para mudar negrito, cor, tamanho ou alinhamento.",
+      options: {
+        bold: true,
+        italic: true,
+        link: true,
+        strikethrough: true,
+        code: false,
+        heading: [],
+        blockquote: false,
+        orderedList: true,
+        unorderedList: true,
+        table: false,
+        image: false,
+        divider: false,
+        codeBlock: false,
+      },
+      components: marcasDoTexto,
     }),
   },
 });

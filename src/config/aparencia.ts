@@ -19,7 +19,6 @@
 import type { Node } from "@markdoc/markdoc";
 import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../keystatic.config";
-import cadastroJson from "@/content/site/cadastro.json";
 import identidadeJson from "@/content/site/identidade.json";
 import navegacaoJson from "@/content/site/navegacao.json";
 import pesquisadorasJson from "@/content/site/pesquisadoras.json";
@@ -77,10 +76,6 @@ export const pesquisadoras = pesquisadorasJson as {
   semResultados: { titulo: string; descricao: string };
 };
 
-export const cadastro = cadastroJson as {
-  mensagemFormularioFechado: string;
-};
-
 export const rodape = rodapeJson as {
   tituloDasRedes: string;
   redes: { nome: string; endereco: string; icone: string }[];
@@ -106,6 +101,16 @@ export async function lerSubtitulo(): Promise<Node> {
     resolveLinkedFiles: true,
   });
   return pagina.subtitulo.node;
+}
+
+/**
+ * Mensagem de formulário fechado da página de cadastro, como `lerSubtitulo`.
+ * Aqui o Markdoc vem de dentro do JSON, e o leitor o devolve do mesmo jeito.
+ */
+export async function lerMensagemFormularioFechado(): Promise<Node> {
+  const leitor = createReader(process.cwd(), keystaticConfig);
+  const pagina = await leitor.singletons.paginaDeCadastro.readOrThrow();
+  return pagina.mensagemFormularioFechado.node;
 }
 
 /**

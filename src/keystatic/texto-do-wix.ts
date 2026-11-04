@@ -19,6 +19,9 @@ import { underlineIcon } from "@keystar/ui/icon/icons/underlineIcon";
  * parágrafo inteiro, é ele que fica alinhado; um pedaço dele vai para uma
  * linha só sua, igual nos dois lugares.
  *
+ * `className` é para os textos fora do Wix, desenhados por TextoRico.astro,
+ * onde há Tailwind e não há texto.css. As páginas do Wix não a usam.
+ *
  * Cor de destaque ficou de fora de propósito: estes textos ficam ora sobre
  * branco, ora sobre roxo (sinopse, bios das convidadas, topo), e o roxo da
  * marca some no fundo roxo.
@@ -28,11 +31,13 @@ const alinhamento = (
   label: string,
   icon: typeof alignLeftIcon,
   textAlign: string,
+  className: string,
 ) =>
   mark({
     label,
     icon,
     tag: "span",
+    className,
     style: { display: "block", textAlign },
     schema: {},
   });
@@ -43,10 +48,30 @@ const alinhamento = (
  * renomeá-los sem migrar os textos já salvos.
  */
 export const componentesDoTexto = {
-  alinharEsquerda: alinhamento("Alinhar à esquerda", alignLeftIcon, "left"),
-  centralizar: alinhamento("Centralizar", alignCenterIcon, "center"),
-  alinharDireita: alinhamento("Alinhar à direita", alignRightIcon, "right"),
-  justificar: alinhamento("Justificar", alignJustifyIcon, "justify"),
+  alinharEsquerda: alinhamento(
+    "Alinhar à esquerda",
+    alignLeftIcon,
+    "left",
+    "block text-left",
+  ),
+  centralizar: alinhamento(
+    "Centralizar",
+    alignCenterIcon,
+    "center",
+    "block text-center",
+  ),
+  alinharDireita: alinhamento(
+    "Alinhar à direita",
+    alignRightIcon,
+    "right",
+    "block text-right",
+  ),
+  justificar: alinhamento(
+    "Justificar",
+    alignJustifyIcon,
+    "justify",
+    "block text-justify",
+  ),
   sublinhado: mark({
     label: "Sublinhado",
     icon: underlineIcon,

@@ -4,9 +4,10 @@
  *
  * O campo `fields.markdoc` grava Markdoc, e o leitor devolve a arvore ja
  * parseada (ver lerSubtitulo em src/config/aparencia.ts). Aqui ela vira HTML
- * pelo proprio Markdoc, com tres ajustes: cada paragrafo recebe a classe vinda
- * da pagina, o link ganha sublinhado e as marcas de cor viram <span> com as
- * classes declaradas em src/keystatic/marcas-de-cor.tsx.
+ * pelo proprio Markdoc, com quatro ajustes: cada paragrafo recebe a classe vinda
+ * da pagina, o link ganha sublinhado, a lista recupera os marcadores que o
+ * reset do Tailwind tira e as marcas viram elementos com as classes declaradas
+ * em src/keystatic/marcas-do-texto.ts.
  *
  * Sai como HTML estatico em vez de um componente React: nao vale uma ilha e
  * uma dependencia de runtime pra desenhar um paragrafo. O renderer de HTML do
@@ -14,7 +15,7 @@
  * do painel.
  */
 import Markdoc, { type Config, type Node, type Schema } from "@markdoc/markdoc";
-import { marcasDeCor } from "@/keystatic/marcas-de-cor";
+import { marcasDoTexto } from "@/keystatic/marcas-do-texto";
 
 // O pacote resolve para CommonJS no Node, que nao expoe exports nomeados.
 const { Tag } = Markdoc;
@@ -28,17 +29,17 @@ interface Props {
 
 const { conteudo, class: classe = "" } = Astro.props;
 
-// As classes estao escritas por extenso em marcas-de-cor.tsx, que e onde o
+// As classes estao escritas por extenso nos arquivos das marcas, que e onde o
 // Tailwind as enxerga. Aqui elas so sao lidas de la.
-const tagsDeCor: Record<string, Schema> = Object.fromEntries(
-  Object.entries(marcasDeCor).map(([nome, marca]): [string, Schema] => [
+const tagsDasMarcas: Record<string, Schema> = Object.fromEntries(
+  Object.entries(marcasDoTexto).map(([nome, marca]): [string, Schema] => [
     nome,
     {
       inline: true,
       transform: (no, config) =>
         new Tag(
           marca.tag ?? "span",
-          { class: marca.className },
+          "className" in marca ? { class: marca.className } : {},
           no.transformChildren(config),
         ),
     },
@@ -55,6 +56,19 @@ const config: Config = {
       transform: (no, config) =>
         new Tag("p", { class: classe }, no.transformChildren(config)),
     },
+    list: {
+      ...Markdoc.nodes.list,
+      transform: (no, config) =>
+        new Tag(
+          no.attributes.ordered ? "ol" : "ul",
+          {
+            class: no.attributes.ordered
+              ? "list-decimal pl-6"
+              : "list-disc pl-6",
+          },
+          no.transformChildren(config),
+        ),
+    },
     link: {
       attributes: { href: { type: String } },
       transform: (no, config) =>
@@ -65,7 +79,7 @@ const config: Config = {
         ),
     },
   },
-  tags: tagsDeCor,
+  tags: tagsDasMarcas,
 };
 
 const html = Markdoc.renderers.html(Markdoc.transform(conteudo, config));

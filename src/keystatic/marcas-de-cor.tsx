@@ -13,6 +13,8 @@ import { mark } from "@keystatic/core/content-components";
  * lugares do site. Elas precisam existir no CSS final — como o Tailwind varre o
  * código-fonte, e não o conteúdo JSON, este arquivo é justamente o que garante
  * que ele as veja.
+ *
+ * `style` repete a cor para o editor, que não carrega o CSS do site.
  */
 
 const IconeRoxo = (
@@ -32,6 +34,7 @@ export const destaqueRoxo = mark({
   icon: IconeRoxo,
   tag: "span",
   className: "text-meco-purple-primary font-bold",
+  style: { color: "#7d1cd4", fontWeight: "700" },
   schema: {},
 });
 
@@ -40,6 +43,7 @@ export const destaqueVerde = mark({
   icon: IconeVerde,
   tag: "span",
   className: "text-meco-green-primary font-bold",
+  style: { color: "#0d9426", fontWeight: "700" },
   schema: {},
 });
 

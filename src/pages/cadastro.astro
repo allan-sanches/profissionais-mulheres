@@ -3,7 +3,8 @@ import { Image } from "astro:assets";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SiteNav from "@/components/layout/SiteNav.astro";
 import Footer from "@/components/layout/Footer.astro";
-import { cadastro } from "@/config/aparencia";
+import TextoRico from "@/components/blocks/TextoRico.astro";
+import { lerMensagemFormularioFechado } from "@/config/aparencia";
 import banner from "@/assets/cadastro/banner.png";
 
 /*
@@ -13,6 +14,8 @@ import banner from "@/assets/cadastro/banner.png";
  * mensagem de formulário fechado: vem do Keystatic, e a que estiver configurada
  * no Forms é ignorada.
  */
+
+const mensagemFechado = await lerMensagemFormularioFechado();
 
 const botao =
   "rounded-lg px-5 py-2.5 text-sm font-bold transition-colors disabled:cursor-wait disabled:opacity-60";
@@ -67,9 +70,14 @@ const botao =
           hidden
           class="rounded-lg border border-gray-200/90 bg-white p-6 sm:p-8"
         >
-          <h1 class="font-epilogue text-2xl font-bold text-meco-purple-deep">
-            {cadastro.mensagemFormularioFechado}
-          </h1>
+          {
+            /* A mensagem pode ter mais de um parágrafo, então não cabe num <h1>
+            nem herda negrito dele: o negrito vem do próprio texto. */
+          }
+          <h1 class="sr-only">Cadastro</h1>
+          <div class="space-y-3 font-epilogue text-2xl text-meco-purple-deep">
+            <TextoRico conteudo={mensagemFechado} />
+          </div>
         </div>
 
         <form data-estado="formulario" hidden novalidate class="space-y-6">
