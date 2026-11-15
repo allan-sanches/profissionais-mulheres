@@ -326,6 +326,11 @@ export const rodape = singleton({
         cnpj: fields.text({ label: "CNPJ" }),
         frase: fields.text({ label: "Frase final" }),
         desenvolvidoPor: fields.text({ label: "Desenvolvido por" }),
+        siteDeQuemDesenvolveu: fields.url({
+          label: "Site de quem desenvolveu",
+          description:
+            "Com um endereço aqui, o nome em “Desenvolvido por” vira link (abre em nova aba). Vazio, fica só o texto.",
+        }),
       },
       { label: "Linha de créditos" },
     ),

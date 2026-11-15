@@ -85,6 +85,8 @@ export const rodape = rodapeJson as {
     cnpj: string;
     frase: string;
     desenvolvidoPor: string;
+    /** Vazio (ou ausente): o nome fica só como texto. */
+    siteDeQuemDesenvolveu?: string | null;
   };
 };
 

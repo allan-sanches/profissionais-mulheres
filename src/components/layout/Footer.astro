@@ -122,11 +122,32 @@ const { creditos } = rodape;
       class="mt-8 border-t border-white/20 pt-5 text-center text-xs text-white sm:mt-12 sm:pt-6 sm:text-sm"
     >
       <p>
-        Copyright © {year}
+        Copyright © {year}{" "}
         {creditos.organizacao} · CNPJ {creditos.cnpj} · {creditos.frase}
       </p>
+      {
+        /* Com o site preenchido no Keystatic, o nome vira link. Sem
+        `noreferrer`: quem recebe a visita vê que ela veio daqui. O {" "}
+        (aqui e depois do ano, acima) segura o espaço que o Astro tiraria na
+        quebra de linha. */
+      }
       <p class="mt-1 text-white">
-        Desenvolvido por {creditos.desenvolvidoPor}
+        Desenvolvido por{" "}
+        {
+          creditos.siteDeQuemDesenvolveu ? (
+            <a
+              href={creditos.siteDeQuemDesenvolveu}
+              target="_blank"
+              rel="noopener"
+              class="font-semibold underline decoration-white/50 underline-offset-2 transition-colors hover:text-gray-200 hover:decoration-white"
+            >
+              {creditos.desenvolvidoPor}
+              <span class="sr-only"> (abre em nova aba)</span>
+            </a>
+          ) : (
+            creditos.desenvolvidoPor
+          )
+        }
       </p>
     </div>
   </div>
